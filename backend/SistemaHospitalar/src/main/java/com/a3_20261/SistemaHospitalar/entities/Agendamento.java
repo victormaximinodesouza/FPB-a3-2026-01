@@ -1,4 +1,4 @@
-package entities;
+package com.a3_20261.SistemaHospitalar.entities;
 
 import java.util.Date;
 

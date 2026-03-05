@@ -1,6 +1,6 @@
-package resources;
+package com.a3_20261.SistemaHospitalar.resources;
 
-import entities.Paciente;
+import com.a3_20261.SistemaHospitalar.entities.Paciente;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
