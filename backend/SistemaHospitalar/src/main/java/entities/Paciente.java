@@ -1,0 +1,96 @@
+package entities;
+
+import java.util.Date;
+import java.util.Objects;
+
+public class Paciente {
+
+    private Integer id;
+    private String nome;
+    private Integer CPF;
+    private Date dateBirth;
+    private String address;
+    private String number;
+    private String email;
+
+    public Paciente() {
+    }
+
+    public Paciente(Integer id, String nome, Integer CPF, Date dateBirth, String address, String email, String number) {
+        this.id = id;
+        this.nome = nome;
+        this.CPF = CPF;
+        this.dateBirth = dateBirth;
+        this.address = address;
+        this.email = email;
+        this.number = number;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public Integer getCPF() {
+        return CPF;
+    }
+
+    public void setCPF(Integer CPF) {
+        this.CPF = CPF;
+    }
+
+    public Date getDateBirth() {
+        return dateBirth;
+    }
+
+    public void setDateBirth(Date dateBirth) {
+        this.dateBirth = dateBirth;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getNumber() {
+        return number;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Paciente paciente = (Paciente) o;
+        return Objects.equals(id, paciente.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
+    }
+}

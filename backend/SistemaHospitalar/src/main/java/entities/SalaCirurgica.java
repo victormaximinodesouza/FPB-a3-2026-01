@@ -2,20 +2,18 @@ package entities;
 
 import java.util.Objects;
 
-public class Hospital {
+public class SalaCirurgica {
     private Integer id;
-    private String name;
     private Integer number;
-    private String address;
+    //private status fazer um enum
 
-    public Hospital() {
+
+    public SalaCirurgica() {
     }
 
-    public Hospital(Integer id, String name, Integer number, String address) {
+    public SalaCirurgica(Integer id, Integer number) {
         this.id = id;
-        this.name = name;
         this.number = number;
-        this.address = address;
     }
 
     public Integer getId() {
@@ -26,14 +24,6 @@ public class Hospital {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public Integer getNumber() {
         return number;
     }
@@ -42,24 +32,15 @@ public class Hospital {
         this.number = number;
     }
 
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        Hospital hospital = (Hospital) o;
-        return Objects.equals(id, hospital.id);
+        SalaCirurgica that = (SalaCirurgica) o;
+        return Objects.equals(id, that.id);
     }
 
     @Override
     public int hashCode() {
         return Objects.hashCode(id);
     }
-
 }
