@@ -1,9 +1,13 @@
 package entities;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
-public class Paciente {
+public class Paciente implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     private Integer id;
     private String nome;
