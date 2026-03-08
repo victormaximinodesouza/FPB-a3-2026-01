@@ -3,15 +3,15 @@ package com.a3_20261.SistemaHospitalar.entities;
 import java.util.Date;
 import java.util.Objects;
 
-public class Cirugias {
+public class Cirurgias {
     private Integer id;
     private Date dateSurgery;
     private String report;
 
-    public Cirugias() {
+    public Cirurgias() {
     }
 
-    public Cirugias(Integer id, Date dateSurgery, String report) {
+    public Cirurgias(Integer id, Date dateSurgery, String report) {
         this.id = id;
         this.dateSurgery = dateSurgery;
         this.report = report;
@@ -44,8 +44,8 @@ public class Cirugias {
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        Cirugias cirugias = (Cirugias) o;
-        return Objects.equals(id, cirugias.id);
+        Cirurgias cirurgias = (Cirurgias) o;
+        return Objects.equals(id, cirurgias.id);
     }
 
     @Override
