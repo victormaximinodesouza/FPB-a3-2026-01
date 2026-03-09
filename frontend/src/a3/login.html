@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HealthLink - Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='login-style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <img src="{{ url_for('static', filename='logo.png') }}" class="logo" alt="HealthLink">
+        <h1>HealthLink</h1>
+        <p class="subtitulo">Sistema de Gestão Hospitalar</p>
+
+        <div class="card">
+            <h2>Acesse sua conta</h2>
+            <form method="POST">
+                <div class="input-group">
+                    <span class="icon">📧</span>
+                    <input type="email" name="email" placeholder="E-mail" required>
+                </div>
+
+                <div class="input-group">
+                    <span class="icon">🔒</span>
+                    <input type="password" id="senha" name="senha" placeholder="Senha" required>
+                    <span class="toggle" onclick="mostrarSenha()">👁️</span>
+                </div>
+
+                <div class="opcoes">
+                    <label>
+                        <input type="checkbox"> Lembrar-me
+                    </label>
+                    <a href="#">Esqueceu a senha?</a>
+                </div>
+
+                <button type="submit">Entrar</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function mostrarSenha() {
+            var campo = document.getElementById("senha");
+            if (campo.type === "password") {
+                campo.type = "text";
+            } else {
+                campo.type = "password";
+            }
+        }
+    </script>
+</body>
+</html>
