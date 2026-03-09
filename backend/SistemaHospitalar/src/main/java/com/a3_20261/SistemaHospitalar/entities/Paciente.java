@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 @Entity
-@Table(name = "tb_user")
+@Table(name = "tb_paciente")
 public class Paciente implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
