@@ -326,3 +326,132 @@ td {
     position: absolute;
     top: 50%;
 }
+/* Ajustes na Barra de Filtros */
+.filter-bar {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px 25px;
+    border-radius: 15px;
+}
+
+.search-input {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    padding: 10px 15px;
+    border-radius: 12px;
+    color: #9ca3af;
+}
+
+.search-input input {
+    border: none;
+    outline: none;
+    width: 100%;
+    margin-left: 10px;
+    font-size: 0.9rem;
+}
+
+.filter-options {
+    display: flex;
+    gap: 10px;
+}
+
+.filter-options select {
+    padding: 10px;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    color: #374151;
+    outline: none;
+}
+
+.btn-filter {
+    background: white;
+    border: 1px solid #e5e7eb;
+    padding: 10px 15px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Estilização da Tabela */
+.table-card {
+    padding: 0; /* Remove padding para a tabela encostar nas bordas se desejar */
+    overflow: hidden;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    background-color: #f9fafb;
+    padding: 15px 25px;
+    text-align: left;
+    font-size: 0.75rem;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+td {
+    padding: 15px 25px;
+    font-size: 0.9rem;
+    color: #374151;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+/* Patient Info & Avatars */
+.patient-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.avatar-circle {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 0.75rem;
+    font-weight: bold;
+}
+
+.avatar-circle.blue { background-color: #3b82f6; }
+.avatar-circle.dark-blue { background-color: #2563eb; }
+
+/* Status Badges */
+.status {
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.status.confirmed { background: #d1fae5; color: #065f46; }
+.status.progress { background: #dbeafe; color: #1e40af; }
+.status.waiting { background: #fef3c7; color: #92400e; }
+
+/* Ações */
+.actions { color: #9ca3af; }
+.actions .view { color: #059669; cursor: pointer; }
+.actions .edit { color: #059669; cursor: pointer; }
