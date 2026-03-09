@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>HealthLink - Dashboard</title>
+</head>
+<body>
+
+    <div class="wrapper">
+        <aside class="sidebar">
+            <div class="logo">
+                <i class="fa-solid fa-heart-pulse"></i>
+                <span>HealthLink</span>
+            </div>
+            <nav>
+                <a href="#"><i class="fa-solid fa-calendar-days"></i> Dashboard</a>
+                <a href="#" class="active"><i class="fa-solid fa-table-columns"></i> Agendamentos</a>               
+                <a href="#"><i class="fa-solid fa-clock"></i> Fila de Espera</a>
+                <a href="#"><i class="fa-solid fa-stethoscope"></i> Atendimento</a>
+                <a href="#"><i class="fa-solid fa-heart-pulse"></i> Cirurgias</a>       
+                <a href="#"><i class="fa-solid fa-file-medical"></i> Exames</a>
+                <a href="#"><i class="fa-solid fa-droplet"></i> Doação de Sangue</a>
+                <a href="#"><i class="fa-solid fa-chart-simple"></i> Relatório</a>
+                <a href="#"><i class="fa-solid fa-user-group"></i> Usuarios</a> 
+            </nav>
+            <div class="logout">
+                <a href="#"><i class="fa-solid fa-right-from-bracket"></i> Sair</a>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header>
+                <div class="header-titles">
+                    <h1>Sistema de Gestão Hospitalar</h1>
+                </div>
+                <div class="header-user">
+                    <i class="fa-solid fa-bell"></i>
+                    <i class="fa-solid fa-gear"></i>
+                    <div class="user-profile">
+                        <span>Dr. Administrador</span>
+                        <div class="avatar">DR</div>
+                    </div>
+                </div>
+            </header>
+
+            <section class="dashboard-head">
+                <h2>Agendamentos</h2>
+                <small>Gerencie e agende consultas de pacientes</small>
+            </section>
+            <div class="dashboard-container">
+    <div class="filter-bar card">
+        <div class="search-input">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" placeholder="Buscar por paciente, médico ou especialidade...">
+        </div>
+        <div class="filter-options">
+            <select>
+                <option>Todos os Status</option>
+            </select>
+            <select>
+                <option>Todos os Médicos</option>
+            </select>
+            <button class="btn-filter"><i class="fa-solid fa-filter"></i></button>
+        </div>
+        <button class="btn-primary"><i class="fa-solid fa-plus"></i> Novo Agendamento</button>
+    </div>
+
+    <div class="table-card card">
+        <table>
+            <thead>
+                <tr>
+                    <th>PACIENTE</th>
+                    <th>MÉDICO</th>
+                    <th>ESPECIALIDADE</th>
+                    <th>DATA</th>
+                    <th>HORÁRIO</th>
+                    <th>TIPO</th>
+                    <th>STATUS</th>
+                    <th>AÇÕES</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <div class="patient-info">
+                            <div class="avatar-circle blue">JS</div>
+                            <span>João Silva</span>
+                        </div>
+                    </td>
+                    <td>Dra. Sarah Santos</td>
+                    <td>Cardiologia</td>
+                    <td>2026-03-01</td>
+                    <td><i class="fa-regular fa-clock"></i> 09:00</td>
+                    <td>Consulta</td>
+                    <td><span class="status confirmed">Confirmado</span></td>
+                    <td class="actions"><span class="view">Ver</span> | <span class="edit">Editar</span></td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="patient-info">
+                            <div class="avatar-circle dark-blue">MO</div>
+                            <span>Maria Oliveira</span>
+                        </div>
+                    </td>
+                    <td>Dr. Michael Costa</td>
+                    <td>Ortopedia</td>
+                    <td>2026-03-01</td>
+                    <td><i class="fa-regular fa-clock"></i> 10:30</td>
+                    <td>Retorno</td>
+                    <td><span class="status progress">Em Andamento</span></td>
+                    <td class="actions"><span class="view">Ver</span> | <span class="edit">Editar</span></td>
+                </tr>
+                </tbody>
+        </table>
+    </div>
+</div>
