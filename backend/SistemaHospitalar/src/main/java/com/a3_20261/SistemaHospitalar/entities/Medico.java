@@ -1,10 +1,10 @@
 package com.a3_20261.SistemaHospitalar.entities;
 
 import jakarta.persistence.*;
-
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
+
 @Entity
 @Table(name = "tb_medico")
 public class Medico implements Serializable {
