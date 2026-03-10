@@ -1,12 +1,20 @@
 package com.a3_20261.SistemaHospitalar.entities;
 
+import jakarta.persistence.*;
+
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
+@Entity
+@Table(name = "tb_sala")
+
 public class SalaCirurgica implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private Integer number;
     //private status fazer um enum

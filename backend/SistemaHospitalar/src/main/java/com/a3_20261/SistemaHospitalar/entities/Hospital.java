@@ -1,12 +1,18 @@
 package com.a3_20261.SistemaHospitalar.entities;
 
+import jakarta.persistence.*;
+
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
-
+@Entity
+@Table(name = "tb_hospital")
 public class Hospital implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String name;
     private Integer number;
