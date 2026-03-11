@@ -1,14 +1,11 @@
 package com.a3_20261.SistemaHospitalar.config;
 
-import com.a3_20261.SistemaHospitalar.Repository.AtendimentoRepository;
-import com.a3_20261.SistemaHospitalar.Repository.MedicoRepository;
-import com.a3_20261.SistemaHospitalar.entities.Atendimento;
-import com.a3_20261.SistemaHospitalar.entities.Medico;
+import com.a3_20261.SistemaHospitalar.Repository.*;
+import com.a3_20261.SistemaHospitalar.entities.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-
 import java.util.Arrays;
 
 @Configuration
@@ -16,9 +13,27 @@ import java.util.Arrays;
 public class TestConfig implements CommandLineRunner {
     @Autowired
     private MedicoRepository medicoRepository;
-
     @Autowired
     private AtendimentoRepository atendimentoRepository;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private CirurgiasRepository cirurgiasRepository;
+    @Autowired
+    private ConsultaRepository consultaRepository;
+    @Autowired
+    private ExameRepository exameRepository;
+    @Autowired
+    private HospitalRepository hospitalRepository;
+    @Autowired
+    private ProntuarioRepository prontuarioRepository;
+    @Autowired
+    private SalaCirurgicaRepository salaCirurgicaRepository;
+    @Autowired
+    private SenhaAtendimentoRepository senhaAtendimentoRepository;
+    @Autowired
+    private AgendamentoRepository agendamentoRepository;
+
 
     @Override
     public void run(String... args) throws Exception {
@@ -28,11 +43,58 @@ public class TestConfig implements CommandLineRunner {
 
         medicoRepository.saveAll(Arrays.asList(m1, m2));
 
-
         Atendimento a1 = new Atendimento(null, "Prioridade", null);
         Atendimento a2 = new Atendimento(null, "Prioridade", null);
 
         atendimentoRepository.saveAll(Arrays.asList(a1, a2));
+
+        Cirurgias c1 = new Cirurgias(null,null,"feito com sucesso");
+        Cirurgias c2 = new Cirurgias(null,null,"deu errado");
+
+        cirurgiasRepository.saveAll(Arrays.asList(c1,c2));
+
+        Consulta cs1 = new Consulta(null,"dor de barriga");
+        Consulta cs2 = new Consulta(null,"dor de dente");
+
+        consultaRepository.saveAll(Arrays.asList(cs1,cs2));
+
+        Exame e1 = new Exame(null,null,null);
+        Exame e2 = new Exame(null,null,null);
+
+        exameRepository.saveAll(Arrays.asList(e1,e2));
+
+        Hospital h1 =new Hospital(null,"Sao vicente",20,"rua da igreja");
+        Hospital h2 =new Hospital(null,"Metropolitado",30,"rua de cima");
+
+        hospitalRepository.saveAll(Arrays.asList(h1,h2));
+
+        Prontuario p1 =new Prontuario(null,null,"cleinte bem");
+        Prontuario p2 =new Prontuario(null,null,"cleinte mal");
+
+        prontuarioRepository.saveAll(Arrays.asList(p1,p2));
+
+        SalaCirurgica s1 =new SalaCirurgica(null,20);
+        SalaCirurgica s2 =new SalaCirurgica(null,30);
+
+        salaCirurgicaRepository.saveAll(Arrays.asList(s1,s2));
+
+        User u1 =new User(null,"adm1",1111111111,null,"rua da macaxeira","adm1@gmail.com","2");
+        User u2 =new User(null,"adm2",111113311,null,"rua da severina","adm2@gmail.com","3");
+
+        userRepository.saveAll(Arrays.asList(u1,u2));
+
+        SenhaAtendimento se1 =new SenhaAtendimento("20",null);
+        SenhaAtendimento se2 =new SenhaAtendimento("30",null);
+
+        senhaAtendimentoRepository.saveAll(Arrays.asList(se1,se2));
+
+        Agendamento ag1 = new Agendamento(null,null);
+        Agendamento ag2 = new Agendamento(null,null);
+
+        agendamentoRepository.saveAll(Arrays.asList(ag1,ag2));
+
+
+
     }
 
 

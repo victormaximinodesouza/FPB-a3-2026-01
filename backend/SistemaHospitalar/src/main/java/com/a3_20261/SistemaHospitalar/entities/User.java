@@ -7,8 +7,8 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 @Entity
-@Table(name = "tb_paciente")
-public class Paciente implements Serializable {
+@Table(name = "tb_user")
+public class User implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
@@ -22,10 +22,10 @@ public class Paciente implements Serializable {
     private String number;
     private String email;
 
-    public Paciente() {
+    public User() {
     }
 
-    public Paciente(Integer id, String nome, Integer CPF, Date dateBirth, String address, String email, String number) {
+    public User(Integer id, String nome, Integer CPF, Date dateBirth, String address, String email, String number) {
         this.id = id;
         this.nome = nome;
         this.CPF = CPF;
@@ -94,8 +94,8 @@ public class Paciente implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        Paciente paciente = (Paciente) o;
-        return Objects.equals(id, paciente.id);
+        User user = (User) o;
+        return Objects.equals(id, user.id);
     }
 
     @Override
