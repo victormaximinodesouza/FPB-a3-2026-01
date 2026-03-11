@@ -570,3 +570,142 @@ td { padding: 16px 12px; border-bottom: 1px solid #f3f4f6; vertical-align: middl
 }
 .btn-call:hover { background: #059669; }
 
+/* --- ESTILOS ESPECÍFICOS PARA TELA DE ATENDIMENTO --- */
+
+/* Cabeçalho de Ação */
+.page-action-header {
+    display: flex;
+    justify-content: flex-end;
+    padding: 0 25px 15px;
+    margin-top: -50px; /* Alinha o botão com o título dependendo do seu header */
+}
+
+.btn-new-service {
+    background-color: #2d9263;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-new-service:hover { background-color: #064e3b; }
+
+/* Ícones Sólidos nos Cards */
+.icon-green-solid { background: #2d9263; color: white; }
+.blue-solid { background: #2563eb; color: white; }
+
+/* Barra de Filtros */
+.filter-bar-container {
+    display: flex;
+    gap: 15px;
+    padding: 15px 25px;
+    align-items: center;
+}
+
+.search-box {
+    flex: 2;
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 10px 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.search-box input {
+    border: none;
+    outline: none;
+    width: 100%;
+    font-size: 0.9rem;
+}
+
+.filter-select, .filter-date {
+    flex: 0.5;
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 10px;
+    color: #374151;
+    outline: none;
+}
+
+/* Cards de Atendimento */
+.attendance-list { padding: 0 25px 25px; display: flex; flex-direction: column; gap: 20px; }
+
+.attendance-card {
+    background: white;
+    border-radius: 15px;
+    border: 1px solid #e5e7eb;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+}
+
+.card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+
+.patient-main-info { display: flex; gap: 15px; align-items: center; }
+
+.name-details h3 { font-size: 1.1rem; color: #111827; margin-bottom: 4px; }
+.name-details span { font-size: 0.85rem; color: #6b7280; }
+
+.card-body-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    background: #f9fafb;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.info-block label {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #9ca3af;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+}
+
+.info-block p { font-size: 0.9rem; color: #374151; font-weight: 500; }
+
+/* Status Atendimento */
+.finished { background: #dcfce7; color: #16a34a; }
+.in-progress { background: #eff6ff; color: #2563eb; }
+
+/* Footer e Botões de Ação */
+.card-footer { display: flex; gap: 10px; flex-wrap: wrap; }
+
+.btn-action-primary {
+    background: #2d9263;
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+}
+
+.btn-action-outline {
+    background: white;
+    border: 1px solid #e5e7eb;
+    color: #374151;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.btn-action-outline:hover { background: #f3f4f6; }
+
