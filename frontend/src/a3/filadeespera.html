@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>HealthLink - Dashboard</title>
+</head>
+<body>
+
+    <div class="wrapper">
+        <aside class="sidebar">
+            <div class="logo">
+                <i class="fa-solid fa-heart-pulse"></i>
+                <span>HealthLink</span>
+            </div>
+            <nav>
+                <a href="#"><i class="fa-solid fa-calendar-days"></i> Dashboard</a>
+                <a href="#"><i class="fa-solid fa-calendar-days"></i> Agendamentos</a>
+                <a href="#" class="active"><i class="fa-solid fa-table-columns"></i> Fila de Espera</a>
+                <a href="#"><i class="fa-solid fa-stethoscope"></i> Atendimento</a>
+                <a href="#"><i class="fa-solid fa-heart-pulse"></i> Cirurgias</a>      
+                <a href="#"><i class="fa-solid fa-file-medical"></i> Exames</a>
+                <a href="#"><i class="fa-solid fa-droplet"></i> Doação de Sangue</a>
+                <a href="#"><i class="fa-solid fa-chart-simple"></i> Relatório</a>
+                <a href="#"><i class="fa-solid fa-user-group"></i> Usuarios</a> 
+            </nav>
+            <div class="logout">
+                <a href="#"><i class="fa-solid fa-right-from-bracket"></i> Sair</a>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header>
+                <div class="header-titles">
+                    <h1>Sistema de Gestão Hospitalar</h1>
+                </div>
+                <div class="header-user">
+                    <i class="fa-solid fa-bell"></i>
+                    <i class="fa-solid fa-gear"></i>
+                    <div class="user-profile">
+                        <span>Dr. Administrador</span>
+                        <div class="avatar">DR</div>
+                    </div>
+                </div>
+            </header>
+
+            <section class="dashboard-head">
+                <h2>Fila de Espera</h2>
+                <small>Gerenciamento em tempo real com sistema de prioridades</small>
+            </section>
+
+            <section class="cards-summary">
+                <div class="card-kpi">
+                    <div class="kpi-icon icon-blue-light"><i class="fa-regular fa-clock"></i></div>
+                    <div class="kpi-data">
+                        <span class="kpi-value">7</span>
+                        <span class="kpi-label">Na Fila</span>
+                    </div>
+                </div>
+                <div class="card-kpi">
+                    <div class="kpi-icon icon-red-light"><i class="fa-solid fa-circle-exclamation"></i></div>
+                    <div class="kpi-data">
+                        <span class="kpi-value">2</span>
+                        <span class="kpi-label">Emergências</span>
+                    </div>
+                </div>
+                <div class="card-kpi">
+                    <div class="kpi-icon icon-orange-light"><i class="fa-solid fa-user-group"></i></div>
+                    <div class="kpi-data">
+                        <span class="kpi-value">2</span>
+                        <span class="kpi-label">Prioridade Idoso</span>
+                    </div>
+                </div>
+                <div class="card-kpi">
+                    <div class="kpi-icon icon-green-light"><i class="fa-solid fa-chart-line"></i></div>
+                    <div class="kpi-data">
+                        <span class="kpi-value">24 min</span>
+                        <span class="kpi-label">Tempo Médio</span>
+                    </div>
+                </div>
+            </section>
+
+            <section class="queue-section">
+                <div class="queue-header">
+                    <h3>Fila Atual</h3>
+                    <p>Acompanhamento em tempo real dos pacientes</p>
+                </div>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Senha</th>
+                                <th>Paciente</th>
+                                <th>Prioridade</th>
+                                <th>Chegada</th>
+                                <th>Tempo Espera</th>
+                                <th>Status</th>
+                                <th>Atendente</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="badge-senha">A001</span></td>
+                                <td>
+                                    <div class="patient-info">
+                                        <div class="avatar-circle grey">JS</div> João Silva
+                                    </div>
+                                </td>
+                                <td><span class="priority emergency"><i class="fa-solid fa-circle-exclamation"></i> Emergência</span></td>
+                                <td>08:15</td>
+                                <td><i class="fa-regular fa-clock"></i> 5 min</td>
+                                <td><span class="status-tag in-service">Em Atendimento</span></td>
+                                <td>Dr. Santos</td>
+                                <td>
+                                    <div class="row-actions">
+                                        <button class="btn-call">Chamar</button>
+                                        <button class="btn-skip">Pular</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span class="badge-senha">A002</span></td>
+                                <td>
+                                    <div class="patient-info">
+                                        <div class="avatar-circle grey">MC</div> Maria Costa
+                                    </div>
+                                </td>
+                                <td><span class="priority elderly"><i class="fa-solid fa-user-group"></i> Idoso</span></td>
+                                <td>08:20</td>
+                                <td><i class="fa-regular fa-clock"></i> 15 min</td>
+                                <td><span class="status-tag waiting-tag">Aguardando</span></td>
+                                <td>Dra. Lima</td>
+                                <td>
+                                    <div class="row-actions">
+                                        <button class="btn-call">Chamar</button>
+                                        <button class="btn-skip">Pular</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main> </div>
+</body>
+</html>
