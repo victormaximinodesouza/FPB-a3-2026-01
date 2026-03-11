@@ -709,3 +709,134 @@ td { padding: 16px 12px; border-bottom: 1px solid #f3f4f6; vertical-align: middl
 
 .btn-action-outline:hover { background: #f3f4f6; }
 
+/* Estilos Específicos da Tela de Exames baseados na Foto */
+:root {
+    --green-health: #2d9263;
+    --bg-gray: #f8fafc;
+    --border-gray: #e2e8f0;
+    --text-main: #1e293b;
+    --text-muted: #64748b;
+}
+
+/* Header Adjustments */
+.header-titles p { color: var(--text-muted); font-size: 0.85rem; }
+.user-info { display: flex; flex-direction: column; line-height: 1.2; font-size: 0.85rem; }
+.user-info span { color: var(--text-muted); font-size: 0.75rem; }
+
+/* Dashboard Head */
+.dashboard-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+.head-left p { color: var(--text-muted); font-size: 0.9rem; margin-top: 5px; }
+
+/* Botão Verde */
+.btn-primary-action {
+    background-color: var(--green-health);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: 0.2s;
+}
+
+/* Cards KPI conforme Foto 5 */
+
+.cards-summary {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+/* O Card Retangular */
+/* O Card principal */
+.card-kpi {
+    background: #ffffff;
+    padding: 16px 20px;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start; /* Força tudo o que estiver dentro do card a ir para a esquerda */
+    height: 110px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+/* O bloco que contém o Número e a Palavra abaixo */
+.kpi-body {
+    text-align: left; /* Garante que o texto dentro do bloco alinhe à esquerda */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Alinha o número e o subtexto à esquerda um do outro */
+    gap: 2px;
+    width: 100%;
+}
+
+.kpi-value {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0;
+    line-height: 1; /* Remove espaços extras acima e abaixo do número */
+}
+
+.kpi-subtext {
+    color: #94a3b8;
+    font-size: 0.75rem;
+    margin: 0;
+}
+
+/* Elementos Visuais */
+.kpi-icon-light {
+    color: #94a3b8;
+    font-size: 1rem;
+}
+
+.dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.dot.orange { background-color: #f59e0b; }
+.dot.blue { background-color: #3b82f6; }
+.dot.green { background-color: #10b981; }
+
+/* Filtros */
+.filter-bar-container { display: flex; gap: 15px; margin-bottom: 25px; }
+.search-box { flex: 1; background: white; border: 1px solid var(--border-gray); border-radius: 12px; padding: 12px 20px; display: flex; align-items: center; gap: 12px; }
+.search-box input { border: none; outline: none; width: 100%; font-size: 0.9rem; }
+.filter-select { padding: 0 15px; border: 1px solid var(--border-gray); border-radius: 12px; min-width: 160px; color: var(--text-main); }
+
+/* Tabela */
+.table-container { background: white; border-radius: 15px; border: 1px solid var(--border-gray); overflow: hidden; }
+.data-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+.data-table th { background: #f9fafb; padding: 15px; text-align: left; color: var(--text-muted); font-weight: 600; border-bottom: 1px solid var(--border-gray); }
+.data-table td { padding: 15px; border-bottom: 1px solid #f1f5f9; vertical-align: middle; }
+
+/* Patient Cell */
+.patient-cell { display: flex; align-items: center; gap: 12px; }
+.avatar-mini { width: 34px; height: 34px; border-radius: 10px; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.75rem; }
+.avatar-mini.purple { background: #a855f7; }
+
+/* Badges de Status e Prioridade baseados na Foto 5 */
+.tag-priority { padding: 5px 15px; border-radius: 20px; font-size: 0.75rem; font-weight: 500; }
+.tag-priority.normal { background: #eff6ff; color: #3b82f6; }
+.tag-priority.urgent { background: #fef2f2; color: #ef4444; }
+
+.status-pill { padding: 5px 15px; border-radius: 20px; font-size: 0.75rem; font-weight: 500; }
+.status-pill.scheduled { background: #f3e8ff; color: #a855f7; }
+.status-pill.finished-green { background: #dcfce7; color: #16a34a; }
+.status-pill.pending-yellow { background: #fef9c3; color: #a16207; }
+
+.btn-view { color: var(--green-health); text-decoration: none; font-weight: 600; }
+.download-icon { color: var(--text-muted); cursor: pointer; margin-right: 8px; }
