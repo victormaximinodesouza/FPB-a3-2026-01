@@ -455,3 +455,118 @@ td {
 .actions { color: #9ca3af; }
 .actions .view { color: #059669; cursor: pointer; }
 .actions .edit { color: #059669; cursor: pointer; }
+
+/* --- COMPLEMENTO FIEL À IMAGEM --- */
+
+/* Cards de Resumo */
+.cards-summary {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    padding: 0 25px 25px 25px;
+}
+
+.card-kpi {
+    background: var(--white);
+    padding: 25px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    border: 1px solid #e5e7eb;
+}
+
+.kpi-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+}
+
+.icon-blue-light { background: #eff6ff; color: #3b82f6; }
+.icon-red-light { background: #fef2f2; color: #ef4444; }
+.icon-orange-light { background: #fff7ed; color: #f97316; }
+.icon-green-light { background: #f0fdf4; color: #10b981; }
+
+.kpi-value { display: block; font-size: 1.8rem; font-weight: 700; color: #111827; }
+.kpi-label { color: #6b7280; font-size: 0.85rem; }
+
+/* Tabela e Seção da Fila */
+.queue-section {
+    background: var(--white);
+    margin: 0 25px;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    padding: 25px;
+}
+
+.queue-header h3 { font-size: 1.3rem; margin-bottom: 5px; }
+.queue-header p { color: #6b7280; font-size: 0.9rem; margin-bottom: 25px; }
+
+.table-container { overflow-x: auto; }
+
+table { width: 100%; border-collapse: collapse; }
+th { text-align: left; padding: 12px; color: #6b7280; font-size: 0.75rem; text-transform: uppercase; border-bottom: 1px solid #f3f4f6; }
+td { padding: 16px 12px; border-bottom: 1px solid #f3f4f6; vertical-align: middle; font-size: 0.9rem; }
+
+/* Badges e Status */
+.badge-senha {
+    background: #064e3b;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-weight: 600;
+}
+
+.avatar-circle.grey {
+    background: #4b5563;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+}
+
+/* Prioridades */
+.priority {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+.emergency { background: #fee2e2; color: #dc2626; }
+.elderly { background: #ffedd5; color: #d97706; }
+.normal { background: #dbeafe; color: #2563eb; }
+
+/* Status Tags */
+.status-tag { padding: 6px 12px; border-radius: 8px; font-size: 0.8rem; }
+.in-service { background: #dcfce7; color: #16a34a; }
+.waiting-tag { background: #fef3c7; color: #d97706; }
+
+/* Ações na Linha */
+.row-actions { display: flex; gap: 8px; }
+.btn-call {
+    background: #064e3b;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+}
+.btn-skip {
+    background: white;
+    border: 1px solid #e5e7eb;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    color: #374151;
+}
+.btn-call:hover { background: #059669; }
+
