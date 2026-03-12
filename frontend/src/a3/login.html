@@ -4,49 +4,183 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HealthLink - Login</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='login-style.css') }}">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        body {
+            background-color: #f0f7f4; /* Fundo verde leve */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        /* Logo do Coração Verde */
+        .main-logo {
+            width: 300px; 
+            height: auto;
+            margin-bottom: 10px;
+        }
+
+        .header-main h1 {
+            color: #1b4332;
+            font-size: 32px;
+            margin-bottom: 5px;
+        }
+
+        .header-main p {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+
+        /* O Card Branco Centralizado */
+        .login-card {
+            background: #ffffff;
+            padding: 40px 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            text-align: left;
+        }
+
+        .login-card h2 {
+            font-size: 24px;
+            margin-bottom: 8px;
+            color: #1a1a1a;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: #888;
+            margin-bottom: 25px;
+        }
+
+        /* Campos de Entrada */
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .input-wrapper {
+            display: flex;
+            align-items: center;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 12px;
+            background: #fafafa;
+        }
+
+        .input-wrapper input {
+            border: none;
+            outline: none;
+            background: transparent;
+            width: 100%;
+            margin-left: 10px;
+            font-size: 16px;
+        }
+
+        /* Botão Entrar Verde Escuro */
+        .btn-primary {
+            width: 100%;
+            padding: 15px;
+            background-color: #2d6a4f;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 10px;
+        }
+
+        .btn-primary:hover {
+            background-color: #1b4332;
+        }
+
+        .form-footer {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            margin: 15px 0;
+        }
+
+        .form-footer a {
+            color: #2d6a4f;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .footer-copy {
+            margin-top: 30px;
+            font-size: 12px;
+            color: #aaa;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
+
     <div class="container">
-        <img src="{{ url_for('static', filename='logo.png') }}" class="logo" alt="HealthLink">
-        <h1>HealthLink</h1>
-        <p class="subtitulo">Sistema de Gestão Hospitalar</p>
+        <header class="header-main">
+            <img src="logo.png" alt="HealthLink" class="main-logo">
+            <h1>HealthLink</h1>
+            <p>Sistema de Gestão Hospitalar</p>
+        </header>
 
-        <div class="card">
+        <main class="login-card">
             <h2>Acesse sua conta</h2>
-            <form action="index.html">
+            <p class="subtitle">Entre com suas credenciais para continuar</p>
+
+            <form>
                 <div class="input-group">
-                    <span class="icon">📧</span>
-                    <input type="email" name="email" placeholder="E-mail" required>
+                    <label>E-mail</label>
+                    <div class="input-wrapper">
+                        <span>✉</span>
+                        <input type="email" placeholder="seu.email@healthlink.com" required>
+                    </div>
                 </div>
 
                 <div class="input-group">
-                    <span class="icon">🔒</span>
-                    <input type="password" id="senha" name="senha" placeholder="Senha" required>
-                    <span class="toggle" onclick="mostrarSenha()">👁️</span>
+                    <label>Senha</label>
+                    <div class="input-wrapper">
+                        <span>🔒</span>
+                        <input type="password" placeholder="••••••••" required>
+                    </div>
                 </div>
 
-                <div class="opcoes">
-                    <label>
+                <div class="form-footer">
+                    <label style="font-size: 12px; cursor: pointer;">
                         <input type="checkbox"> Lembrar-me
                     </label>
                     <a href="#">Esqueceu a senha?</a>
                 </div>
 
-                <button type="submit">Entrar</button>
+                <button type="submit" class="btn-primary">Entrar</button>
             </form>
-        </div>
+        </main>
+
+        <footer class="footer-copy">
+            <p>&copy; 2026 HealthLink. Todos os direitos reservados.</p>
+        </footer>
     </div>
 
-    <script>
-        function mostrarSenha() {
-            var campo = document.getElementById("senha");
-            if (campo.type === "password") {
-                campo.type = "text";
-            } else {
-                campo.type = "password";
-            }
-        }
-    </script>
 </body>
 </html>
