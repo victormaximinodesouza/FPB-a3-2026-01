@@ -7,6 +7,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 @Profile("test")
@@ -63,11 +64,6 @@ public class TestConfig implements CommandLineRunner {
 
         exameRepository.saveAll(Arrays.asList(e1,e2));
 
-        Hospital h1 =new Hospital(null,"Sao vicente",20,"rua da igreja");
-        Hospital h2 =new Hospital(null,"Metropolitado",30,"rua de cima");
-
-        hospitalRepository.saveAll(Arrays.asList(h1,h2));
-
         Prontuario p1 =new Prontuario(null,null,"cleinte bem");
         Prontuario p2 =new Prontuario(null,null,"cleinte mal");
 
@@ -82,6 +78,11 @@ public class TestConfig implements CommandLineRunner {
         User u2 =new User(null,"adm2",111113311,null,"rua da severina","adm2@gmail.com","3");
 
         userRepository.saveAll(Arrays.asList(u1,u2));
+
+        Hospital h1 = new Hospital(null, "Sao vicente", 20, "rua da igreja", Arrays.asList(u1));
+        Hospital h2 = new Hospital(null, "Metropolitado", 30, "rua de cima", Arrays.asList(u2));
+
+        hospitalRepository.saveAll(Arrays.asList(h1,h2));
 
         SenhaAtendimento se1 =new SenhaAtendimento("20",null);
         SenhaAtendimento se2 =new SenhaAtendimento("30",null);

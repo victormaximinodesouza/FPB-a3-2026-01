@@ -1,10 +1,13 @@
 package com.a3_20261.SistemaHospitalar.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 @Entity
 @Table(name = "tb_user")
@@ -21,6 +24,8 @@ public class User implements Serializable {
     private String address;
     private String number;
     private String email;
+    @ManyToMany(mappedBy = "users")
+    private List<Hospital> hospitals = new ArrayList<>();
 
     public User() {
     }
@@ -89,6 +94,13 @@ public class User implements Serializable {
 
     public void setNumber(String number) {
         this.number = number;
+    }
+
+    public List<Hospital> getHospitals() {
+        return hospitals;
+    }
+    public void setHospitals(List<Hospital> hospitals) {
+        this.hospitals = hospitals;
     }
 
     @Override
