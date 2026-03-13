@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>HealthLink - Gestão de Cirurgias</title>
+</head>
+<body>
+
+    <div class="wrapper">
+        <aside class="sidebar">
+            <div class="logo">
+                <i class="fa-solid fa-heart-pulse"></i>
+                <span>HealthLink</span>
+            </div>
+            <nav>
+                <a href="#"><i class="fa-solid fa-table-columns"></i> Dashboard</a>
+                <a href="#"><i class="fa-solid fa-calendar-days"></i> Agendamentos</a>
+                <a href="#"><i class="fa-solid fa-clock"></i> Fila de Espera</a>
+                <a href="#"><i class="fa-solid fa-stethoscope"></i> Atendimento</a>
+                <a href="#" class="active"><i class="fa-solid fa-heart-pulse"></i> Cirurgias</a>      
+                <a href="#"><i class="fa-solid fa-file-medical"></i> Exames</a>
+                <a href="#"><i class="fa-solid fa-droplet"></i> Doação de Sangue</a>
+                <a href="#"><i class="fa-solid fa-chart-simple"></i> Relatório</a>
+                <a href="#"><i class="fa-solid fa-user-group"></i> Usuarios</a>
+            </nav>
+            <div class="logout">
+                <a href="#"><i class="fa-solid fa-right-from-bracket"></i> Sair</a>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header>
+                <div class="header-titles">
+                    <h1>Sistema de Gestão Hospitalar</h1>
+                    <p>Gestão integrada e distribuída</p>
+                </div>
+                <div class="header-user">
+                    <i class="fa-solid fa-bell notification-icon"></i>
+                    <i class="fa-solid fa-gear"></i>
+                    <div class="user-profile">
+                        <div class="user-info">
+                            <strong>Dr. Administrador</strong>
+                            <span>Administrador</span>
+                        </div>
+                        <div class="avatar">DR</div>
+                    </div>
+                </div>
+            </header>
+
+            <section class="dashboard-head">
+                <div class="head-left">
+                    <h2>Gestão de Cirurgias</h2>
+                    <p>Agendar e gerenciar procedimentos cirúrgicos</p>
+                </div>
+                <button class="btn-primary-action green">
+                    <i class="fa-solid fa-plus"></i> Agendar Cirurgia
+                </button>
+            </section>
+
+            <section class="cards-summary">
+                <div class="card-kpi">
+                    <div class="kpi-icon-container green">
+                        <i class="fa-solid fa-heart-pulse"></i>
+                    </div>
+                    <div class="kpi-body">
+                        <h3 class="kpi-value">12</h3>
+                        <p class="kpi-subtext">Agendadas esta Semana</p>
+                    </div>
+                </div>
+                <div class="card-kpi">
+                    <div class="kpi-icon-container blue">
+                        <i class="fa-regular fa-clock"></i>
+                    </div>
+                    <div class="kpi-body">
+                        <h3 class="kpi-value">3</h3>
+                        <p class="kpi-subtext">Hoje</p>
+                    </div>
+                </div>
+                <div class="card-kpi">
+                    <div class="kpi-icon-container orange">
+                        <i class="fa-solid fa-wave-square"></i>
+                    </div>
+                    <div class="kpi-body">
+                        <h3 class="kpi-value">1</h3>
+                        <p class="kpi-subtext">Em Andamento</p>
+                    </div>
+                </div>
+                <div class="card-kpi">
+                    <div class="kpi-icon-container teal">
+                        <i class="fa-solid fa-chart-line"></i>
+                    </div>
+                    <div class="kpi-body">
+                        <h3 class="kpi-value">98%</h3>
+                        <p class="kpi-subtext">Taxa de Sucesso</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="filter-bar-container">
+                <div class="search-box">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" placeholder="Buscar cirurgias por paciente, procedimento ou cirurgião...">
+                </div>
+                <div class="filter-groups">
+                    <select class="filter-select">
+                        <option>Todos os Status</option>
+                    </select>
+                    <input type="text" class="filter-select date-input" placeholder="dd/mm/aaaa">
+                </div>
+            </section>
+
+            <section class="surgery-list">
+                <div class="surgery-card">
+                    <div class="surgery-card-header">
+                        <div class="title-group">
+                            <h3>Ponte de Safena</h3>
+                            <span class="tag orange-light">Alta</span>
+                            <span class="tag purple-light">Agendado</span>
+                        </div>
+                        <div class="date-info">
+                            <strong>2026-03-05</strong>
+                            <span>08:00</span>
+                        </div>
+                    </div>
+                    <p class="patient-name">Paciente: João Silva</p>
+                    <div class="surgery-details-grid">
+                        <div class="detail-item">
+                            <span>CIRURGIÃO</span>
+                            <strong>Dra. Sarah Santos</strong>
+                        </div>
+                        <div class="detail-item">
+                            <span>ASSISTENTES</span>
+                            <strong>Dr. Wilson, Dr. Brown</strong>
+                        </div>
+                        <div class="detail-item">
+                            <span>DURAÇÃO</span>
+                            <strong><i class="fa-regular fa-clock"></i> 4-5 horas</strong>
+                        </div>
+                        <div class="detail-item">
+                            <span>SALA</span>
+                            <strong><i class="fa-solid fa-location-dot"></i> CC-1</strong>
+                        </div>
+                    </div>
+                    <div class="surgery-actions">
+                        <button class="btn-green">Ver Detalhes</button>
+                        <button class="btn-outline">Editar Agenda</button>
+                        <button class="btn-outline">Checklist Pré-op</button>
+                        <button class="btn-outline">Notas do Paciente</button>
+                    </div>
+                </div>
+
+                <div class="surgery-card">
+                    <div class="surgery-card-header">
+                        <div class="title-group">
+                            <h3>Substituição de Joelho</h3>
+                            <span class="tag blue-light">Normal</span>
+                            <span class="tag green-light">Confirmado</span>
+                        </div>
+                        <div class="date-info">
+                            <strong>2026-03-02</strong>
+                            <span>10:00</span>
+                        </div>
+                    </div>
+                    <p class="patient-name">Paciente: Maria Wilson</p>
+                    <div class="surgery-details-grid">
+                        <div class="detail-item">
+                            <span>CIRURGIÃO</span>
+                            <strong>Dr. Michael Costa</strong>
+                        </div>
+                        <div class="detail-item">
+                            <span>ASSISTENTES</span>
+                            <strong>Dra. Lima</strong>
+                        </div>
+                        <div class="detail-item">
+                            <span>DURAÇÃO</span>
+                            <strong><i class="fa-regular fa-clock"></i> 2-3 horas</strong>
+                        </div>
+                        <div class="detail-item">
+                            <span>SALA</span>
+                            <strong><i class="fa-solid fa-location-dot"></i> CC-2</strong>
+                        </div>
+                    </div>
+                    <div class="surgery-actions">
+                        <button class="btn-green">Ver Detalhes</button>
+                        <button class="btn-outline">Editar Agenda</button>
+                        <button class="btn-outline">Checklist Pré-op</button>
+                        <button class="btn-outline">Notas do Paciente</button>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+</body>
+</html>
