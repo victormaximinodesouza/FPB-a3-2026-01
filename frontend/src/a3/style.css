@@ -840,3 +840,145 @@ td { padding: 16px 12px; border-bottom: 1px solid #f3f4f6; vertical-align: middl
 
 .btn-view { color: var(--green-health); text-decoration: none; font-weight: 600; }
 .download-icon { color: var(--text-muted); cursor: pointer; margin-right: 8px; }
+
+/* Estilos Específicos para Gestão de Cirurgias */
+
+.btn-primary-action.green {
+    background-color: #2d7a4d;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+/* Ícones coloridos nos KPIs */
+.kpi-icon-container {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    margin-right: 15px;
+}
+
+.kpi-icon-container.green { background: #e8f5e9; color: #2e7d32; }
+.kpi-icon-container.blue { background: #e3f2fd; color: #1565c0; }
+.kpi-icon-container.orange { background: #fff3e0; color: #ef6c00; }
+.kpi-icon-container.teal { background: #e0f2f1; color: #00695c; }
+
+/* Ajuste do Card para alinhar horizontalmente conforme a foto */
+.card-kpi {
+    display: flex;
+    flex-direction: row !important; /* Força horizontal */
+    align-items: center;
+    padding: 20px;
+    height: auto;
+}
+
+/* Cards de Lista de Cirurgia */
+.surgery-card {
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 20px;
+    border: 1px solid #e2e8f0;
+}
+
+.surgery-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 10px;
+}
+
+.title-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.title-group h3 { font-size: 1.25rem; color: #1e293b; }
+
+/* Estilo base das tags (retângulos arredondados) */
+.tag {
+    padding: 4px 12px;
+    border-radius: 20px; /* Deixa as bordas bem arredondadas como na foto */
+    font-size: 0.75rem;
+    font-weight: 600;
+    display: inline-block;
+}
+
+/* Cores específicas para "Alta" e "Agendado" (Imagem 10) */
+.tag.orange-light {
+    background-color: #ffedd5; /* Fundo laranja bem claro */
+    color: #9a3412;           /* Texto laranja escuro */
+}
+
+.tag.purple-light {
+    background-color: #f3e8ff; /* Fundo roxo bem claro */
+    color: #6b21a8;           /* Texto roxo escuro */
+}
+
+/* Cores extras para "Normal" e "Confirmado" (Imagem 11) */
+.tag.blue-light {
+    background-color: #dbeafe; /* Fundo azul claro */
+    color: #1e40af;           /* Texto azul escuro */
+}
+
+.tag.green-light {
+    background-color: #dcfce7; /* Fundo verde claro */
+    color: #15803d;           /* Texto verde escuro */
+}
+
+/* Cor para "Emergência" (Imagem 11) */
+.tag.red-light {
+    background-color: #fee2e2; /* Fundo vermelho claro */
+    color: #991b1b;           /* Texto vermelho escuro */
+}
+
+.date-group { text-align: right; }
+.date-group strong { display: block; color: #1e293b; }
+.date-group span { color: #64748b; font-size: 0.85rem; }
+
+.patient-name { color: #64748b; margin-bottom: 20px; font-size: 0.9rem; }
+
+.surgery-details-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    background: #f8fafc;
+    padding: 15px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+}
+
+.detail-item span {
+    display: block;
+    font-size: 0.7rem;
+    color: #94a3b8;
+    margin-bottom: 4px;
+    letter-spacing: 0.05em;
+}
+
+.detail-item strong { color: #1e293b; font-size: 0.9rem; }
+
+.surgery-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.surgery-actions button {
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-green { background: #2d7a4d; color: white; border: none; }
+.btn-outline { background: white; border: 1px solid #e2e8f0; color: #64748b; }
+.btn-outline:hover { background: #f8fafc; }
