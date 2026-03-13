@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+
+import java.util.ArrayList;
 import java.util.Arrays;
 
 @Configuration
@@ -38,15 +40,23 @@ public class TestConfig implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        Cirurgia c1 = new Cirurgia(null,null,"feito com sucesso");
-        Cirurgia c2 = new Cirurgia(null,null,"deu errado");
+        Cirurgia c1 = new Cirurgia(null,null,"feito com sucesso",new ArrayList<>());
+        Cirurgia c2 = new Cirurgia(null,null,"deu errado",new ArrayList<>());
+
+        Medico m1 = new Medico(null, "joao", 3232, "cabeca", 922992922,new ArrayList<>());
+        Medico m2 = new Medico(null, "maria", 32333, "pe", 992922,new ArrayList<>());
+
+        // medico -> cirurgia
+        m1.getCirurgia().add(c2);
+        m2.getCirurgia().add(c1);
+
+        // cirurgia -> medico
+        c2.getMedicos().add(m1);
+        c1.getMedicos().add(m2);
 
         cirurgiasRepository.saveAll(Arrays.asList(c1,c2));
+        medicoRepository.saveAll(Arrays.asList(m1,m2));
 
-        Medico m1 = new Medico(null, "joao", 3232, "cabeca", 922992922,Arrays.asList(c1,c2));
-        Medico m2 = new Medico(null, "maria", 32333, "pe", 992922, Arrays.asList(c1,c2));
-
-        medicoRepository.saveAll(Arrays.asList(m1, m2));
 
         Atendimento a1 = new Atendimento(null, "Prioridade", null);
         Atendimento a2 = new Atendimento(null, "Prioridade", null);

@@ -23,15 +23,16 @@ public class Cirurgia implements Serializable {
     private Date dateSurgery;
     private String report;
     @ManyToMany(mappedBy = "cirurgia")
-    @JsonIgnoreProperties({"medico"})
+    @JsonIgnoreProperties("cirurgia")
     private List<Medico> medicos = new ArrayList<>();
     public Cirurgia() {
     }
 
-    public Cirurgia(Integer id, Date dateSurgery, String report) {
+    public Cirurgia(Integer id, Date dateSurgery, String report,List<Medico> medicos) {
         this.id = id;
         this.dateSurgery = dateSurgery;
         this.report = report;
+        this.medicos = medicos;
 
     }
 
