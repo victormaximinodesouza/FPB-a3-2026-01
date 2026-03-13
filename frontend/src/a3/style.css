@@ -982,3 +982,204 @@ td { padding: 16px 12px; border-bottom: 1px solid #f3f4f6; vertical-align: middl
 .btn-green { background: #2d7a4d; color: white; border: none; }
 .btn-outline { background: white; border: 1px solid #e2e8f0; color: #64748b; }
 .btn-outline:hover { background: #f8fafc; }
+
+/* --- ESTILOS GESTÃO DE SANGUE (UNIFICADO - 8 TIPOS) --- */
+
+/* Botão de Ação */
+.btn-primary-action.green {
+    background-color: #2d7a4d;
+    color: white;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+}
+/* Ajuste no container principal para desgrudar da margem direita */
+main, .main-content {
+    padding: 20px 40px; /* Aumenta o respiro lateral conforme Imagem 15 */
+    box-sizing: border-box;
+}
+
+/* Fundo da página cinza claro (essencial para o card branco aparecer) */
+body {
+    background-color: #f8fafc;
+}
+
+/* O Retângulo Branco */
+.card-base {
+    background: #ffffff;      /* Fundo totalmente branco */
+    padding: 30px;            /* Espaço interno generoso */
+    border-radius: 16px;      /* Bordas bem arredondadas como na foto */
+    border: 1px solid #eef2f6; /* Borda quase invisível */
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); /* Sombra suave */
+}
+
+/* Ajuste do Título dentro do Card */
+.card-base h3 {
+    margin-top: 0;
+    margin-bottom: 25px;
+    font-size: 1.1rem;
+    color: #0f172a;
+    font-weight: 700;
+}
+
+/* Garante que os cards fiquem alinhados lado a lado */
+.inventory-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin: 20px 0;
+}
+
+/* Cards KPI */
+.cards-summary {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin: 20px 0;
+}
+
+.card-kpi {
+    background: white;
+    padding: 15px 20px;
+    border-radius: 12px;
+    border: 1px solid #eef2f6;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center;
+    height: 90px;
+}
+
+.kpi-icon-container {
+    width: 45px;
+    height: 45px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    margin-right: 15px;
+}
+
+.red-bg { background: #fee2e2; color: #dc2626; }
+.green-bg { background: #dcfce7; color: #15803d; }
+.orange-bg { background: #ffedd5; color: #d97706; }
+.blue-bg { background: #dbeafe; color: #2563eb; }
+
+.kpi-body { text-align: left; }
+.kpi-value { font-size: 1.6rem; font-weight: 700; color: #1e293b; margin: 0; line-height: 1; }
+.kpi-subtext { font-size: 0.75rem; color: #94a3b8; margin-top: 4px; }
+
+/* Seção de Inventário e Gráfico (8 TIPOS) */
+
+.inventory-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Proporção igual conforme Imagem 17 */
+    gap: 24px;
+    margin-top: 20px;
+}
+
+/* Gráfico de Pizza com Rótulos Externos (Imagem 17) */
+.chart-container-large {
+    position: relative;
+    padding: 40px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.pie-chart-full {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    position: relative;
+    /* Cores e proporções exatas da Imagem 17 */
+    background: conic-gradient(
+        #2d7a4d 0% 25%,    /* A+: 45 */
+        #a7f3d0 25% 32%,   /* A-: 12 */
+        #3b82f6 32% 52%,   /* B+: 38 */
+        #93c5fd 52% 56%,   /* B-: 8 */
+        #f59e0b 56% 64%,   /* AB+: 15 */
+        #fde68a 64% 67%,   /* AB-: 5 */
+        #ef4444 67% 94%,   /* O+: 52 */
+        #fca5a5 94% 100%   /* O-: 10 */
+    );
+}
+
+/* Posicionamento dos Textos ao redor do gráfico (Imagem 17) */
+.p-label {
+    position: absolute;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.p-ap { top: 10%; right: -10%; color: #2d7a4d; }
+.p-an { top: -10%; left: 30%; color: #a7f3d0; }
+.p-bp { top: 30%; left: -20%; color: #3b82f6; }
+.p-bn { top: 55%; left: -20%; color: #93c5fd; }
+.p-abp { bottom: 20%; left: -10%; color: #f59e0b; }
+.p-abn { bottom: 0%; left: 25%; color: #fde68a; }
+.p-op { bottom: -10%; right: 20%; color: #ef4444; }
+.p-on { top: 45%; right: -25%; color: #fca5a5; }
+
+/* Níveis de Estoque (Lado Direito) */
+.level-row {
+    margin-bottom: 16px;
+}
+
+.level-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.85rem;
+    font-weight: 500;
+    margin-bottom: 6px;
+    color: #1e293b;
+}
+
+/* Cores das Gotas Conforme Imagem 17 */
+.icon-ap { color: #2d7a4d; } .icon-an { color: #a7f3d0; }
+.icon-bp { color: #3b82f6; } .icon-bn { color: #93c5fd; }
+.icon-abp { color: #f59e0b; } .icon-abn { color: #fde68a; }
+.icon-op { color: #ef4444; } .icon-on { color: #fca5a5; }
+
+/* Barras de Progresso (Verde para normal, Laranja para baixo) */
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background: #f1f5f9;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.progress { height: 100%; border-radius: 10px; }
+.bar-green { background: #2d7a4d; } /* Estoque OK */
+.bar-orange { background: #f59e0b; } /* Estoque Baixo (Imagem 17) */
+
+/* Ícone de Alerta Laranja (!) */
+.warn-icon {
+    color: #f97316;
+    margin-left: 6px;
+    font-size: 0.85rem;
+}
+
+/* Tabelas (Ajuste de cores de badges para Imagem 16) */
+.blood-badge {
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-weight: 700;
+    font-size: 0.75rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: #fee2e2; /* Fundo rosado padrão da Imagem 16 */
+    color: #dc2626;
+}
+
+.blood-badge i { font-size: 0.65rem; }
+
+/* Status da Tabela */
+.tag.pendente { background: #fef9c3; color: #854d0e; } /* Amarelo */
+.tag.processando { background: #dbeafe; color: #1e40af; } /* Azul */
+.tag.atendido { background: #dcfce7; color: #15803d; } /* Verde */
