@@ -7,7 +7,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import java.util.Arrays;
-import java.util.List;
 
 @Configuration
 @Profile("test")
@@ -39,8 +38,13 @@ public class TestConfig implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        Medico m1 = new Medico(null, "joao", 3232, "cabeca", 922992922);
-        Medico m2 = new Medico(null, "maria", 32333, "pe", 992922);
+        Cirurgia c1 = new Cirurgia(null,null,"feito com sucesso");
+        Cirurgia c2 = new Cirurgia(null,null,"deu errado");
+
+        cirurgiasRepository.saveAll(Arrays.asList(c1,c2));
+
+        Medico m1 = new Medico(null, "joao", 3232, "cabeca", 922992922,Arrays.asList(c1,c2));
+        Medico m2 = new Medico(null, "maria", 32333, "pe", 992922, Arrays.asList(c1,c2));
 
         medicoRepository.saveAll(Arrays.asList(m1, m2));
 
@@ -49,10 +53,6 @@ public class TestConfig implements CommandLineRunner {
 
         atendimentoRepository.saveAll(Arrays.asList(a1, a2));
 
-        Cirurgias c1 = new Cirurgias(null,null,"feito com sucesso");
-        Cirurgias c2 = new Cirurgias(null,null,"deu errado");
-
-        cirurgiasRepository.saveAll(Arrays.asList(c1,c2));
 
         Consulta cs1 = new Consulta(null,"dor de barriga");
         Consulta cs2 = new Consulta(null,"dor de dente");

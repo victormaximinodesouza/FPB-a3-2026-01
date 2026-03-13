@@ -28,6 +28,8 @@ public class Hospital implements Serializable {
     @JsonIgnoreProperties({"hospitals"})
     private List<User> users;
 
+
+
     public Hospital() {
     }
 

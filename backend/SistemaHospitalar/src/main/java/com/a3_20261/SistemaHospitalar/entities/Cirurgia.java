@@ -1,14 +1,19 @@
 package com.a3_20261.SistemaHospitalar.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 @Entity
 @Table(name = "tb_Cirurgias")
-public class Cirurgias implements Serializable {
+public class Cirurgia implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
@@ -17,14 +22,17 @@ public class Cirurgias implements Serializable {
     private Integer id;
     private Date dateSurgery;
     private String report;
-
-    public Cirurgias() {
+    @ManyToMany(mappedBy = "cirurgia")
+    @JsonIgnoreProperties({"medico"})
+    private List<Medico> medicos = new ArrayList<>();
+    public Cirurgia() {
     }
 
-    public Cirurgias(Integer id, Date dateSurgery, String report) {
+    public Cirurgia(Integer id, Date dateSurgery, String report) {
         this.id = id;
         this.dateSurgery = dateSurgery;
         this.report = report;
+
     }
 
     public Integer getId() {
@@ -51,11 +59,18 @@ public class Cirurgias implements Serializable {
         this.report = report;
     }
 
+    public List<Medico> getMedicos() {
+        return medicos;
+    }
+    public void setMedicos(List<Medico> medicos) {
+        this.medicos = medicos;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        Cirurgias cirurgias = (Cirurgias) o;
-        return Objects.equals(id, cirurgias.id);
+        Cirurgia cirurgia = (Cirurgia) o;
+        return Objects.equals(id, cirurgia.id);
     }
 
     @Override

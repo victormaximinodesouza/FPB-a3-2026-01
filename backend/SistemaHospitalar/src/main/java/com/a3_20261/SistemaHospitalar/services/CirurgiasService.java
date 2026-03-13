@@ -1,9 +1,7 @@
 package com.a3_20261.SistemaHospitalar.services;
 
-import com.a3_20261.SistemaHospitalar.Repository.AgendamentoRepository;
 import com.a3_20261.SistemaHospitalar.Repository.CirurgiasRepository;
-import com.a3_20261.SistemaHospitalar.entities.Agendamento;
-import com.a3_20261.SistemaHospitalar.entities.Cirurgias;
+import com.a3_20261.SistemaHospitalar.entities.Cirurgia;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +14,7 @@ public class CirurgiasService {
     private CirurgiasRepository cirurgiasRepository;
 
     @GetMapping
-    public List<Cirurgias> findAll() {
+    public List<Cirurgia> findAll() {
         return cirurgiasRepository.findAll();
     }
 
