@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>HealthLink - Relatórios & Analytics</title>
+</head>
+<body>
+
+    <div class="wrapper">
+        <aside class="sidebar">
+            <div class="logo">
+                <i class="fa-solid fa-heart-pulse"></i>
+                <span>HealthLink</span>
+            </div>
+            <nav>
+                <a href="#"><i class="fa-solid fa-house"></i> Dashboard</a>
+                <a href="#"><i class="fa-solid fa-calendar-days"></i> Agendamentos</a>
+                <a href="#"><i class="fa-solid fa-table-columns"></i> Fila de Espera</a>
+                <a href="#"><i class="fa-solid fa-stethoscope"></i> Atendimento</a>
+                <a href="#"><i class="fa-solid fa-heart-pulse"></i> Cirurgias</a>      
+                <a href="#"><i class="fa-solid fa-file-medical"></i> Exames</a>
+                <a href="#"><i class="fa-solid fa-droplet"></i> Doação de Sangue</a>
+                <a href="#" class="active"><i class="fa-solid fa-chart-simple"></i> Relatórios</a>
+                <a href="#"><i class="fa-solid fa-user-group"></i> Usuários</a> 
+            </nav>
+            <div class="logout">
+                <a href="#"><i class="fa-solid fa-right-from-bracket"></i> Sair</a>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header>
+                <div class="header-titles">
+                    <h1>Sistema de Gestão Hospitalar</h1>
+                    <p>Gestão integrada e distribuída</p>
+                </div>
+                <div class="header-user">
+                    <i class="fa-solid fa-bell notification-icon"></i>
+                    <i class="fa-solid fa-gear"></i>
+                    <div class="user-profile">
+                        <div class="user-info">
+                            <strong>Dr. Administrador</strong>
+                            <span>Administrador</span>
+                        </div>
+                        <div class="avatar">DR</div>
+                    </div>
+                </div>
+            </header>
+
+            <section class="dashboard-head">
+                <div class="head-left">
+                    <h2>Relatórios & Analytics</h2>
+                    <p>Insights abrangentes e relatórios estatísticos</p>
+                </div>
+            </section>
+
+            <section class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <span>Receita Total</span>
+                        <i class="fa-solid fa-arrow-trend-up trend-up"></i>
+                    </div>
+                    <h3>R$ 156.000</h3>
+                    <p class="trend-label"><span class="trend-up">+12,5%</span> vs mês anterior</p>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <span>Total de Pacientes</span>
+                        <i class="fa-solid fa-arrow-trend-up trend-up"></i>
+                    </div>
+                    <h3>1.200</h3>
+                    <p class="trend-label"><span class="trend-up">+7,2%</span> vs mês anterior</p>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <span>Consultas</span>
+                        <i class="fa-solid fa-arrow-trend-up trend-up"></i>
+                    </div>
+                    <h3>1.360</h3>
+                    <p class="trend-label"><span class="trend-up">+1,9%</span> vs mês anterior</p>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <span>Taxa de Satisfação</span>
+                        <i class="fa-solid fa-arrow-trend-down trend-down"></i>
+                    </div>
+                    <h3>94,2%</h3>
+                    <p class="trend-label"><span class="trend-down">-0,8%</span> vs mês anterior</p>
+                </div>
+            </section>
+
+            <section class="charts-row">
+                <div class="chart-container">
+                    <h3>Tendências Mensais (6 Meses)</h3>
+                    <div class="chart-placeholder">
+                        <canvas id="lineChart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <h3>Desempenho por Departamento</h3>
+                    <div class="chart-placeholder">
+                        <canvas id="barChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <section class="charts-row">
+                <div class="chart-container full-width">
+                    <h3>Receita por Departamento</h3>
+                    <div class="chart-placeholder-horizontal">
+                         </div>
+                </div>
+            </section>
+
+            <section class="reports-section">
+                <div class="reports-header">
+                    <div>
+                        <h3>Relatórios Gerados</h3>
+                        <p>Documentos e análises disponíveis</p>
+                    </div>
+                    <button class="btn-generate"><i class="fa-solid fa-file-circle-plus"></i> Gerar Novo Relatório</button>
+                </div>
+
+                <div class="report-item">
+                    <div class="report-icon"><i class="fa-solid fa-file-invoice-dollar"></i></div>
+                    <div class="report-info">
+                        <h4>Relatório Financeiro Mensal</h4>
+                        <p>Visão geral financeira completa de Março 2026</p>
+                        <small>Tipo: Financeiro • Formato: PDF • Gerado: 2026-03-01</small>
+                    </div>
+                    <button class="btn-download"><i class="fa-solid fa-download"></i> Baixar</button>
+                </div>
+
+                <div class="report-item">
+                    <div class="report-icon"><i class="fa-solid fa-file-medical"></i></div>
+                    <div class="report-info">
+                        <h4>Estatísticas de Pacientes</h4>
+                        <p>Demografia e resultados de tratamentos</p>
+                        <small>Tipo: Clínico • Formato: PDF • Gerado: 2026-03-01</small>
+                    </div>
+                    <button class="btn-download"><i class="fa-solid fa-download"></i> Baixar</button>
+                </div>
+            </section>
+        </main>
+    </div>
+
+</body>
+</html>
