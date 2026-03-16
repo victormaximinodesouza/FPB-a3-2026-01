@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>HealthLink - Gestão de Usuários</title>
+</head>
+<body>
+
+    <div class="wrapper">
+        <aside class="sidebar">
+            <div class="logo">
+                <i class="fa-solid fa-heart-pulse"></i>
+                <span>HealthLink</span>
+            </div>
+            <nav>
+                <a href="#"><i class="fa-solid fa-house"></i> Dashboard</a>
+                <a href="#"><i class="fa-solid fa-calendar-days"></i> Agendamentos</a>
+                <a href="#"><i class="fa-solid fa-table-columns"></i> Fila de Espera</a>
+                <a href="#"><i class="fa-solid fa-stethoscope"></i> Atendimento</a>
+                <a href="#"><i class="fa-solid fa-heart-pulse"></i> Cirurgias</a>      
+                <a href="#"><i class="fa-solid fa-file-medical"></i> Exames</a>
+                <a href="#"><i class="fa-solid fa-droplet"></i> Doação de Sangue</a>
+                <a href="#"><i class="fa-solid fa-chart-simple"></i> Relatórios</a>
+                <a href="#" class="active"><i class="fa-solid fa-user-group"></i> Usuários</a> 
+            </nav>
+            <div class="logout">
+                <a href="#"><i class="fa-solid fa-right-from-bracket"></i> Sair</a>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header>
+                <div class="header-titles">
+                    <h1>Sistema de Gestão Hospitalar</h1>
+                    <p>Gestão integrada e distribuída</p>
+                </div>
+                <div class="header-user">
+                    <i class="fa-solid fa-bell notification-icon"></i>
+                    <i class="fa-solid fa-gear"></i>
+                    <div class="user-profile">
+                        <div class="user-info">
+                            <strong>Dr. Administrador</strong>
+                            <span>Administrador</span>
+                        </div>
+                        <div class="avatar">DR</div>
+                    </div>
+                </div>
+            </header>
+
+            <section class="page-header">
+                <div class="head-left">
+                    <h2>Gestão de Usuários</h2>
+                    <p>Gerenciar contas e permissões da equipe</p>
+                </div>
+                <button class="btn-primary-action">
+                    <i class="fa-solid fa-plus"></i> Adicionar Usuário
+                </button>
+            </section>
+
+            <section class="cards-summary">
+                <div class="card-kpi">
+                    <div class="kpi-icon-container green-light"><i class="fa-solid fa-users"></i></div>
+                    <div class="kpi-body">
+                        <span class="kpi-value">45</span>
+                        <p class="kpi-subtext">Total de Usuários</p>
+                    </div>
+                </div>
+                <div class="card-kpi">
+                    <div class="kpi-icon-container blue-light"><i class="fa-solid fa-shield-halved"></i></div>
+                    <div class="kpi-body">
+                        <span class="kpi-value">18</span>
+                        <p class="kpi-subtext">Médicos</p>
+                    </div>
+                </div>
+                <div class="card-kpi">
+                    <div class="kpi-icon-container green-pale"><i class="fa-solid fa-user-nurse"></i></div>
+                    <div class="kpi-body">
+                        <span class="kpi-value">22</span>
+                        <p class="kpi-subtext">Enfermeiros</p>
+                    </div>
+                </div>
+                <div class="card-kpi">
+                    <div class="kpi-icon-container orange-light"><i class="fa-solid fa-user-gear"></i></div>
+                    <div class="kpi-body">
+                        <span class="kpi-value">5</span>
+                        <p class="kpi-subtext">Equipe Admin</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="data-container">
+                <div class="filter-bar">
+                    <div class="search-box">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" placeholder="Buscar por nome, email ou departamento...">
+                    </div>
+                    <select class="filter-select"><option>Todos os Perfis</option></select>
+                    <select class="filter-select"><option>Todos os Status</option></select>
+                    <button class="btn-filter-icon"><i class="fa-solid fa-sliders"></i></button>
+                </div>
+
+                <div class="table-card">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Email</th>
+                                <th>Perfil</th>
+                                <th>Departamento</th>
+                                <th>Status</th>
+                                <th>Último Acesso</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="patient-cell">
+                                        <div class="avatar-mini blue">DS</div>
+                                        <strong>Dra. Sarah Santos</strong>
+                                    </div>
+                                </td>
+                                <td>sarah.santos@healthlink.com</td>
+                                <td><span class="tag blue-light">Médico</span></td>
+                                <td>Cardiologia</td>
+                                <td><span class="tag success">Ativo</span></td>
+                                <td>2026-03-01 08:30</td>
+                                <td class="actions">
+                                    <span class="action-link">Editar</span> | <span class="action-link">Permissões</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="patient-cell">
+                                        <div class="avatar-mini blue-dark">DM</div>
+                                        <strong>Dr. Michael Costa</strong>
+                                    </div>
+                                </td>
+                                <td>michael.costa@healthlink.com</td>
+                                <td><span class="tag blue-light">Médico</span></td>
+                                <td>Ortopedia</td>
+                                <td><span class="tag success">Ativo</span></td>
+                                <td>2026-03-01 09:15</td>
+                                <td class="actions">
+                                    <span class="action-link">Editar</span> | <span class="action-link">Permissões</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+</body>
+</html>
