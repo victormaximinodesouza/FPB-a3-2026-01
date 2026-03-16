@@ -46,9 +46,11 @@
                 </div>
             </header>
 
-            <section class="dashboard-head">
+             <section class="dashboard-head">
+                <div class="head-left">
                 <h2>Agendamentos</h2>
                 <small>Gerencie e agende consultas de pacientes</small>
+                
             </section>
             <div class="dashboard-container">
     <div class="filter-bar card">
@@ -56,15 +58,25 @@
             <i class="fa-solid fa-magnifying-glass"></i>
             <input type="text" placeholder="Buscar por paciente, médico ou especialidade...">
         </div>
-        <div class="filter-options">
-            <select>
-                <option>Todos os Status</option>
-            </select>
-            <select>
-                <option>Todos os Médicos</option>
-            </select>
-            <button class="btn-filter"><i class="fa-solid fa-filter"></i></button>
-        </div>
+       <div class="filter-options">
+    <select>
+        <option value="">Todos os Status</option>
+        <option value="confirmado">Confirmado</option>
+        <option value="pendente">Pendente</option>
+        <option value="andamento">Em Andamento</option>
+        <option value="concluido">Concluído</option>
+    </select>
+
+    <select>
+        <option value="">Todos os Médicos</option>
+        <option value="sarah">Dra. Sarah Santos</option>
+        <option value="michael">Dr. Michael Costa</option>
+        <option value="emily">Dra. Emily Lima</option>
+        <option value="roberto">Dr. Roberto Silva</option>
+    </select>
+    
+    <button class="btn-filter"><i class="fa-solid fa-filter"></i></button>
+</div>
         <button class="btn-primary"><i class="fa-solid fa-plus"></i> Novo Agendamento</button>
     </div>
 
