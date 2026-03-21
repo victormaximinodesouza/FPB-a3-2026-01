@@ -1,5 +1,6 @@
 package com.a3_20261.SistemaHospitalar.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
@@ -24,13 +25,16 @@ public class User implements Serializable {
     private String address;
     private String number;
     private String email;
-    @ManyToMany(mappedBy = "users")
-    private List<Hospital> hospitals = new ArrayList<>();
+    @OneToOne(mappedBy = "user")
+    @JsonIgnoreProperties("user")
+    private Prontuario prontuario;
+
+
 
     public User() {
     }
 
-    public User(Integer id, String nome, Integer CPF, Date dateBirth, String address, String email, String number) {
+    public User(Integer id, String nome, Integer CPF, Date dateBirth, String address, String email, String number,Prontuario prontuario) {
         this.id = id;
         this.nome = nome;
         this.CPF = CPF;
@@ -38,6 +42,7 @@ public class User implements Serializable {
         this.address = address;
         this.email = email;
         this.number = number;
+        this.prontuario = prontuario;
     }
 
     public String getEmail() {
@@ -96,11 +101,12 @@ public class User implements Serializable {
         this.number = number;
     }
 
-    public List<Hospital> getHospitals() {
-        return hospitals;
+    public Prontuario getProntuario() {
+        return prontuario;
     }
-    public void setHospitals(List<Hospital> hospitals) {
-        this.hospitals = hospitals;
+
+    public void setProntuario(Prontuario prontuario) {
+        this.prontuario = prontuario;
     }
 
     @Override

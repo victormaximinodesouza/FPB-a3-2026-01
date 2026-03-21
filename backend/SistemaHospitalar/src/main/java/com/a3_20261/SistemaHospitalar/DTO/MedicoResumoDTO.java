@@ -1,4 +1,4 @@
-package DTO;
+package com.a3_20261.SistemaHospitalar.DTO;
 
 import com.a3_20261.SistemaHospitalar.entities.Medico;
 

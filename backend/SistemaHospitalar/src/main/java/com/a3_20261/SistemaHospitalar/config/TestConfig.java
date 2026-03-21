@@ -74,20 +74,22 @@ public class TestConfig implements CommandLineRunner {
 
         exameRepository.saveAll(Arrays.asList(e1,e2));
 
-        Prontuario p1 =new Prontuario(null,null,"cleinte bem");
-        Prontuario p2 =new Prontuario(null,null,"cleinte mal");
-
-        prontuarioRepository.saveAll(Arrays.asList(p1,p2));
 
         SalaCirurgica s1 =new SalaCirurgica(null,20);
         SalaCirurgica s2 =new SalaCirurgica(null,30);
 
         salaCirurgicaRepository.saveAll(Arrays.asList(s1,s2));
 
-        User u1 =new User(null,"adm1",1111111111,null,"rua da macaxeira","adm1@gmail.com","2");
-        User u2 =new User(null,"adm2",111113311,null,"rua da severina","adm2@gmail.com","3");
+        User u1 =new User(null,"adm1",1111111111,null,"rua da macaxeira","adm1@gmail.com","2",null);
+        User u2 =new User(null,"adm2",111113311,null,"rua da severina","adm2@gmail.com","3",null);
 
         userRepository.saveAll(Arrays.asList(u1,u2));
+
+
+        Prontuario p1 =new Prontuario(null,null,"cleinte bem",u1);
+        Prontuario p2 =new Prontuario(null,null,"cleinte mal",u2);
+
+        prontuarioRepository.saveAll(Arrays.asList(p1,p2));
 
         Hospital h1 = new Hospital(null, "Sao vicente", 20, "rua da igreja", Arrays.asList(u1));
         Hospital h2 = new Hospital(null, "Metropolitado", 30, "rua de cima", Arrays.asList(u2));
