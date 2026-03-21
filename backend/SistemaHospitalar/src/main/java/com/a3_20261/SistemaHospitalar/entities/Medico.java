@@ -28,7 +28,7 @@ public class Medico implements Serializable {
             joinColumns = @JoinColumn(name = "medico_id"),
             inverseJoinColumns = @JoinColumn(name = "cirurgia_id")
     )
-    @JsonManagedReference
+
     private List<Cirurgia> cirurgia =new ArrayList<>();
 
     public Medico() {

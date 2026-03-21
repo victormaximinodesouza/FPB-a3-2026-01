@@ -1,5 +1,6 @@
 package com.a3_20261.SistemaHospitalar.resources;
 
+import DTO.CirurgiaDTO;
 import com.a3_20261.SistemaHospitalar.entities.Cirurgia;
 import com.a3_20261.SistemaHospitalar.services.CirurgiasService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +18,11 @@ public class CirurgiasResources {
     @Autowired
     private CirurgiasService cirurgiasService;
     @GetMapping
-    public ResponseEntity <List<Cirurgia>> findAll(){
+    public  List<CirurgiaDTO> findAll(){
         List<Cirurgia> list= cirurgiasService.findAll();
 
-                return ResponseEntity.ok().body(list);
+        return list.stream().map(CirurgiaDTO::new).toList();
+    }
 
     }
-}
+

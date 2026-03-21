@@ -46,11 +46,11 @@ public class TestConfig implements CommandLineRunner {
         Medico m1 = new Medico(null, "joao", 3232, "cabeca", 922992922,new ArrayList<>());
         Medico m2 = new Medico(null, "maria", 32333, "pe", 992922,new ArrayList<>());
 
-        // medico -> cirurgia
+
         m1.getCirurgia().add(c2);
         m2.getCirurgia().add(c1);
 
-        // cirurgia -> medico
+
         c2.getMedicos().add(m1);
         c1.getMedicos().add(m2);
 

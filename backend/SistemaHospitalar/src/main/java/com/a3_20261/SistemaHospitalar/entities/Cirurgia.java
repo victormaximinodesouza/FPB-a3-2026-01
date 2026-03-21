@@ -23,7 +23,7 @@ public class Cirurgia implements Serializable {
     private Date dateSurgery;
     private String report;
     @ManyToMany(mappedBy = "cirurgia")
-    @JsonIgnoreProperties("cirurgia")
+    @JsonIgnore
     private List<Medico> medicos = new ArrayList<>();
     public Cirurgia() {
     }

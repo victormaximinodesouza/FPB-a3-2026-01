@@ -1,5 +1,6 @@
 package com.a3_20261.SistemaHospitalar.resources;
 
+import DTO.MedicoDTO;
 import com.a3_20261.SistemaHospitalar.entities.Medico;
 import com.a3_20261.SistemaHospitalar.services.MedicoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +19,10 @@ public class MedicoResources {
     private MedicoService medicoService;
 
     @GetMapping
-    public ResponseEntity<List<Medico>> findAll(){
+    public List<MedicoDTO> findAll(){
         List<Medico> list = medicoService.findAll();
 
-                return ResponseEntity.ok().body(list);
+                return list.stream().map(MedicoDTO::new).toList();
 
     }
 }
