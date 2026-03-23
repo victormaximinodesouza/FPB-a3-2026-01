@@ -91,8 +91,8 @@ public class TestConfig implements CommandLineRunner {
 
         prontuarioRepository.saveAll(Arrays.asList(p1,p2));
 
-        Hospital h1 = new Hospital(null, "Sao vicente", 20, "rua da igreja", Arrays.asList(u1));
-        Hospital h2 = new Hospital(null, "Metropolitado", 30, "rua de cima", Arrays.asList(u2));
+        Hospital h1 = new Hospital(null, "Sao vicente", 20, "rua da igreja", Arrays.asList(u1),Arrays.asList(m1));
+        Hospital h2 = new Hospital(null, "Metropolitado", 30, "rua de cima", Arrays.asList(u2),Arrays.asList(m2));
 
         hospitalRepository.saveAll(Arrays.asList(h1,h2));
 

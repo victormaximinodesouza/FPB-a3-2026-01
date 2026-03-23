@@ -28,8 +28,10 @@ public class Medico implements Serializable {
             joinColumns = @JoinColumn(name = "medico_id"),
             inverseJoinColumns = @JoinColumn(name = "cirurgia_id")
     )
-
     private List<Cirurgia> cirurgia =new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name = "Hospital_id")
+    private Hospital hospital;
 
     public Medico() {
     }

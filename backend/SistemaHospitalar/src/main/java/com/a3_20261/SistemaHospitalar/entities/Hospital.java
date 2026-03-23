@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -27,18 +28,19 @@ public class Hospital implements Serializable {
     )
     @JsonIgnoreProperties({"hospitals"})
     private List<User> users;
-
-
+    @OneToMany
+    private List<Medico> medicos =new ArrayList<>();
 
     public Hospital() {
     }
 
-    public Hospital(Integer id, String name, Integer number, String address, List<User> users) {
+    public Hospital(Integer id, String name, Integer number, String address, List<User> users, List<Medico> medicos) {
         this.id = id;
         this.name = name;
         this.number = number;
         this.address = address;
         this.users = users;
+        this.medicos = medicos;
     }
 
     public Integer getId() {
@@ -81,6 +83,12 @@ public void setUsers(List<User> users) {
     this.users = users;
 }
 
+    public List<Medico> getMedicos() {
+        return medicos;
+    }
+    public void setMedicos(List<Medico> medicos) {
+        this.medicos = medicos;
+    }
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;

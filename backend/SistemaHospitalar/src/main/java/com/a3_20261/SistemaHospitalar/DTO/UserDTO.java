@@ -24,7 +24,6 @@ public class UserDTO {
     private String address;
     private String email;
     private String number;
-
     private ProntuarioResumoDTO prontuario;
 
     public UserDTO() {

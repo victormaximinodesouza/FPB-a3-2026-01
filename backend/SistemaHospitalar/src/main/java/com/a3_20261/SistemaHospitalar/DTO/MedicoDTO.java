@@ -2,26 +2,17 @@ package com.a3_20261.SistemaHospitalar.DTO;
 
 import com.a3_20261.SistemaHospitalar.entities.Cirurgia;
 import com.a3_20261.SistemaHospitalar.entities.Medico;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-
 import java.util.ArrayList;
 import java.util.List;
-@JsonPropertyOrder({
-        "id",
-        "name",
-        "CRM",
-        "specialty",
-        "number",
-        "cirurgia"
-})
+
 public class MedicoDTO {
     private Integer id;
     private String name;
     private Integer CRM;
     private String specialty;
     private Integer number;
-
     private List<CirurgiaResumoDTO> cirurgia = new ArrayList<>();
+    private HospitalResumoDTO hospital;
 
     public MedicoDTO() {}
 
