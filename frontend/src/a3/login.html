@@ -134,6 +134,20 @@
             color: #aaa;
             text-align: center;
         }
+
+        @media screen and (min-width: 786px){
+            body{
+                background-image: linear-gradient(to top, rgb(84, 168, 84) , rgb(16, 16, 22));
+                width: 99vw;
+                height: 100%;
+                text-align: center;
+                font-size: 1.5em;
+                transition: width 0.5s , heigth 0.5s;
+                transition-timing-function: ease;
+            }
+            
+        }
+
     </style>
 </head>
 <body>
@@ -141,8 +155,7 @@
     <div class="container">
         <header class="header-main">
             <img src="logo.png" alt="HealthLink" class="main-logo">
-            <h1>HealthLink</h1>
-            <p>Sistema de Gestão Hospitalar</p>
+            <p><strong>Sistema de Gestão Hospitalar</strong></p>
         </header>
 
         <main class="login-card">
