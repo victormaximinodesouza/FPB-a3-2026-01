@@ -1,8 +1,13 @@
 package com.a3_20261.SistemaHospitalar.DTO;
 
+import com.a3_20261.SistemaHospitalar.entities.Exame;
 import com.a3_20261.SistemaHospitalar.entities.User;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
 @JsonPropertyOrder({
         "id",
         "nome",
@@ -11,7 +16,8 @@ import java.util.Date;
         "dateBirth",
         "address",
         "number",
-        "prontuario"
+        "prontuario",
+        "exame"
 
 })
 public class UserDTO {
@@ -25,6 +31,8 @@ public class UserDTO {
     private String email;
     private String number;
     private ProntuarioResumoDTO prontuario;
+    private List<ExameResumoDTO> exame = new ArrayList<>();
+
 
     public UserDTO() {
     }
@@ -38,8 +46,12 @@ public class UserDTO {
         this.email = entity.getEmail();
         this.number = entity.getNumber();
 
+
         if (entity.getProntuario() != null) {
             this.prontuario = new ProntuarioResumoDTO(entity.getProntuario());
+        }
+        for (Exame e : entity.getExames()) {
+            this.exame.add(new ExameResumoDTO(e));
         }
     }
 
@@ -105,5 +117,12 @@ public class UserDTO {
 
     public void setProntuario(ProntuarioResumoDTO prontuario) {
         this.prontuario = prontuario;
+    }
+
+    public List<ExameResumoDTO> getExame() {
+        return exame;
+    }
+    public void setExame(List<ExameResumoDTO> exame) {
+        this.exame = exame;
     }
 }

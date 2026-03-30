@@ -28,13 +28,14 @@ public class User implements Serializable {
     @OneToOne(mappedBy = "user")
     @JsonIgnoreProperties("user")
     private Prontuario prontuario;
-
+    @OneToMany
+    private List<Exame> exames =new ArrayList<>();
 
 
     public User() {
     }
 
-    public User(Integer id, String nome, Integer CPF, Date dateBirth, String address, String email, String number,Prontuario prontuario) {
+    public User(Integer id, String nome, Integer CPF, Date dateBirth, String address, String email, String number,Prontuario prontuario,List<Exame> exames) {
         this.id = id;
         this.nome = nome;
         this.CPF = CPF;
@@ -43,6 +44,7 @@ public class User implements Serializable {
         this.email = email;
         this.number = number;
         this.prontuario = prontuario;
+        this.exames = exames;
     }
 
     public String getEmail() {
@@ -104,11 +106,16 @@ public class User implements Serializable {
     public Prontuario getProntuario() {
         return prontuario;
     }
-
     public void setProntuario(Prontuario prontuario) {
         this.prontuario = prontuario;
     }
 
+    public List<Exame> getExames() {
+        return exames;
+    }
+    public void setExames(List<Exame> exames) {
+        this.exames = exames;
+    }
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;

@@ -17,14 +17,18 @@ public class Exame implements Serializable {
     private Integer id;
     private Date Date_request;
     private Date result;
+    @ManyToOne
+    @JoinColumn(name = "User_id")
+    private User user;
 
     public Exame() {
     }
 
-    public Exame(Integer id, Date date_request, Date result) {
+    public Exame(Integer id, Date date_request, Date result,User user) {
         this.id = id;
         Date_request = date_request;
         this.result = result;
+        this.user = user;
     }
 
     public Integer getId() {
@@ -49,6 +53,14 @@ public class Exame implements Serializable {
 
     public void setResult(Date result) {
         this.result = result;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @Override
