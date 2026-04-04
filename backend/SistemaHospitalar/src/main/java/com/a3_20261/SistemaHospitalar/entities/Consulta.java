@@ -1,25 +1,33 @@
 package com.a3_20261.SistemaHospitalar.entities;
 
+import com.a3_20261.SistemaHospitalar.Enum.StatusConsulta;
 import jakarta.persistence.*;
-import java.io.Serial;
+
 import java.io.Serializable;
-import java.util.Objects;
+import java.time.LocalDate;
+
 @Entity
 @Table(name ="tb_Consulta")
 public class Consulta implements Serializable {
-    @Serial
-    private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     private Integer id;
+
+    @Enumerated(EnumType.STRING)
+    private StatusConsulta status;
+
+    private LocalDate data;
+
     private String obs;
 
     public Consulta() {
     }
 
-    public Consulta(Integer id, String obs) {
+    public Consulta(Integer id, StatusConsulta status, LocalDate data, String obs) {
         this.id = id;
+        this.status = status;
+        this.data = data;
         this.obs = obs;
     }
 
@@ -31,23 +39,27 @@ public class Consulta implements Serializable {
         this.id = id;
     }
 
+    public StatusConsulta getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusConsulta status) {
+        this.status = status;
+    }
+
+    public LocalDate getData() {
+        return data;
+    }
+
+    public void setData(LocalDate data) {
+        this.data = data;
+    }
+
     public String getObs() {
         return obs;
     }
 
     public void setObs(String obs) {
         this.obs = obs;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        Consulta consulta = (Consulta) o;
-        return Objects.equals(id, consulta.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(id);
     }
 }

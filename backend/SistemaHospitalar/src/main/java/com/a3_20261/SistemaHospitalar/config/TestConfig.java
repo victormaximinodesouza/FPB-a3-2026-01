@@ -7,6 +7,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -64,8 +65,8 @@ public class TestConfig implements CommandLineRunner {
         atendimentoRepository.saveAll(Arrays.asList(a1, a2));
 
 
-        Consulta cs1 = new Consulta(null,"dor de barriga");
-        Consulta cs2 = new Consulta(null,"dor de dente");
+        Consulta cs1 = new Consulta(null,null,LocalDate.now(),"dor de barriga");
+        Consulta cs2 = new Consulta(null,null, LocalDate.now(),"dor de dente");
 
         consultaRepository.saveAll(Arrays.asList(cs1,cs2));
 

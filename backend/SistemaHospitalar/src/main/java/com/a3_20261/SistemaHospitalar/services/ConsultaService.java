@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -18,6 +19,10 @@ public class ConsultaService {
     @GetMapping
     public List<Consulta> findAll() {
         return consultaRepository.findAll();
+    }
+
+    public long totalConsultasPorDia(LocalDate data) {
+        return consultaRepository.countByData(data);
     }
 
 }
