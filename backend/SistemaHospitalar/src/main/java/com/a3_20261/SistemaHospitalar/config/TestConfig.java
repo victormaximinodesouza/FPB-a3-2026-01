@@ -41,8 +41,8 @@ public class TestConfig implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        Cirurgia c1 = new Cirurgia(null,null,"feito com sucesso",new ArrayList<>());
-        Cirurgia c2 = new Cirurgia(null,null,"deu errado",new ArrayList<>());
+        Cirurgia c1 = new Cirurgia(null,null,"feito com sucesso",null,new ArrayList<>());
+        Cirurgia c2 = new Cirurgia(null,null,"deu errado",null,new ArrayList<>());
 
         Medico m1 = new Medico(null, "joao", 3232, "cabeca", 922992922,new ArrayList<>());
         Medico m2 = new Medico(null, "maria", 32333, "pe", 992922,new ArrayList<>());

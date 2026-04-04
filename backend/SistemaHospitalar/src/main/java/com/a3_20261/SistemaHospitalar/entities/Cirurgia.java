@@ -1,5 +1,6 @@
 package com.a3_20261.SistemaHospitalar.entities;
 
+import com.a3_20261.SistemaHospitalar.Enum.StatusCirurgia;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -22,16 +23,19 @@ public class Cirurgia implements Serializable {
     private Integer id;
     private Date dateSurgery;
     private String report;
+    @Enumerated(EnumType.STRING)
+    private StatusCirurgia status;
     @ManyToMany(mappedBy = "cirurgia")
     @JsonIgnore
     private List<Medico> medicos = new ArrayList<>();
     public Cirurgia() {
     }
 
-    public Cirurgia(Integer id, Date dateSurgery, String report,List<Medico> medicos) {
+    public Cirurgia(Integer id, Date dateSurgery, String report,StatusCirurgia status,List<Medico> medicos) {
         this.id = id;
         this.dateSurgery = dateSurgery;
         this.report = report;
+        this.status = status;
         this.medicos = medicos;
 
     }
@@ -56,8 +60,16 @@ public class Cirurgia implements Serializable {
         return report;
     }
 
+    public StatusCirurgia getStatus() {
+        return status;
+    }
+
     public void setReport(String report) {
         this.report = report;
+    }
+
+    private void setStatus(StatusCirurgia status) {
+        this.status = status;
     }
 
     public List<Medico> getMedicos() {
