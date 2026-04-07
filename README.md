@@ -2,7 +2,7 @@
 
 ## Descrição breve
 
-O HealthLink é um projeto de sistema de gestão hospitalar com frontend em HTML/CSS e backend em Java com Spring Boot. Ele organiza módulos como usuários, médicos, hospitais, prontuários, exames, cirurgias, atendimentos, agendamentos, fila de espera, relatórios e doação de sangue.
+O HealthLink é um sistema de gestão hospitalar com frontend em HTML/CSS e backend em Java com Spring Boot. O projeto reúne módulos de usuários, médicos, hospitais, prontuários, exames, consultas, cirurgias, atendimentos, agendamentos, fila de espera, relatórios e doação de sangue.
 
 ## Tecnologias Utilizadas
 
@@ -66,6 +66,7 @@ Sugestão:
 
 - `backend/` - código da API Spring Boot
 - `backend/SistemaHospitalar/src/main/java/.../entities` - entidades do banco
+- `backend/SistemaHospitalar/src/main/java/.../Enum` - enums de status do domínio
 - `backend/SistemaHospitalar/src/main/java/.../Repository` - repositórios JPA
 - `backend/SistemaHospitalar/src/main/java/.../services` - regras e consultas
 - `backend/SistemaHospitalar/src/main/java/.../resources` - rotas da API
