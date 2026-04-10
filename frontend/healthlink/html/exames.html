@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>HealthLink - Gestão de Exames</title>
+</head>
+<body>
+<div class="wrapper">
+
+    <aside class="sidebar">
+        <div class="logo">
+            <i class="fa-solid fa-heart-pulse"></i>
+            <span>HealthLink</span>
+        </div>
+        <nav>
+            <a href="index.html"><i class="fa-solid fa-table-columns"></i> <span>Dashboard</span></a>
+            <a href="agendamentos.html"><i class="fa-solid fa-calendar-days"></i> <span>Agendamentos</span></a>
+            <a href="filadeespera.html"><i class="fa-solid fa-clock"></i> <span>Fila de Espera</span></a>
+            <a href="atendimento.html"><i class="fa-solid fa-stethoscope"></i> <span>Atendimento</span></a>
+            <a href="cirurgias.html"><i class="fa-solid fa-heart-pulse"></i> <span>Cirurgias</span></a>
+            <a href="exames.html" class="active"><i class="fa-solid fa-file-medical"></i> <span>Exames</span></a>
+            <a href="doacaodesangue.html"><i class="fa-solid fa-droplet"></i> <span>Doação de Sangue</span></a>
+            <a href="usuarios.html"><i class="fa-solid fa-user-group"></i> <span>Usuários</span></a>
+        </nav>
+        <div class="logout">
+            <a href="login.html"><i class="fa-solid fa-right-from-bracket"></i> <span>Sair</span></a>
+        </div>
+    </aside>
+
+    <main class="main-content">
+
+        <header>
+            <div class="header-titles">
+                <h1>Sistema de Gestão Hospitalar</h1>
+                <p>Gestão integrada e distribuída</p>
+            </div>
+            <div class="header-user">
+                <i class="fa-solid fa-bell"></i>
+                <i class="fa-solid fa-gear"></i>
+                <div class="user-profile">
+                    <div class="user-info"><strong>Dr. Administrador</strong><span>Administrador</span></div>
+                    <div class="avatar">DR</div>
+                </div>
+            </div>
+        </header>
+
+        <section class="dashboard-head">
+            <div class="head-left">
+                <h2>Gestão de Exames</h2>
+                <small>Testes laboratoriais e procedimentos diagnósticos</small>
+            </div>
+            <button class="btn-primary">
+                <i class="fa-solid fa-plus"></i> Solicitar Exame
+            </button>
+        </section>
+
+        <!-- KPIs -->
+        <section class="cards-summary">
+            <div class="card-kpi">
+                <div class="kpi-icon-container blue"><i class="fa-solid fa-flask-vial"></i></div>
+                <div class="kpi-body"><span class="kpi-value">156</span><span class="kpi-subtext">Total este mês</span></div>
+            </div>
+            <div class="card-kpi">
+                <div class="kpi-icon-container orange"><i class="fa-solid fa-hourglass-half"></i></div>
+                <div class="kpi-body"><span class="kpi-value">24</span><span class="kpi-subtext">Pendentes</span></div>
+            </div>
+            <div class="card-kpi">
+                <div class="kpi-icon-container teal"><i class="fa-solid fa-rotate"></i></div>
+                <div class="kpi-body"><span class="kpi-value">8</span><span class="kpi-subtext">Em Andamento</span></div>
+            </div>
+            <div class="card-kpi">
+                <div class="kpi-icon-container green"><i class="fa-solid fa-circle-check"></i></div>
+                <div class="kpi-body"><span class="kpi-value">124</span><span class="kpi-subtext">Concluídos</span></div>
+            </div>
+        </section>
+
+       
+        <!-- Filtros -->
+        <section class="filter-bar-container">
+            <div class="search-box">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" placeholder="Buscar por paciente, tipo de exame ou médico solicitante...">
+            </div>
+            <div class="filter-groups">
+                <select class="filter-select">
+                    <option>Todas Categorias</option>
+                    <option>Laboratório</option>
+                    <option>Imagem</option>
+                    <option>Cardiologia</option>
+                    <option>Neurologia</option>
+                </select>
+                <select class="filter-select">
+                    <option>Todos os Status</option>
+                    <option>Agendado</option>
+                    <option>Em Andamento</option>
+                    <option>Concluído</option>
+                    <option>Pendente</option>
+                </select>
+                <select class="filter-select">
+                    <option>Qualquer Prioridade</option>
+                    <option>Normal</option>
+                    <option>Urgente</option>
+                    <option>Crítico</option>
+                </select>
+            </div>
+        </section>
+
+        <!-- Tabela de exames -->
+        <section class="exam-table-container">
+            <div class="table-head-row">
+                <div>
+                    <h3>Lista de Exames</h3>
+                    <p>Mostrando 6 de 156 exames</p>
+                </div>
+                <button class="btn-export">
+                    <i class="fa-solid fa-arrow-up-from-bracket"></i> Exportar
+                </button>
+            </div>
+
+            <table style="margin-top:8px;">
+                <thead>
+                    <tr>
+                        <th>PACIENTE</th>
+                        <th>TIPO DE EXAME</th>
+                        <th>CATEGORIA</th>
+                        <th>SOLICITADO POR</th>
+                        <th>DATA</th>
+                        <th>PRIORIDADE</th>
+                        <th>PROGRESSO</th>
+                        <th>STATUS</th>
+                        <th>AÇÕES</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <!-- Linha 1 -->
+                    <tr>
+                        <td>
+                            <div class="patient-cell">
+                                <div class="avatar-mini purple">JS</div>
+                                <div>
+                                    <strong>João Silva</strong>
+                                    <div style="font-size:.72rem;color:var(--text-muted);">ID #4521</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="exam-type-cell">
+                                <div class="exam-cat-dot lab"></div>
+                                <div>
+                                    <strong>Hemograma Completo</strong>
+                                    <div style="font-size:.72rem;color:var(--text-muted);">Exame de sangue</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>Laboratório</td>
+                        <td>Dra. Sarah Santos</td>
+                        <td>
+                            <div>2026-03-01</div>
+                            <div style="font-size:.72rem;color:var(--text-muted);"><i class="fa-regular fa-clock"></i> Agend. 03-02</div>
+                        </td>
+                        <td><span class="tag-priority normal">Normal</span></td>
+                        <td>
+                            <div class="exam-progress">
+                                <div class="exam-progress-bar"><div class="exam-progress-fill fill-blue" style="width:0%;"></div></div>
+                                <span>—</span>
+                            </div>
+                        </td>
+                        <td><span class="status-pill scheduled">Agendado</span></td>
+                        <td>
+                            <div class="action-btns">
+                                <button class="btn-action-sm"><i class="fa-regular fa-eye"></i> Ver</button>
+                                <button class="btn-action-sm"><i class="fa-regular fa-pen-to-square"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <!-- Linha 2 -->
+                    <tr>
+                        <td>
+                            <div class="patient-cell">
+                                <div class="avatar-mini purple">MW</div>
+                                <div>
+                                    <strong>Maria Wilson</strong>
+                                    <div style="font-size:.72rem;color:var(--text-muted);">ID #4498</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="exam-type-cell">
+                                <div class="exam-cat-dot img"></div>
+                                <div>
+                                    <strong>Raio-X — Joelho</strong>
+                                    <div style="font-size:.72rem;color:var(--text-muted);">Radiografia</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>Imagem</td>
+                        <td>Dr. Michael Costa</td>
+                        <td>
+                            <div>2026-03-01</div>
+                            <div style="font-size:.72rem;color:var(--text-muted);"><i class="fa-regular fa-clock"></i> Realiz. 03-01</div>
+                        </td>
+                        <td><span class="tag-priority normal">Normal</span></td>
+                        <td>
+                            <div class="exam-progress">
+                                <div class="exam-progress-bar"><div class="exam-progress-fill fill-green" style="width:100%;"></div></div>
+                                <span>100%</span>
+                            </div>
+                        </td>
+                        <td><span class="status-pill finished-green">Concluído</span></td>
+                        <td>
+                            <div class="action-btns">
+                                <button class="btn-action-sm primary"><i class="fa-solid fa-file-waveform"></i> Resultado</button>
+                                <button class="btn-action-sm" title="Baixar PDF"><i class="fa-solid fa-download"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <!-- Linha 3 — Urgente -->
+                    <tr class="row-urgent">
+                        <td>
+                            <div class="patient-cell">
+                                <div class="avatar-mini purple">CP</div>
+                                <div>
+                                    <strong>Carlos Pereira</strong>
+                                    <div style="font-size:.72rem;color:var(--text-muted);">ID #4510</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="exam-type-cell">
+                                <div class="exam-cat-dot card"></div>
+                                <div>
+                                    <strong>Eletrocardiograma</strong>
+                                    <div style="font-size:.72rem;color:var(--text-muted);">ECG 12 derivações</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>Cardiologia</td>
+                        <td>Dr. Roberto Silva</td>
+                        <td>
+                            <div>2026-03-02</div>
+                            <div style="font-size:.72rem;color:var(--text-muted);"><i class="fa-regular fa-clock"></i> Agend. 03-03</div>
+                        </td>
+                        <td><span class="tag-priority urgent">Urgente</span></td>
+                        <td>
+                            <div class="exam-progress">
+                                <div class="exam-progress-bar"><div class="exam-progress-fill fill-orange" style="width:0%;"></div></div>
+                                <span>—</span>
+                            </div>
+                        </td>
+                        <td><span class="status-pill scheduled">Agendado</span></td>
+                        <td>
+                            <div class="action-btns">
+                                <button class="btn-action-sm"><i class="fa-regular fa-eye"></i> Ver</button>
+                                <button class="btn-action-sm"><i class="fa-regular fa-pen-to-square"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <!-- Linha 4 -->
+                    <tr>
+                        <td>
+                            <div class="patient-cell">
+                                <div class="avatar-mini purple">AF</div>
+                                <div>
+                                    <strong>Ana Ferreira</strong>
+                                    <div style="font-size:.72rem;color:var(--text-muted);">ID #4487</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="exam-type-cell">
+                                <div class="exam-cat-dot img"></div>
+                                <div>
+                                    <strong>Ressonância Magnética</strong>
+                                    <div style="font-size:.72rem;color:var(--text-muted);">RM — Coluna</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>Imagem</td>
+                        <td>Dra. Emily Lima</td>
+                        <td>
+                            <div>2026-03-02</div>
+                            <div style="font-size:.72rem;color:var(--text-muted);"><i class="fa-regular fa-clock"></i> Hoje</div>
+                        </td>
+                        <td><span class="tag-priority normal">Normal</span></td>
+                        <td>
+                            <div class="exam-progress">
+                                <div class="exam-progress-bar"><div class="exam-progress-fill fill-blue" style="width:60%;"></div></div>
+                                <span>60%</span>
+                            </div>
+                        </td>
+                        <td><span class="status-pill scheduled" style="background:var(--blue-pale);color:var(--blue-mid);">Em Andamento</span></td>
+                        <td>
+                            <div class="action-btns">
+                                <button class="btn-action-sm"><i class="fa-regular fa-eye"></i> Ver</button>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <!-- Linha 5 -->
+                    <tr>
+                        <td>
+                            <div class="patient-cell">
+                                <div class="avatar-mini purple">RL</div>
+                                <div>
+                                    <strong>Roberto Lima</strong>
+                                    <div style="font-size:.72rem;color:var(--text-muted);">ID #4476</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="exam-type-cell">
+                                <div class="exam-cat-dot img"></div>
+                                <div>
+                                    <strong>Ultrassom Abdominal</strong>
+                                    <div style="font-size:.72rem;color:var(--text-muted);">Ultrassonografia</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>Imagem</td>
+                        <td>Dr. Michael Costa</td>
+                        <td>
+                            <div>2026-02-28</div>
+                            <div style="font-size:.72rem;color:var(--text-muted);"><i class="fa-regular fa-clock"></i> Realiz. 02-28</div>
+                        </td>
+                        <td><span class="tag-priority normal">Normal</span></td>
+                        <td>
+                            <div class="exam-progress">
+                                <div class="exam-progress-bar"><div class="exam-progress-fill fill-green" style="width:100%;"></div></div>
+                                <span>100%</span>
+                            </div>
+                        </td>
+                        <td><span class="status-pill finished-green">Concluído</span></td>
+                        <td>
+                            <div class="action-btns">
+                                <button class="btn-action-sm primary"><i class="fa-solid fa-file-waveform"></i> Resultado</button>
+                                <button class="btn-action-sm" title="Baixar PDF"><i class="fa-solid fa-download"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <!-- Linha 6 — Urgente -->
+                    <tr class="row-urgent">
+                        <td>
+                            <div class="patient-cell">
+                                <div class="avatar-mini purple">FS</div>
+                                <div>
+                                    <strong>Fernanda Souza</strong>
+                                    <div style="font-size:.72rem;color:var(--text-muted);">ID #4519</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="exam-type-cell">
+                                <div class="exam-cat-dot neuro"></div>
+                                <div>
+                                    <strong>Eletroencefalograma</strong>
+                                    <div style="font-size:.72rem;color:var(--text-muted);">EEG</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>Neurologia</td>
+                        <td>Dr. Roberto Silva</td>
+                        <td>
+                            <div>2026-03-02</div>
+                            <div style="font-size:.72rem;color:var(--text-muted);"><i class="fa-regular fa-clock"></i> Agend. 03-04</div>
+                        </td>
+                        <td><span class="tag-priority urgent">Urgente</span></td>
+                        <td>
+                            <div class="exam-progress">
+                                <div class="exam-progress-bar"><div class="exam-progress-fill fill-orange" style="width:0%;"></div></div>
+                                <span>—</span>
+                            </div>
+                        </td>
+                        <td><span class="status-pill scheduled">Agendado</span></td>
+                        <td>
+                            <div class="action-btns">
+                                <button class="btn-action-sm"><i class="fa-regular fa-eye"></i> Ver</button>
+                                <button class="btn-action-sm"><i class="fa-regular fa-pen-to-square"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Resultados recentes -->
+        <section class="recent-section">
+            <h3>Resultados Recentes</h3>
+            <p>Exames concluídos aguardando revisão médica</p>
+
+            <div class="recent-exam-card">
+                <div class="exam-icon-box img"><i class="fa-solid fa-x-ray"></i></div>
+                <div class="recent-exam-info">
+                    <h4>Raio-X — Joelho · Maria Wilson</h4>
+                    <span>Concluído em 2026-03-01 · Dr. Michael Costa</span>
+                </div>
+                <div class="result-badge"><i class="fa-solid fa-circle-check"></i> Resultado Disponível</div>
+                <button class="btn-action-sm primary"><i class="fa-solid fa-file-waveform"></i> Abrir</button>
+            </div>
+
+            <div class="recent-exam-card">
+                <div class="exam-icon-box lab"><i class="fa-solid fa-flask"></i></div>
+                <div class="recent-exam-info">
+                    <h4>Hemograma Completo · Pedro Alves</h4>
+                    <span>Concluído em 2026-02-27 · Dra. Sarah Santos</span>
+                </div>
+                <div class="result-badge"><i class="fa-solid fa-circle-check"></i> Resultado Disponível</div>
+                <button class="btn-action-sm primary"><i class="fa-solid fa-file-waveform"></i> Abrir</button>
+            </div>
+
+            <div class="recent-exam-card">
+                <div class="exam-icon-box card"><i class="fa-solid fa-heart-pulse"></i></div>
+                <div class="recent-exam-info">
+                    <h4>Ecocardiograma · Lucas Mendes</h4>
+                    <span>Concluído em 2026-02-26 · Dra. Sarah Santos</span>
+                </div>
+                <div class="result-badge pending"><i class="fa-solid fa-clock"></i> Aguard. Revisão</div>
+                <button class="btn-action-sm"><i class="fa-regular fa-eye"></i> Ver</button>
+            </div>
+        </section>
+
+    </main>
+</div>
+</body>
+</html>

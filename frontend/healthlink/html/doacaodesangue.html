@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>HealthLink - Doação de Sangue</title>
+</head>
+<body>
+<div class="wrapper">
+
+    <aside class="sidebar">
+        <div class="logo"><i class="fa-solid fa-heart-pulse"></i><span>HealthLink</span></div>
+        <nav>
+            <a href="index.html"><i class="fa-solid fa-table-columns"></i> <span>Dashboard</span></a>
+            <a href="agendamentos.html"><i class="fa-solid fa-calendar-days"></i> <span>Agendamentos</span></a>
+            <a href="filadeespera.html"><i class="fa-solid fa-clock"></i> <span>Fila de Espera</span></a>
+            <a href="atendimento.html"><i class="fa-solid fa-stethoscope"></i> <span>Atendimento</span></a>
+            <a href="cirurgias.html"><i class="fa-solid fa-heart-pulse"></i> <span>Cirurgias</span></a>
+            <a href="exames.html"><i class="fa-solid fa-file-medical"></i> <span>Exames</span></a>
+            <a href="doacaodesangue.html" class="active"><i class="fa-solid fa-droplet"></i> <span>Doação de Sangue</span></a>
+            <a href="usuarios.html"><i class="fa-solid fa-user-group"></i> <span>Usuários</span></a>
+        </nav>
+        <div class="logout"><a href="login.html"><i class="fa-solid fa-right-from-bracket"></i> <span>Sair</span></a></div>
+    </aside>
+
+    <main class="main-content">
+
+        <header>
+            <div class="header-titles"><h1>Sistema de Gestão Hospitalar</h1><p>Gestão integrada e distribuída</p></div>
+            <div class="header-user">
+                <i class="fa-solid fa-bell"></i>
+                <i class="fa-solid fa-gear"></i>
+                <div class="user-profile">
+                    <div class="user-info"><strong>Dr. Administrador</strong><span>Administrador</span></div>
+                    <div class="avatar">DR</div>
+                </div>
+            </div>
+        </header>
+
+        <section class="dashboard-head">
+            <div class="head-left">
+                <h2>Gestão de Doação de Sangue</h2>
+                <small>Gerenciar doações de sangue e estoque</small>
+            </div>
+            <button class="btn-primary">
+                <i class="fa-solid fa-plus"></i> Nova Doação
+            </button>
+        </section>
+
+        <section class="cards-summary">
+            <div class="card-kpi">
+                <div class="kpi-icon-container red-bg"><i class="fa-solid fa-droplet"></i></div>
+                <div class="kpi-body"><h3 class="kpi-value">185</h3><p class="kpi-subtext">Unidades Disponíveis</p></div>
+            </div>
+            <div class="card-kpi">
+                <div class="kpi-icon-container green-bg"><i class="fa-solid fa-arrow-trend-up"></i></div>
+                <div class="kpi-body"><h3 class="kpi-value">48</h3><p class="kpi-subtext">Doações Este Mês</p></div>
+            </div>
+            <div class="card-kpi">
+                <div class="kpi-icon-container orange-bg"><i class="fa-solid fa-circle-exclamation"></i></div>
+                <div class="kpi-body"><h3 class="kpi-value">3</h3><p class="kpi-subtext">Solicitações Críticas</p></div>
+            </div>
+            <div class="card-kpi">
+                <div class="kpi-icon-container blue-bg"><i class="fa-solid fa-users"></i></div>
+                <div class="kpi-body"><h3 class="kpi-value">324</h3><p class="kpi-subtext">Doadores Registrados</p></div>
+            </div>
+        </section>
+
+        <!-- Níveis de estoque -->
+        <div class="card-base inventory-levels">
+            <h3>Níveis de Estoque por Tipo Sanguíneo</h3>
+            <div class="levels-list">
+                <div class="level-row">
+                    <div class="level-head"><span><i class="fa-solid fa-droplet icon-ap"></i> A+</span><span>45 unidades</span></div>
+                    <div class="progress-bar"><div class="progress bar-green" style="width:85%;"></div></div>
+                </div>
+                <div class="level-row">
+                    <div class="level-head"><span><i class="fa-solid fa-droplet icon-an"></i> A-</span><span>12 unidades <i class="fa-solid fa-circle-exclamation warn"></i></span></div>
+                    <div class="progress-bar"><div class="progress bar-orange" style="width:25%;"></div></div>
+                </div>
+                <div class="level-row">
+                    <div class="level-head"><span><i class="fa-solid fa-droplet icon-bp"></i> B+</span><span>38 unidades</span></div>
+                    <div class="progress-bar"><div class="progress bar-green" style="width:70%;"></div></div>
+                </div>
+                <div class="level-row">
+                    <div class="level-head"><span><i class="fa-solid fa-droplet icon-bn"></i> B-</span><span>8 unidades <i class="fa-solid fa-circle-exclamation warn"></i></span></div>
+                    <div class="progress-bar"><div class="progress bar-orange" style="width:15%;"></div></div>
+                </div>
+                <div class="level-row">
+                    <div class="level-head"><span><i class="fa-solid fa-droplet icon-abp"></i> AB+</span><span>15 unidades</span></div>
+                    <div class="progress-bar"><div class="progress bar-blue" style="width:30%;"></div></div>
+                </div>
+                <div class="level-row">
+                    <div class="level-head"><span><i class="fa-solid fa-droplet icon-abn"></i> AB-</span><span>5 unidades <i class="fa-solid fa-circle-exclamation warn"></i></span></div>
+                    <div class="progress-bar"><div class="progress bar-orange" style="width:10%;"></div></div>
+                </div>
+                <div class="level-row">
+                    <div class="level-head"><span><i class="fa-solid fa-droplet icon-op"></i> O+</span><span>52 unidades</span></div>
+                    <div class="progress-bar"><div class="progress bar-green" style="width:95%;"></div></div>
+                </div>
+                <div class="level-row">
+                    <div class="level-head"><span><i class="fa-solid fa-droplet icon-on"></i> O-</span><span>10 unidades <i class="fa-solid fa-circle-exclamation warn"></i></span></div>
+                    <div class="progress-bar"><div class="progress bar-orange" style="width:20%;"></div></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Solicitações -->
+        <section class="table-container card-base table-spacing">
+            <div class="table-header">
+                <div><h3>Solicitações de Sangue</h3><p>Gerenciar pedidos urgentes e não urgentes</p></div>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>PACIENTE</th><th>TIPO SANGUÍNEO</th><th>QUANTIDADE</th>
+                        <th>URGÊNCIA</th><th>STATUS</th><th>AÇÕES</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Emily Costa</strong></td>
+                        <td><span class="blood-badge o-neg">O −</span></td>
+                        <td>2 unidades</td>
+                        <td><span class="tag red-light">Crítico</span></td>
+                        <td><span class="tag yellow-light">Pendente</span></td>
+                        <td><a href="#" class="action-link">Processar</a></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Roberto Lee</strong></td>
+                        <td><span class="blood-badge a-pos">A +</span></td>
+                        <td>3 unidades</td>
+                        <td><span class="tag orange-light">Urgente</span></td>
+                        <td><span class="tag blue-light">Processando</span></td>
+                        <td><a href="#" class="action-link">Processar</a></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Lucas Mendes</strong></td>
+                        <td><span class="blood-badge ab-pos">AB +</span></td>
+                        <td>1 unidade</td>
+                        <td><span class="tag blue-light">Normal</span></td>
+                        <td><span class="tag yellow-light">Pendente</span></td>
+                        <td><a href="#" class="action-link">Processar</a></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Fernanda Silva</strong></td>
+                        <td><span class="blood-badge b-neg">B −</span></td>
+                        <td>2 unidades</td>
+                        <td><span class="tag red-light">Crítico</span></td>
+                        <td><span class="tag blue-light">Processando</span></td>
+                        <td><a href="#" class="action-link">Processar</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Doações recentes -->
+        <section class="table-container card-base table-spacing" style="margin-bottom:32px;">
+            <div class="table-header">
+                <div><h3>Doações Recentes</h3><p>Histórico e agendamentos</p></div>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>DOADOR</th><th>TIPO SANGUÍNEO</th><th>DATA</th>
+                        <th>QUANTIDADE</th><th>STATUS</th><th>PRÓXIMA DOAÇÃO</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><div class="user-cell"><div class="avatar-small red">JS</div> João Silva</div></td>
+                        <td><span class="blood-badge o-pos">O +</span></td>
+                        <td>2026-03-01</td>
+                        <td><strong>450 ml</strong></td>
+                        <td><span class="tag green-light">Concluído</span></td>
+                        <td>2026-06-01</td>
+                    </tr>
+                    <tr>
+                        <td><div class="user-cell"><div class="avatar-small red">MW</div> Maria Wilson</div></td>
+                        <td><span class="blood-badge a-pos">A +</span></td>
+                        <td>2026-03-01</td>
+                        <td><strong>450 ml</strong></td>
+                        <td><span class="tag blue-light">Em Andamento</span></td>
+                        <td>2026-06-01</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+    </main>
+</div>
+</body>
+</html>

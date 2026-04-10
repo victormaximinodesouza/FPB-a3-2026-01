@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>HealthLink - Login</title>
+</head>
+<body class="login-page">
+
+    <div class="login-container">
+
+        <div class="login-logo">
+            <i class="fa-solid fa-heart-pulse"></i>
+            <h1>HealthLink</h1>
+            <p>Sistema de Gestão Hospitalar</p>
+        </div>
+
+        <div class="login-card">
+            <h2>Acesse sua conta</h2>
+            <p class="subtitle">Entre com suas credenciais para continuar</p>
+
+            <div class="input-group">
+                <label for="email">E-mail</label>
+                <div class="input-wrapper">
+                    <span>✉</span>
+                    <input type="text" id="email" placeholder="seu.email@healthlink.com">
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label for="senha">Senha</label>
+                <div class="input-wrapper">
+                    <span>🔒</span>
+                    <input type="password" id="senha" placeholder="••••••••">
+                </div>
+            </div>
+
+            <div class="form-footer">
+                <label style="cursor:pointer;">
+                    <input type="checkbox"> Lembrar-me
+                </label>
+                <a href="#">Esqueceu a senha?</a>
+            </div>
+
+            <button class="btn-login" onclick="fazerLogin()">
+                <i class="fa-solid fa-right-to-bracket"></i> Entrar
+            </button>
+
+            <p id="erro-login" style="display:none; color:#dc2626; font-size:.82rem; margin-top:12px; text-align:center;">
+                <i class="fa-solid fa-circle-exclamation"></i> Preencha o e-mail e a senha para continuar.
+            </p>
+        </div>
+
+        <footer class="login-footer">
+            <p>&copy; 2026 HealthLink. Todos os direitos reservados.</p>
+        </footer>
+
+    </div>
+
+    <script>
+        document.getElementById('senha').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') fazerLogin();
+        });
+        document.getElementById('email').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') fazerLogin();
+        });
+
+        function fazerLogin() {
+            var email = document.getElementById('email').value.trim();
+            var senha = document.getElementById('senha').value.trim();
+            var erro  = document.getElementById('erro-login');
+
+            if (email === '' || senha === '') {
+                erro.style.display = 'block';
+                return;
+            }
+
+            erro.style.display = 'none';
+            window.location.href = 'index.html';
+        }
+    </script>
+
+</body>
+</html>

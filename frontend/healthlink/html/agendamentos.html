@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>HealthLink - Agendamentos</title>
+</head>
+<body>
+<div class="wrapper">
+
+    <aside class="sidebar">
+        <div class="logo">
+            <i class="fa-solid fa-heart-pulse"></i>
+            <span>HealthLink</span>
+        </div>
+        <nav>
+            <a href="index.html"><i class="fa-solid fa-table-columns"></i> <span>Dashboard</span></a>
+            <a href="agendamentos.html" class="active"><i class="fa-solid fa-calendar-days"></i> <span>Agendamentos</span></a>
+            <a href="filadeespera.html"><i class="fa-solid fa-clock"></i> <span>Fila de Espera</span></a>
+            <a href="atendimento.html"><i class="fa-solid fa-stethoscope"></i> <span>Atendimento</span></a>
+            <a href="cirurgias.html"><i class="fa-solid fa-heart-pulse"></i> <span>Cirurgias</span></a>
+            <a href="exames.html"><i class="fa-solid fa-file-medical"></i> <span>Exames</span></a>
+            <a href="doacaodesangue.html"><i class="fa-solid fa-droplet"></i> <span>Doação de Sangue</span></a>
+            <a href="usuarios.html"><i class="fa-solid fa-user-group"></i> <span>Usuários</span></a>
+        </nav>
+        <div class="logout">
+            <a href="login.html"><i class="fa-solid fa-right-from-bracket"></i> <span>Sair</span></a>
+        </div>
+    </aside>
+
+    <main class="main-content">
+
+        <header>
+            <div class="header-titles">
+                <h1>Sistema de Gestão Hospitalar</h1>
+                <p>Gestão integrada e distribuída</p>
+            </div>
+            <div class="header-user">
+                <i class="fa-solid fa-bell"></i>
+                <i class="fa-solid fa-gear"></i>
+                <div class="user-profile">
+                    <div class="user-info"><strong>Dr. Administrador</strong><span>Administrador</span></div>
+                    <div class="avatar">DR</div>
+                </div>
+            </div>
+        </header>
+
+        <section class="dashboard-head">
+            <div class="head-left">
+                <h2>Agendamentos</h2>
+                <small>Gerencie e agende consultas de pacientes</small>
+            </div>
+            <button class="btn-primary">
+                <i class="fa-solid fa-plus"></i> Novo Agendamento
+            </button>
+        </section>
+
+        <div class="dashboard-container">
+
+            <!-- Filtros -->
+            <div class="filter-bar card">
+                <div class="search-input">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" placeholder="Buscar por paciente, médico ou especialidade...">
+                </div>
+                <div class="filter-options">
+                    <select>
+                        <option value="">Todos os Status</option>
+                        <option value="confirmado">Confirmado</option>
+                        <option value="pendente">Pendente</option>
+                        <option value="andamento">Em Andamento</option>
+                        <option value="concluido">Concluído</option>
+                    </select>
+                    <select>
+                        <option value="">Todos os Médicos</option>
+                        <option value="sarah">Dra. Sarah Santos</option>
+                        <option value="michael">Dr. Michael Costa</option>
+                        <option value="emily">Dra. Emily Lima</option>
+                        <option value="roberto">Dr. Roberto Silva</option>
+                    </select>
+                    <button class="btn-filter">
+                        <i class="fa-solid fa-filter"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Tabela -->
+            <div class="table-card card">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>PACIENTE</th>
+                            <th>MÉDICO</th>
+                            <th>ESPECIALIDADE</th>
+                            <th>DATA</th>
+                            <th>HORÁRIO</th>
+                            <th>TIPO</th>
+                            <th>STATUS</th>
+                            <th>AÇÕES</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div class="patient-info">
+                                    <div class="avatar-circle blue">JS</div>
+                                    <span>João Silva</span>
+                                </div>
+                            </td>
+                            <td>Dra. Sarah Santos</td>
+                            <td>Cardiologia</td>
+                            <td>2026-03-01</td>
+                            <td><i class="fa-regular fa-clock"></i> 09:00</td>
+                            <td>Consulta</td>
+                            <td><span class="status confirmed">Confirmado</span></td>
+                            <td class="actions"><span class="view">Ver</span> | <span class="edit">Editar</span></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="patient-info">
+                                    <div class="avatar-circle dark-blue">MO</div>
+                                    <span>Maria Oliveira</span>
+                                </div>
+                            </td>
+                            <td>Dr. Michael Costa</td>
+                            <td>Ortopedia</td>
+                            <td>2026-03-01</td>
+                            <td><i class="fa-regular fa-clock"></i> 10:30</td>
+                            <td>Retorno</td>
+                            <td><span class="status progress">Em Andamento</span></td>
+                            <td class="actions"><span class="view">Ver</span> | <span class="edit">Editar</span></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="patient-info">
+                                    <div class="avatar-circle blue">CP</div>
+                                    <span>Carlos Pereira</span>
+                                </div>
+                            </td>
+                            <td>Dr. Roberto Silva</td>
+                            <td>Clínica Geral</td>
+                            <td>2026-03-02</td>
+                            <td><i class="fa-regular fa-clock"></i> 08:00</td>
+                            <td>Consulta</td>
+                            <td><span class="status pending">Pendente</span></td>
+                            <td class="actions"><span class="view">Ver</span> | <span class="edit">Editar</span></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="patient-info">
+                                    <div class="avatar-circle dark-blue">AF</div>
+                                    <span>Ana Ferreira</span>
+                                </div>
+                            </td>
+                            <td>Dra. Emily Lima</td>
+                            <td>Dermatologia</td>
+                            <td>2026-02-28</td>
+                            <td><i class="fa-regular fa-clock"></i> 14:00</td>
+                            <td>Consulta</td>
+                            <td><span class="status done">Concluído</span></td>
+                            <td class="actions"><span class="view">Ver</span> | <span class="edit">Editar</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </main>
+</div>
+</body>
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>HealthLink - Fila de Espera</title>
+</head>
+<body>
+<div class="wrapper">
+
+    <aside class="sidebar">
+        <div class="logo">
+            <i class="fa-solid fa-heart-pulse"></i>
+            <span>HealthLink</span>
+        </div>
+        <nav>
+            <a href="index.html"><i class="fa-solid fa-table-columns"></i> <span>Dashboard</span></a>
+            <a href="agendamentos.html"><i class="fa-solid fa-calendar-days"></i> <span>Agendamentos</span></a>
+            <a href="filadeespera.html" class="active"><i class="fa-solid fa-clock"></i> <span>Fila de Espera</span></a>
+            <a href="atendimento.html"><i class="fa-solid fa-stethoscope"></i> <span>Atendimento</span></a>
+            <a href="cirurgias.html"><i class="fa-solid fa-heart-pulse"></i> <span>Cirurgias</span></a>
+            <a href="exames.html"><i class="fa-solid fa-file-medical"></i> <span>Exames</span></a>
+            <a href="doacaodesangue.html"><i class="fa-solid fa-droplet"></i> <span>Doação de Sangue</span></a>
+            <a href="usuarios.html"><i class="fa-solid fa-user-group"></i> <span>Usuários</span></a>
+        </nav>
+        <div class="logout">
+            <a href="login.html"><i class="fa-solid fa-right-from-bracket"></i> <span>Sair</span></a>
+        </div>
+    </aside>
+
+    <main class="main-content">
+
+        <header>
+            <div class="header-titles">
+                <h1>Sistema de Gestão Hospitalar</h1>
+                <p>Gestão integrada e distribuída</p>
+            </div>
+            <div class="header-user">
+                <i class="fa-solid fa-bell notification-icon"></i>
+                <i class="fa-solid fa-gear"></i>
+                <div class="user-profile">
+                    <div class="user-info"><strong>Dr. Administrador</strong><span>Administrador</span></div>
+                    <div class="avatar">DR</div>
+                </div>
+            </div>
+        </header>
+
+        <section class="dashboard-head">
+            <div class="head-left">
+                <h2>Fila de Espera</h2>
+                <small>Pacientes aguardando atendimento em tempo real</small>
+            </div>
+            <button class="btn-primary">
+                <i class="fa-solid fa-user-plus"></i> Chamar Próximo
+            </button>
+        </section>
+
+        <section class="cards-summary">
+            <div class="card-kpi">
+                <div class="kpi-icon-container orange"><i class="fa-solid fa-clock"></i></div>
+                <div class="kpi-body"><h3 class="kpi-value">7</h3><p class="kpi-subtext">Aguardando</p></div>
+            </div>
+            <div class="card-kpi">
+                <div class="kpi-icon-container blue"><i class="fa-solid fa-stethoscope"></i></div>
+                <div class="kpi-body"><h3 class="kpi-value">3</h3><p class="kpi-subtext">Em Atendimento</p></div>
+            </div>
+            <div class="card-kpi">
+                <div class="kpi-icon-container green"><i class="fa-solid fa-hourglass-half"></i></div>
+                <div class="kpi-body"><h3 class="kpi-value">24 min</h3><p class="kpi-subtext">Tempo Médio de Espera</p></div>
+            </div>
+        </section>
+
+        <section class="filter-bar-container">
+            <div class="search-box">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" placeholder="Buscar paciente na fila...">
+            </div>
+            <select class="filter-select">
+                <option>Todos os Status</option>
+                <option>Aguardando</option>
+                <option>Em Atendimento</option>
+            </select>
+        </section>
+
+        <section class="waiting-list">
+            <div class="waiting-card">
+                <div class="waiting-number">1</div>
+                <div class="avatar-circle blue">JS</div>
+                <div class="waiting-info"><h3>João Silva</h3><span>Cardiologia • Dra. Sarah Santos</span></div>
+                <div class="wait-time"><i class="fa-regular fa-clock"></i> 32 min aguardando</div>
+                <span class="status pending">Aguardando</span>
+                <button class="btn-green">Chamar</button>
+            </div>
+            <div class="waiting-card">
+                <div class="waiting-number">2</div>
+                <div class="avatar-circle dark-blue">MO</div>
+                <div class="waiting-info"><h3>Maria Oliveira</h3><span>Ortopedia • Dr. Michael Costa</span></div>
+                <div class="wait-time"><i class="fa-regular fa-clock"></i> 18 min aguardando</div>
+                <span class="status progress">Em Atendimento</span>
+                <button class="btn-outline">Detalhes</button>
+            </div>
+            <div class="waiting-card">
+                <div class="waiting-number">3</div>
+                <div class="avatar-circle blue">CP</div>
+                <div class="waiting-info"><h3>Carlos Pereira</h3><span>Clínica Geral • Dr. Roberto Silva</span></div>
+                <div class="wait-time"><i class="fa-regular fa-clock"></i> 12 min aguardando</div>
+                <span class="status pending">Aguardando</span>
+                <button class="btn-green">Chamar</button>
+            </div>
+            <div class="waiting-card">
+                <div class="waiting-number">4</div>
+                <div class="avatar-circle dark-blue">AF</div>
+                <div class="waiting-info"><h3>Ana Ferreira</h3><span>Dermatologia • Dra. Emily Lima</span></div>
+                <div class="wait-time"><i class="fa-regular fa-clock"></i> 5 min aguardando</div>
+                <span class="status pending">Aguardando</span>
+                <button class="btn-green">Chamar</button>
+            </div>
+        </section>
+
+    </main>
+</div>
+</body>
+</html>

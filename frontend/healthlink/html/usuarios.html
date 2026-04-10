@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>HealthLink - Usuários</title>
+</head>
+<body>
+<div class="wrapper">
+
+    <aside class="sidebar">
+        <div class="logo"><i class="fa-solid fa-heart-pulse"></i><span>HealthLink</span></div>
+        <nav>
+            <a href="index.html"><i class="fa-solid fa-table-columns"></i> <span>Dashboard</span></a>
+            <a href="agendamentos.html"><i class="fa-solid fa-calendar-days"></i> <span>Agendamentos</span></a>
+            <a href="filadeespera.html"><i class="fa-solid fa-clock"></i> <span>Fila de Espera</span></a>
+            <a href="atendimento.html"><i class="fa-solid fa-stethoscope"></i> <span>Atendimento</span></a>
+            <a href="cirurgias.html"><i class="fa-solid fa-heart-pulse"></i> <span>Cirurgias</span></a>
+            <a href="exames.html"><i class="fa-solid fa-file-medical"></i> <span>Exames</span></a>
+            <a href="doacaodesangue.html"><i class="fa-solid fa-droplet"></i> <span>Doação de Sangue</span></a>
+            <a href="usuarios.html" class="active"><i class="fa-solid fa-user-group"></i> <span>Usuários</span></a>
+        </nav>
+        <div class="logout"><a href="login.html"><i class="fa-solid fa-right-from-bracket"></i> <span>Sair</span></a></div>
+    </aside>
+
+    <main class="main-content">
+
+        <header>
+            <div class="header-titles"><h1>Sistema de Gestão Hospitalar</h1><p>Gestão integrada e distribuída</p></div>
+            <div class="header-user">
+                <i class="fa-solid fa-bell"></i>
+                <i class="fa-solid fa-gear"></i>
+                <div class="user-profile">
+                    <div class="user-info"><strong>Dr. Administrador</strong><span>Administrador</span></div>
+                    <div class="avatar">DR</div>
+                </div>
+            </div>
+        </header>
+
+        <section class="dashboard-head">
+            <div class="head-left">
+                <h2>Usuários do Sistema</h2>
+                <small>Gerenciar médicos, enfermeiros e administradores</small>
+            </div>
+            <button class="btn-primary">
+                <i class="fa-solid fa-user-plus"></i> Novo Usuário
+            </button>
+        </section>
+
+        <section class="cards-summary">
+            <div class="card-kpi">
+                <div class="kpi-icon-container green"><i class="fa-solid fa-user-group"></i></div>
+                <div class="kpi-body"><h3 class="kpi-value">48</h3><p class="kpi-subtext">Total de Usuários</p></div>
+            </div>
+            <div class="card-kpi">
+                <div class="kpi-icon-container blue"><i class="fa-solid fa-user-doctor"></i></div>
+                <div class="kpi-body"><h3 class="kpi-value">22</h3><p class="kpi-subtext">Médicos</p></div>
+            </div>
+            <div class="card-kpi">
+                <div class="kpi-icon-container orange"><i class="fa-solid fa-user-nurse"></i></div>
+                <div class="kpi-body"><h3 class="kpi-value">18</h3><p class="kpi-subtext">Enfermeiros</p></div>
+            </div>
+            <div class="card-kpi">
+                <div class="kpi-icon-container teal"><i class="fa-solid fa-user-shield"></i></div>
+                <div class="kpi-body"><h3 class="kpi-value">8</h3><p class="kpi-subtext">Administradores</p></div>
+            </div>
+        </section>
+
+        <section class="filter-bar-container">
+            <div class="search-box">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" placeholder="Buscar usuário por nome, e-mail ou departamento...">
+            </div>
+            <div class="filter-groups">
+                <select class="filter-select">
+                    <option>Todos os Perfis</option>
+                    <option>Médico</option>
+                    <option>Enfermeiro</option>
+                    <option>Administrador</option>
+                </select>
+                <select class="filter-select">
+                    <option>Todos os Departamentos</option>
+                    <option>Cardiologia</option>
+                    <option>Ortopedia</option>
+                    <option>Clínica Geral</option>
+                    <option>Dermatologia</option>
+                </select>
+            </div>
+        </section>
+
+        <section class="users-grid">
+
+            <div class="user-card">
+                <div class="avatar-large">SS</div>
+                <h3>Dra. Sarah Santos</h3>
+                <p class="role">Médica Cardiologista</p>
+                <span class="dept">Cardiologia</span>
+                <div style="margin-top:14px;display:flex;justify-content:center;gap:8px;">
+                    <button class="btn-outline" style="font-size:.75rem;padding:6px 14px;">Editar</button>
+                    <button class="btn-outline" style="font-size:.75rem;padding:6px 14px;color:var(--red-mid);border-color:var(--red-mid);">Desativar</button>
+                </div>
+            </div>
+
+            <div class="user-card">
+                <div class="avatar-large" style="background:var(--blue-mid);">MC</div>
+                <h3>Dr. Michael Costa</h3>
+                <p class="role">Médico Ortopedista</p>
+                <span class="dept">Ortopedia</span>
+                <div style="margin-top:14px;display:flex;justify-content:center;gap:8px;">
+                    <button class="btn-outline" style="font-size:.75rem;padding:6px 14px;">Editar</button>
+                    <button class="btn-outline" style="font-size:.75rem;padding:6px 14px;color:var(--red-mid);border-color:var(--red-mid);">Desativar</button>
+                </div>
+            </div>
+
+            <div class="user-card">
+                <div class="avatar-large" style="background:#7c3aed;">EL</div>
+                <h3>Dra. Emily Lima</h3>
+                <p class="role">Médica Dermatologista</p>
+                <span class="dept">Dermatologia</span>
+                <div style="margin-top:14px;display:flex;justify-content:center;gap:8px;">
+                    <button class="btn-outline" style="font-size:.75rem;padding:6px 14px;">Editar</button>
+                    <button class="btn-outline" style="font-size:.75rem;padding:6px 14px;color:var(--red-mid);border-color:var(--red-mid);">Desativar</button>
+                </div>
+            </div>
+
+            <div class="user-card">
+                <div class="avatar-large" style="background:#0f766e;">RS</div>
+                <h3>Dr. Roberto Silva</h3>
+                <p class="role">Médico Clínico Geral</p>
+                <span class="dept">Clínica Geral</span>
+                <div style="margin-top:14px;display:flex;justify-content:center;gap:8px;">
+                    <button class="btn-outline" style="font-size:.75rem;padding:6px 14px;">Editar</button>
+                    <button class="btn-outline" style="font-size:.75rem;padding:6px 14px;color:var(--red-mid);border-color:var(--red-mid);">Desativar</button>
+                </div>
+            </div>
+
+            <div class="user-card">
+                <div class="avatar-large" style="background:#d97706;">AP</div>
+                <h3>Enf. Ana Paula</h3>
+                <p class="role">Enfermeira Chefe</p>
+                <span class="dept">UTI</span>
+                <div style="margin-top:14px;display:flex;justify-content:center;gap:8px;">
+                    <button class="btn-outline" style="font-size:.75rem;padding:6px 14px;">Editar</button>
+                    <button class="btn-outline" style="font-size:.75rem;padding:6px 14px;color:var(--red-mid);border-color:var(--red-mid);">Desativar</button>
+                </div>
+            </div>
+
+            <div class="user-card">
+                <div class="avatar-large" style="background:#1b4332;">DR</div>
+                <h3>Dr. Administrador</h3>
+                <p class="role">Administrador do Sistema</p>
+                <span class="dept">Administração</span>
+                <div style="margin-top:14px;display:flex;justify-content:center;gap:8px;">
+                    <button class="btn-outline" style="font-size:.75rem;padding:6px 14px;">Editar</button>
+                    <button class="btn-outline" style="font-size:.75rem;padding:6px 14px;opacity:.4;" disabled>Protegido</button>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+</div>
+</body>
+</html>
