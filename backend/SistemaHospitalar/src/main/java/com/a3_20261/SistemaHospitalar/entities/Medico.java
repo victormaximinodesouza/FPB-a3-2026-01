@@ -1,5 +1,6 @@
 package com.a3_20261.SistemaHospitalar.entities;
 
+import com.a3_20261.SistemaHospitalar.Enum.MedicoSpecialty;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
@@ -20,7 +21,8 @@ public class Medico implements Serializable {
     private Integer id;
     private String name;
     private Integer CRM;
-    private String specialty;
+    @Enumerated(EnumType.STRING)
+    private MedicoSpecialty specialty;
     private Integer number;
     @ManyToMany
     @JoinTable(
@@ -36,7 +38,7 @@ public class Medico implements Serializable {
     public Medico() {
     }
 
-    public Medico(Integer id, String name, Integer CRM, String specialty, Integer number,List<Cirurgia> cirurgia) {
+    public Medico(Integer id, String name, Integer CRM, MedicoSpecialty specialty, Integer number,List<Cirurgia> cirurgia) {
         this.id = id;
         this.name = name;
         this.CRM = CRM;
@@ -77,11 +79,11 @@ public class Medico implements Serializable {
         this.number = number;
     }
 
-    public String getSpecialty() {
+    public  MedicoSpecialty  getSpecialty() {
         return specialty;
     }
 
-    public void setSpecialty(String specialty) {
+    public void setSpecialty(MedicoSpecialty specialty) {
         this.specialty = specialty;
     }
 
