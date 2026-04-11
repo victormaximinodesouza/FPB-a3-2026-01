@@ -1,5 +1,6 @@
 package com.a3_20261.SistemaHospitalar.DTO;
 
+import com.a3_20261.SistemaHospitalar.Enum.MedicoSpecialty;
 import com.a3_20261.SistemaHospitalar.entities.Cirurgia;
 import com.a3_20261.SistemaHospitalar.entities.Medico;
 import java.util.ArrayList;
@@ -9,7 +10,7 @@ public class MedicoDTO {
     private Integer id;
     private String name;
     private Integer CRM;
-    private String specialty;
+    private MedicoSpecialty specialty;
     private Integer number;
     private List<CirurgiaResumoDTO> cirurgia = new ArrayList<>();
     private HospitalResumoDTO hospital;
@@ -52,11 +53,11 @@ public class MedicoDTO {
         this.CRM = CRM;
     }
 
-    public String getSpecialty() {
-        return specialty;
+    public MedicoSpecialty getSpecialty() {
+        return this.specialty;
     }
 
-    public void setSpecialty(String specialty) {
+    public void setSpecialty(MedicoSpecialty specialty) {
         this.specialty = specialty;
     }
 

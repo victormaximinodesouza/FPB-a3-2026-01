@@ -1,11 +1,12 @@
 package com.a3_20261.SistemaHospitalar.DTO;
 
+import com.a3_20261.SistemaHospitalar.Enum.MedicoSpecialty;
 import com.a3_20261.SistemaHospitalar.entities.Medico;
 
 public class MedicoResumoDTO {
     private Integer id;
     private String name;
-    private String specialty;
+    private MedicoSpecialty specialty;
 
     public MedicoResumoDTO() {}
 
@@ -31,11 +32,11 @@ public class MedicoResumoDTO {
         this.name = name;
     }
 
-    public String getSpecialty() {
+    public MedicoSpecialty getSpecialty() {
         return specialty;
     }
 
-    public void setSpecialty(String specialty) {
+    public void setSpecialty(MedicoSpecialty specialty) {
         this.specialty = specialty;
     }
 }
