@@ -25,5 +25,10 @@ public class ConsultaService {
         return consultaRepository.countByData(data);
     }
 
+    public List<Consulta> buscarPorData(LocalDate data) {
+        return consultaRepository.findByData(data);
+    }
+
+
 }
 

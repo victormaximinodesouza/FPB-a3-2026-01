@@ -39,4 +39,13 @@ public class ConsultaResources {
 
         return ResponseEntity.ok(total);
     }
+    @GetMapping("/por-dia/lista")
+    public ResponseEntity<List<Consulta>> consultasPorDia(@RequestParam String data) {
+
+        LocalDate dataFormatada = LocalDate.parse(data);
+
+        List<Consulta> lista = consultaService.buscarPorData(dataFormatada);
+
+        return ResponseEntity.ok(lista);
+    }
 }
