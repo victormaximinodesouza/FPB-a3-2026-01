@@ -44,8 +44,8 @@ public class TestConfig implements CommandLineRunner {
         Cirurgia c1 = new Cirurgia(null,null,"feito com sucesso",null,new ArrayList<>());
         Cirurgia c2 = new Cirurgia(null,null,"deu errado",null,new ArrayList<>());
 
-        Medico m1 = new Medico(null, "joao", 3232, null, 922992922,new ArrayList<>());
-        Medico m2 = new Medico(null, "maria", 32333, null, 992922,new ArrayList<>());
+        Medico m1 = new Medico(null, "joao", 3232, null, 922992922,new ArrayList<>(),new ArrayList<>());
+        Medico m2 = new Medico(null, "maria", 32333, null, 992922,new ArrayList<>(),new ArrayList<>());
 
 
         m1.getCirurgia().add(c2);
@@ -68,7 +68,11 @@ public class TestConfig implements CommandLineRunner {
         Consulta cs1 = new Consulta(null,null,LocalDate.now(),"dor de barriga");
         Consulta cs2 = new Consulta(null,null, LocalDate.now(),"dor de dente");
 
+        cs1.setMedico(m1);
+        cs2.setMedico(m2);
+
         consultaRepository.saveAll(Arrays.asList(cs1,cs2));
+
 
         Exame e1 = new Exame(null,null,null,null);
         Exame e2 = new Exame(null,null,null,null);

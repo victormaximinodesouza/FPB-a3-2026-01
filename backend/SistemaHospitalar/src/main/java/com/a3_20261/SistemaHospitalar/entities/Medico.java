@@ -34,17 +34,20 @@ public class Medico implements Serializable {
     @ManyToOne
     @JoinColumn(name = "Hospital_id")
     private Hospital hospital;
+    @OneToMany
+    private List<Consulta> consultas =new ArrayList<>();
 
     public Medico() {
     }
 
-    public Medico(Integer id, String name, Integer CRM, MedicoSpecialty specialty, Integer number,List<Cirurgia> cirurgia) {
+    public Medico(Integer id, String name, Integer CRM, MedicoSpecialty specialty, Integer number,List<Cirurgia> cirurgia,List<Consulta> consultas) {
         this.id = id;
         this.name = name;
         this.CRM = CRM;
         this.specialty = specialty;
         this.number = number;
         this.cirurgia = cirurgia;
+        this.consultas = consultas;
     }
 
     public Integer getId() {
@@ -92,6 +95,14 @@ public class Medico implements Serializable {
     }
     public void setCirurgia(List<Cirurgia> cirurgia) {
         this.cirurgia = cirurgia;
+    }
+
+    public List<Consulta> getConsultas() {
+        return consultas;
+    }
+
+    public void setConsultas(List<Consulta> consultas) {
+        this.consultas = consultas;
     }
 
     @Override
