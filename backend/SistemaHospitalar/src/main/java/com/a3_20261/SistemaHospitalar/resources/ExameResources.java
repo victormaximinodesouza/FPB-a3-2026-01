@@ -1,6 +1,7 @@
 package com.a3_20261.SistemaHospitalar.resources;
 
 import com.a3_20261.SistemaHospitalar.DTO.ExameDTO;
+import com.a3_20261.SistemaHospitalar.Enum.ExameStatus;
 import com.a3_20261.SistemaHospitalar.Repository.ExameRepository;
 import com.a3_20261.SistemaHospitalar.entities.Agendamento;
 import com.a3_20261.SistemaHospitalar.entities.Exame;
@@ -37,6 +38,11 @@ public List<ExameDTO> findAll(){
 
         long total = exameService.totalExamePorMes(mes, ano);
 
+        return ResponseEntity.ok(total);
+    }
+    @GetMapping("/por-status")
+    public ResponseEntity<Long> totalPorStatus(@RequestParam ExameStatus status) {
+        long total = exameService.totalPorStatus(status);
         return ResponseEntity.ok(total);
     }
     }

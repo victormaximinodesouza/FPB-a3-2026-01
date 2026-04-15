@@ -1,5 +1,6 @@
 package com.a3_20261.SistemaHospitalar.services;
 
+import com.a3_20261.SistemaHospitalar.Enum.ExameStatus;
 import com.a3_20261.SistemaHospitalar.Repository.AgendamentoRepository;
 import com.a3_20261.SistemaHospitalar.Repository.ExameRepository;
 import com.a3_20261.SistemaHospitalar.entities.Agendamento;
@@ -35,6 +36,9 @@ public class ExameService {
                 .atZone(ZoneId.systemDefault()).toInstant());
 
         return exameRepository.countByDate_requestBetween(inicio, fim);
+    }
+    public long totalPorStatus(ExameStatus status) {
+        return exameRepository.countByExameStatus(status);
     }
 
 }
