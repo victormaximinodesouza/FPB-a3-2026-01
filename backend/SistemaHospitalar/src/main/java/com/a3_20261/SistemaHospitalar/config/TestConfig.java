@@ -74,8 +74,8 @@ public class TestConfig implements CommandLineRunner {
         consultaRepository.saveAll(Arrays.asList(cs1,cs2));
 
 
-        Exame e1 = new Exame(null,null,null,null,null,null);
-        Exame e2 = new Exame(null,null,null,null,null,null);
+        Exame e1 = new Exame(null,null,null,null,null,null,null);
+        Exame e2 = new Exame(null,null,null,null,null,null,null);
 
         exameRepository.saveAll(Arrays.asList(e1,e2));
 

@@ -1,5 +1,7 @@
 package com.a3_20261.SistemaHospitalar.DTO;
 
+import com.a3_20261.SistemaHospitalar.Enum.ExameStatus;
+import com.a3_20261.SistemaHospitalar.Enum.ExameTipo;
 import com.a3_20261.SistemaHospitalar.entities.Exame;
 import com.a3_20261.SistemaHospitalar.entities.User;
 
@@ -11,8 +13,10 @@ public class ExameDTO {
     private Integer id;
     private Date Date_request;
     private Date result;
+    private ExameTipo tipo;
     private UserResumoDTO user;
     private MedicoResumoDTO medico;
+    private ExameStatus status;
 
 
     public ExameDTO() {
@@ -22,6 +26,8 @@ public class ExameDTO {
         this.id = entity.getId();
         this.Date_request = entity.getDate_request();
         this.result = entity.getResult();
+        this.tipo=entity.getExameTipo();
+        this.status=entity.getExameStatus();
 
         if (entity.getUser() != null) {
             this.user = new UserResumoDTO(entity.getUser());
@@ -31,9 +37,6 @@ public class ExameDTO {
         }
 
     }
-
-
-
 
     public Integer getId() {
         return id;
@@ -73,5 +76,21 @@ public class ExameDTO {
 
     public void setMedico(MedicoResumoDTO medico) {
         this.medico = medico;
+    }
+
+    public ExameTipo getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(ExameTipo tipo) {
+        this.tipo = tipo;
+    }
+
+    public ExameStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(ExameStatus status) {
+        this.status = status;
     }
 }
