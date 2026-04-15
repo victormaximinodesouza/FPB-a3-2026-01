@@ -36,11 +36,13 @@ public class Medico implements Serializable {
     private Hospital hospital;
     @OneToMany
     private List<Consulta> consultas =new ArrayList<>();
+    @OneToMany
+    private List<Exame> exames =new ArrayList<>();
 
     public Medico() {
     }
 
-    public Medico(Integer id, String name, Integer CRM, MedicoSpecialty specialty, Integer number,List<Cirurgia> cirurgia,List<Consulta> consultas) {
+    public Medico(Integer id, String name, Integer CRM, MedicoSpecialty specialty, Integer number,List<Cirurgia> cirurgia,List<Consulta> consultas,List<Exame> exames) {
         this.id = id;
         this.name = name;
         this.CRM = CRM;
@@ -48,6 +50,7 @@ public class Medico implements Serializable {
         this.number = number;
         this.cirurgia = cirurgia;
         this.consultas = consultas;
+        this.exames = exames;
     }
 
     public Integer getId() {
@@ -105,6 +108,13 @@ public class Medico implements Serializable {
         this.consultas = consultas;
     }
 
+    public List<Exame> getExames() {
+        return exames;
+    }
+
+    public void setExames(List<Exame> exames) {
+        this.exames = exames;
+    }
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;

@@ -12,6 +12,8 @@ public class ExameDTO {
     private Date Date_request;
     private Date result;
     private UserResumoDTO user;
+    private MedicoResumoDTO medico;
+
 
     public ExameDTO() {
     }
@@ -20,7 +22,14 @@ public class ExameDTO {
         this.id = entity.getId();
         this.Date_request = entity.getDate_request();
         this.result = entity.getResult();
-        this.user = new UserResumoDTO(entity.getUser()); // 👈 sem for
+
+        if (entity.getUser() != null) {
+            this.user = new UserResumoDTO(entity.getUser());
+        }
+        if (entity.getMedico() != null) {
+            this.medico = new MedicoResumoDTO(entity.getMedico());
+        }
+
     }
 
 
@@ -48,5 +57,21 @@ public class ExameDTO {
 
     public void setResult(Date result) {
         this.result = result;
+    }
+
+    public UserResumoDTO getUser() {
+        return user;
+    }
+
+    public void setUser(UserResumoDTO user) {
+        this.user = user;
+    }
+
+    public MedicoResumoDTO getMedico() {
+        return medico;
+    }
+
+    public void setMedico(MedicoResumoDTO medico) {
+        this.medico = medico;
     }
 }

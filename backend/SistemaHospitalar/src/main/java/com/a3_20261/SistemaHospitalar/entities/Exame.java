@@ -1,5 +1,6 @@
 package com.a3_20261.SistemaHospitalar.entities;
 
+import com.a3_20261.SistemaHospitalar.Enum.ExameTipo;
 import jakarta.persistence.*;
 
 import java.io.Serial;
@@ -20,15 +21,22 @@ public class Exame implements Serializable {
     @ManyToOne
     @JoinColumn(name = "User_id")
     private User user;
+    @Enumerated(EnumType.STRING)
+    private ExameTipo exameTipo;
+    @ManyToOne
+    @JoinColumn(name = "Medico_id")
+    private Medico medico;
 
     public Exame() {
     }
 
-    public Exame(Integer id, Date date_request, Date result,User user) {
+    public Exame(Integer id, Date date_request, Date result,User user, ExameTipo exameTipo, Medico medico) {
         this.id = id;
         Date_request = date_request;
         this.result = result;
         this.user = user;
+        this.exameTipo = exameTipo;
+        this.medico = medico;
     }
 
     public Integer getId() {
@@ -61,6 +69,22 @@ public class Exame implements Serializable {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Medico getMedico() {
+        return medico;
+    }
+
+    public void setMedico(Medico medico) {
+        this.medico = medico;
+    }
+
+    public ExameTipo getExameTipo() {
+        return exameTipo;
+    }
+
+    public void setExameTipo(ExameTipo exameTipo) {
+        this.exameTipo = exameTipo;
     }
 
     @Override
