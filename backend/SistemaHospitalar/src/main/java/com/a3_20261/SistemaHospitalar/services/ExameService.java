@@ -35,7 +35,7 @@ public class ExameService {
         Date fim = Date.from(fimLocal.atTime(23,59,59)
                 .atZone(ZoneId.systemDefault()).toInstant());
 
-        return exameRepository.countByDate_requestBetween(inicio, fim);
+        return exameRepository.countByDateRequestBetween(inicio, fim);
     }
     public long totalPorStatus(ExameStatus status) {
         return exameRepository.countByExameStatus(status);

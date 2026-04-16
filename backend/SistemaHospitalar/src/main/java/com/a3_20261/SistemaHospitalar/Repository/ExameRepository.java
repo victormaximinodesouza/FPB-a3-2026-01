@@ -1,26 +1,21 @@
 package com.a3_20261.SistemaHospitalar.Repository;
 
-
-
 import com.a3_20261.SistemaHospitalar.Enum.ExameStatus;
-import com.a3_20261.SistemaHospitalar.entities.Consulta;
 import com.a3_20261.SistemaHospitalar.entities.Exame;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
-public interface ExameRepository extends JpaRepository<Exame,Integer> {
+public interface ExameRepository extends JpaRepository<Exame, Integer> {
 
+    long countByDateRequest(Date data);
 
-    long countByDate_request(Date data);
-    List<Exame> findByDate_request(Date data);
+    List<Exame> findByDateRequest(Date dateRequest);
 
+    long countByDateRequestBetween(Date inicio, Date fim);
 
-    long countByDate_requestBetween(Date inicio, Date fim);
-
-    List<Exame> findByDate_requestBetween(Date inicio, Date fim);
+    List<Exame> findByDateRequestBetween(Date inicio, Date fim);
 
     long countByExameStatus(ExameStatus status);
 }

@@ -17,7 +17,7 @@ public class Exame implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private Date Date_request;
+    private Date dateRequest;
     private Date result;
     @ManyToOne
     @JoinColumn(name = "User_id")
@@ -34,9 +34,9 @@ public class Exame implements Serializable {
     public Exame() {
     }
 
-    public Exame(Integer id, Date date_request, Date result,User user, ExameTipo exameTipo, Medico medico, ExameStatus exameStatus) {
+    public Exame(Integer id, Date dateRequest, Date result,User user, ExameTipo exameTipo, Medico medico, ExameStatus exameStatus) {
         this.id = id;
-        Date_request = date_request;
+        this.dateRequest = dateRequest;
         this.result = result;
         this.user = user;
         this.exameTipo = exameTipo;
@@ -52,14 +52,13 @@ public class Exame implements Serializable {
         this.id = id;
     }
 
-    public Date getDate_request() {
-        return Date_request;
+    public Date getDateRequest() {
+        return dateRequest;
     }
 
-    public void setDate_request(Date date_request) {
-        Date_request = date_request;
+    public void setDateRequest(Date dateRequest) {
+        this.dateRequest = dateRequest;
     }
-
     public Date getResult() {
         return result;
     }

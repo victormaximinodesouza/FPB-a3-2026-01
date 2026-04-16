@@ -24,7 +24,7 @@ public class ExameDTO {
 
     public ExameDTO(Exame entity) {
         this.id = entity.getId();
-        this.Date_request = entity.getDate_request();
+        this.Date_request = entity.getDateRequest();
         this.result = entity.getResult();
         this.tipo=entity.getExameTipo();
         this.status=entity.getExameStatus();
