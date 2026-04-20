@@ -1,5 +1,6 @@
 package com.a3_20261.SistemaHospitalar.entities;
 
+import com.a3_20261.SistemaHospitalar.Enum.StatusSalaCirurgica;
 import jakarta.persistence.*;
 
 import java.io.Serial;
@@ -17,15 +18,16 @@ public class SalaCirurgica implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private Integer number;
-    //private status fazer um enum
-
+    @Enumerated(EnumType.STRING)
+    private StatusSalaCirurgica status;
 
     public SalaCirurgica() {
     }
 
-    public SalaCirurgica(Integer id, Integer number) {
+    public SalaCirurgica(Integer id, Integer number, StatusSalaCirurgica status) {
         this.id = id;
         this.number = number;
+        this.status = status;
     }
 
     public Integer getId() {
@@ -42,6 +44,14 @@ public class SalaCirurgica implements Serializable {
 
     public void setNumber(Integer number) {
         this.number = number;
+    }
+
+    public StatusSalaCirurgica getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusSalaCirurgica status) {
+        this.status = status;
     }
 
     @Override

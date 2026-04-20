@@ -1,5 +1,6 @@
 package com.a3_20261.SistemaHospitalar.config;
 
+import com.a3_20261.SistemaHospitalar.Enum.StatusSalaCirurgica;
 import com.a3_20261.SistemaHospitalar.Repository.*;
 import com.a3_20261.SistemaHospitalar.entities.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,8 +81,8 @@ public class TestConfig implements CommandLineRunner {
         exameRepository.saveAll(Arrays.asList(e1,e2));
 
 
-        SalaCirurgica s1 =new SalaCirurgica(null,20);
-        SalaCirurgica s2 =new SalaCirurgica(null,30);
+        SalaCirurgica s1 =new SalaCirurgica(null,20, StatusSalaCirurgica.LIVRE);
+        SalaCirurgica s2 =new SalaCirurgica(null,30,StatusSalaCirurgica.MANUNTENCAO);
 
         salaCirurgicaRepository.saveAll(Arrays.asList(s1,s2));
 
