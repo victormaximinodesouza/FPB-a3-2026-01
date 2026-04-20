@@ -21,6 +21,8 @@ public class Cirurgia implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    private String nome;
+    private Integer duracao;
     private Date dateSurgery;
     private String report;
     @Enumerated(EnumType.STRING)
@@ -33,14 +35,15 @@ public class Cirurgia implements Serializable {
     public Cirurgia() {
     }
 
-    public Cirurgia(Integer id, Date dateSurgery, String report,StatusCirurgia status,List<Medico> medicos, SalaCirurgica salaCirurgica) {
+    public Cirurgia(Integer id,String nome,Integer duracao, Date dateSurgery, String report,StatusCirurgia status,List<Medico> medicos, SalaCirurgica salaCirurgica) {
         this.id = id;
+        this.nome = nome;
         this.dateSurgery = dateSurgery;
         this.report = report;
         this.status = status;
         this.medicos = medicos;
         this.salaCirurgica = salaCirurgica;
-
+        this.duracao = duracao;
     }
 
     public Integer getId() {
@@ -49,6 +52,22 @@ public class Cirurgia implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public Integer getDuracao() {
+        return duracao;
+    }
+
+    public void setDuracao(Integer duracao) {
+        this.duracao = duracao;
     }
 
     public Date getDateSurgery() {

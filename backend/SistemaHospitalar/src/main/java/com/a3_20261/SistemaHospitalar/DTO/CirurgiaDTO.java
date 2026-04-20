@@ -10,6 +10,8 @@ import java.util.List;
 
 public class CirurgiaDTO {
     private Integer id;
+    private String nome;
+    private Integer duracao;
     private Date dateSurgery;
     private String report;
     private List<MedicoResumoDTO> medicos = new ArrayList<>();
@@ -22,6 +24,8 @@ public class CirurgiaDTO {
         this.dateSurgery = entity.getDateSurgery();
         this.report = entity.getReport();
         this.salaCirurgica = entity.getSalaCirurgica();
+        this.nome = entity.getNome();
+        this.duracao = entity.getDuracao();
 
         for (Medico m : entity.getMedicos()) {
             this.medicos.add(new MedicoResumoDTO(m));
@@ -34,6 +38,22 @@ public class CirurgiaDTO {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public Integer getDuracao() {
+        return duracao;
+    }
+
+    public void setDuracao(Integer duracao) {
+        this.duracao = duracao;
     }
 
     public Date getDateSurgery() {
@@ -67,5 +87,7 @@ public class CirurgiaDTO {
     public void setSalaCirurgica(SalaCirurgica salaCirurgica) {
         this.salaCirurgica = salaCirurgica;
     }
+
+
 }
 
