@@ -42,8 +42,8 @@ public class TestConfig implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        Cirurgia c1 = new Cirurgia(null,null,"feito com sucesso",null,new ArrayList<>());
-        Cirurgia c2 = new Cirurgia(null,null,"deu errado",null,new ArrayList<>());
+        Cirurgia c1 = new Cirurgia(null,null,"feito com sucesso",null,new ArrayList<>(),null);
+        Cirurgia c2 = new Cirurgia(null,null,"deu errado",null,new ArrayList<>(),null);
 
         Medico m1 = new Medico(null, "joao", 3232, null, 922992922,new ArrayList<>(),new ArrayList<>(),new ArrayList<>());
         Medico m2 = new Medico(null, "maria", 32333, null, 992922,new ArrayList<>(),new ArrayList<>(),new ArrayList<>());
@@ -81,8 +81,8 @@ public class TestConfig implements CommandLineRunner {
         exameRepository.saveAll(Arrays.asList(e1,e2));
 
 
-        SalaCirurgica s1 =new SalaCirurgica(null,20, StatusSalaCirurgica.LIVRE);
-        SalaCirurgica s2 =new SalaCirurgica(null,30,StatusSalaCirurgica.MANUNTENCAO);
+        SalaCirurgica s1 =new SalaCirurgica(null,20, StatusSalaCirurgica.LIVRE,Arrays.asList(c1));
+        SalaCirurgica s2 =new SalaCirurgica(null,30,StatusSalaCirurgica.MANUNTENCAO,Arrays.asList(c2));
 
         salaCirurgicaRepository.saveAll(Arrays.asList(s1,s2));
 

@@ -2,6 +2,7 @@ package com.a3_20261.SistemaHospitalar.DTO;
 
 import com.a3_20261.SistemaHospitalar.entities.Cirurgia;
 import com.a3_20261.SistemaHospitalar.entities.Medico;
+import com.a3_20261.SistemaHospitalar.entities.SalaCirurgica;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -11,8 +12,8 @@ public class CirurgiaDTO {
     private Integer id;
     private Date dateSurgery;
     private String report;
-
     private List<MedicoResumoDTO> medicos = new ArrayList<>();
+    private SalaCirurgica salaCirurgica;
 
     public CirurgiaDTO() {}
 
@@ -20,6 +21,7 @@ public class CirurgiaDTO {
         this.id = entity.getId();
         this.dateSurgery = entity.getDateSurgery();
         this.report = entity.getReport();
+        this.salaCirurgica = entity.getSalaCirurgica();
 
         for (Medico m : entity.getMedicos()) {
             this.medicos.add(new MedicoResumoDTO(m));
@@ -57,4 +59,13 @@ public class CirurgiaDTO {
     public void setMedicos(List<MedicoResumoDTO> medicos) {
         this.medicos = medicos;
     }
+
+    public SalaCirurgica getSalaCirurgica() {
+        return salaCirurgica;
+    }
+
+    public void setSalaCirurgica(SalaCirurgica salaCirurgica) {
+        this.salaCirurgica = salaCirurgica;
+    }
 }
+

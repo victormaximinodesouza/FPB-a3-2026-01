@@ -28,15 +28,18 @@ public class Cirurgia implements Serializable {
     @ManyToMany(mappedBy = "cirurgia")
     @JsonIgnore
     private List<Medico> medicos = new ArrayList<>();
+    @JoinColumn(name="SalaCirurgica_id")
+    private SalaCirurgica salaCirurgica;
     public Cirurgia() {
     }
 
-    public Cirurgia(Integer id, Date dateSurgery, String report,StatusCirurgia status,List<Medico> medicos) {
+    public Cirurgia(Integer id, Date dateSurgery, String report,StatusCirurgia status,List<Medico> medicos, SalaCirurgica salaCirurgica) {
         this.id = id;
         this.dateSurgery = dateSurgery;
         this.report = report;
         this.status = status;
         this.medicos = medicos;
+        this.salaCirurgica = salaCirurgica;
 
     }
 
@@ -77,6 +80,14 @@ public class Cirurgia implements Serializable {
     }
     public void setMedicos(List<Medico> medicos) {
         this.medicos = medicos;
+    }
+
+    public SalaCirurgica getSalaCirurgica() {
+        return salaCirurgica;
+    }
+
+    public void setSalaCirurgica(SalaCirurgica salaCirurgica) {
+        this.salaCirurgica = salaCirurgica;
     }
 
     @Override
