@@ -14,7 +14,7 @@ import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 
-import static sun.security.util.KnownOIDs.Data;
+
 
 @Service
 public class ExameService {

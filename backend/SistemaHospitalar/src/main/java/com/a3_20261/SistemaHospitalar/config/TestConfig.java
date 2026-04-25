@@ -1,5 +1,7 @@
 package com.a3_20261.SistemaHospitalar.config;
 
+import com.a3_20261.SistemaHospitalar.Enum.AtendimentoStatus;
+import com.a3_20261.SistemaHospitalar.Enum.ExameStatus;
 import com.a3_20261.SistemaHospitalar.Enum.StatusSalaCirurgica;
 import com.a3_20261.SistemaHospitalar.Repository.*;
 import com.a3_20261.SistemaHospitalar.entities.*;
@@ -60,8 +62,8 @@ public class TestConfig implements CommandLineRunner {
         medicoRepository.saveAll(Arrays.asList(m1,m2));
 
 
-        Atendimento a1 = new Atendimento(null, "Prioridade", null);
-        Atendimento a2 = new Atendimento(null, "Prioridade", null);
+        Atendimento a1 = new Atendimento(null, "Prioridade", null, AtendimentoStatus.ANDAMENTO);
+        Atendimento a2 = new Atendimento(null, "Prioridade", null,AtendimentoStatus.CONCLUIDO);
 
         atendimentoRepository.saveAll(Arrays.asList(a1, a2));
 
@@ -75,8 +77,8 @@ public class TestConfig implements CommandLineRunner {
         consultaRepository.saveAll(Arrays.asList(cs1,cs2));
 
 
-        Exame e1 = new Exame(null,null,null,null,null,null,null);
-        Exame e2 = new Exame(null,null,null,null,null,null,null);
+        Exame e1 = new Exame(null,null,null,null,null,null, ExameStatus.AGENDADO);
+        Exame e2 = new Exame(null,null,null,null,null,null,ExameStatus.AGENDADO);
 
         exameRepository.saveAll(Arrays.asList(e1,e2));
 

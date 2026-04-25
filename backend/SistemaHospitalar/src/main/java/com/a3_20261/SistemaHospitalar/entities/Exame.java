@@ -89,6 +89,7 @@ public class Exame implements Serializable {
     public void setExameTipo(ExameTipo exameTipo) {
         this.exameTipo = exameTipo;
     }
+
     public ExameStatus getExameStatus() {
         return exameStatus;
     }

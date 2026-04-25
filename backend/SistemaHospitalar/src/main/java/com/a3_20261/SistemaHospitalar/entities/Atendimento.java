@@ -1,5 +1,6 @@
 package com.a3_20261.SistemaHospitalar.entities;
 
+import com.a3_20261.SistemaHospitalar.Enum.AtendimentoStatus;
 import jakarta.persistence.*;
 
 import java.io.Serial;
@@ -17,14 +18,17 @@ public class Atendimento implements Serializable {
     private Integer id;
     private String diagnosis;
     private Date service_date;
+    @Enumerated(EnumType.STRING)
+    private AtendimentoStatus atendimentoStatus;
 
     public Atendimento() {
     }
 
-    public Atendimento(Integer id, String diagnosis, Date service_date) {
+    public Atendimento(Integer id, String diagnosis, Date service_date, AtendimentoStatus atendimentoStatus) {
         this.id = id;
         this.diagnosis = diagnosis;
         this.service_date = service_date;
+        this.atendimentoStatus = atendimentoStatus;
     }
 
     public Integer getId() {
@@ -49,6 +53,14 @@ public class Atendimento implements Serializable {
 
     public void setService_date(Date service_date) {
         this.service_date = service_date;
+    }
+
+    public AtendimentoStatus getAtendimentoStatus() {
+        return atendimentoStatus;
+    }
+
+    public void setAtendimentoStatus(AtendimentoStatus atendimentoStatus) {
+        this.atendimentoStatus = atendimentoStatus;
     }
 
     @Override
