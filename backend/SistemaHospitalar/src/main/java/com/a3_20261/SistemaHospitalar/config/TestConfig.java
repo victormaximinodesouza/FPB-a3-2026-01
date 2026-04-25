@@ -62,12 +62,6 @@ public class TestConfig implements CommandLineRunner {
         medicoRepository.saveAll(Arrays.asList(m1,m2));
 
 
-        Atendimento a1 = new Atendimento(null, "Prioridade", null, AtendimentoStatus.ANDAMENTO);
-        Atendimento a2 = new Atendimento(null, "Prioridade", null,AtendimentoStatus.CONCLUIDO);
-
-        atendimentoRepository.saveAll(Arrays.asList(a1, a2));
-
-
         Consulta cs1 = new Consulta(null,null,LocalDate.now(),"dor de barriga");
         Consulta cs2 = new Consulta(null,null, LocalDate.now(),"dor de dente");
 
@@ -88,8 +82,8 @@ public class TestConfig implements CommandLineRunner {
 
         salaCirurgicaRepository.saveAll(Arrays.asList(s1,s2));
 
-        User u1 =new User(null,"adm1",1111111111,null,"rua da macaxeira","adm1@gmail.com","2",null,new ArrayList<>());
-        User u2 =new User(null,"adm2",111113311,null,"rua da severina","adm2@gmail.com","3",null,new ArrayList<>());
+        User u1 =new User(null,"adm1",1111111111,null,"rua da macaxeira","adm1@gmail.com","2",null,new ArrayList<>(),new ArrayList<>());
+        User u2 =new User(null,"adm2",111113311,null,"rua da severina","adm2@gmail.com","3",null,new ArrayList<>(),new ArrayList<>());
 
         userRepository.saveAll(Arrays.asList(u1,u2));
 
@@ -103,6 +97,12 @@ public class TestConfig implements CommandLineRunner {
         Hospital h2 = new Hospital(null, "Metropolitado", 30, "rua de cima", Arrays.asList(u2),Arrays.asList(m2));
 
         hospitalRepository.saveAll(Arrays.asList(h1,h2));
+
+
+        Atendimento a1 = new Atendimento(null,"cliente dolorido", "Prioridade", null, AtendimentoStatus.ANDAMENTO,u1);
+        Atendimento a2 = new Atendimento(null,"cliente bem", "Prioridade", null,AtendimentoStatus.CONCLUIDO,u2);
+
+        atendimentoRepository.saveAll(Arrays.asList(a1, a2));
 
         SenhaAtendimento se1 =new SenhaAtendimento("20",null);
         SenhaAtendimento se2 =new SenhaAtendimento("30",null);

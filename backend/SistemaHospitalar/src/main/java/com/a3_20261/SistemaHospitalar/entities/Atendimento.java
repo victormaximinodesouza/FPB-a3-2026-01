@@ -16,19 +16,25 @@ public class Atendimento implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    private String descricao;
     private String diagnosis;
     private Date service_date;
     @Enumerated(EnumType.STRING)
     private AtendimentoStatus atendimentoStatus;
+    @ManyToOne
+    @JoinColumn(name = "usuario_id")
+    private User usuario;
 
     public Atendimento() {
     }
 
-    public Atendimento(Integer id, String diagnosis, Date service_date, AtendimentoStatus atendimentoStatus) {
+    public Atendimento(Integer id,String descricao, String diagnosis, Date service_date, AtendimentoStatus atendimentoStatus, User usuario) {
         this.id = id;
+        this.descricao = descricao;
         this.diagnosis = diagnosis;
         this.service_date = service_date;
         this.atendimentoStatus = atendimentoStatus;
+        this.usuario = usuario;
     }
 
     public Integer getId() {
@@ -37,6 +43,14 @@ public class Atendimento implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
     }
 
     public String getDiagnosis() {
@@ -61,6 +75,14 @@ public class Atendimento implements Serializable {
 
     public void setAtendimentoStatus(AtendimentoStatus atendimentoStatus) {
         this.atendimentoStatus = atendimentoStatus;
+    }
+
+    public User getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(User usuario) {
+        this.usuario = usuario;
     }
 
     @Override

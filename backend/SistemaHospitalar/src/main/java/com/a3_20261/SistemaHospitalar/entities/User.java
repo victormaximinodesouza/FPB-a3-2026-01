@@ -30,12 +30,15 @@ public class User implements Serializable {
     private Prontuario prontuario;
     @OneToMany
     private List<Exame> exames =new ArrayList<>();
+    @OneToMany(mappedBy = "usuario")
+    @JsonIgnore
+    private List<Atendimento> atendimentos = new ArrayList<>();
 
 
     public User() {
     }
 
-    public User(Integer id, String nome, Integer CPF, Date dateBirth, String address, String email, String number,Prontuario prontuario,List<Exame> exames) {
+    public User(Integer id, String nome, Integer CPF, Date dateBirth, String address, String email, String number,Prontuario prontuario,List<Exame> exames,List<Atendimento> atendimentos) {
         this.id = id;
         this.nome = nome;
         this.CPF = CPF;
@@ -45,6 +48,7 @@ public class User implements Serializable {
         this.number = number;
         this.prontuario = prontuario;
         this.exames = exames;
+        this.atendimentos = atendimentos;
     }
 
     public String getEmail() {
@@ -116,6 +120,15 @@ public class User implements Serializable {
     public void setExames(List<Exame> exames) {
         this.exames = exames;
     }
+
+    public List<Atendimento> getAtendimentos() {
+        return atendimentos;
+    }
+
+    public void setAtendimentos(List<Atendimento> atendimentos) {
+        this.atendimentos = atendimentos;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
