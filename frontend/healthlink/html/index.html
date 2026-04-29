@@ -66,7 +66,7 @@
                         <i class="fa-solid fa-users icon-blue"></i>
                         <span class="trend positive">+12,5%</span>
                     </div>
-                    <h2>2.847</h2>
+                    <h2 id="total-pacientes">...</h2>
                     <p>Total de Pacientes</p>
                 </div>
                 <div class="card">
@@ -74,7 +74,7 @@
                         <i class="fa-solid fa-calendar-check icon-green"></i>
                         <span class="trend positive">+8,2%</span>
                     </div>
-                    <h2>48</h2>
+                    <h2 id="consultas-hoje">...</h2>
                     <p>Consultas Hoje</p>
                 </div>
                 <div class="card">
@@ -82,7 +82,7 @@
                         <i class="fa-solid fa-heart-pulse icon-orange"></i>
                         <span class="trend positive">+3,1%</span>
                     </div>
-                    <h2>12</h2>
+                    <h2 id="cirurgias-agendadas">...</h2>
                     <p>Cirurgias Agendadas</p>
                 </div>
                 <div class="card">
@@ -90,7 +90,7 @@
                         <i class="fa-solid fa-clock icon-purple"></i>
                         <span class="trend positive">+5,4%</span>
                     </div>
-                    <h2>7</h2>
+                    <h2 id="fila-espera">...</h2>
                     <p>Na Fila de Espera</p>
                 </div>
             </section>
@@ -157,7 +157,7 @@
                             <th>STATUS</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="consultas-hoje-tabela">
                         <tr>
                             <td><strong>João Silva</strong></td>
                             <td>Dr. Carlos Santos</td>
@@ -187,5 +187,114 @@
 
     </main>
 </div>
+<script>
+    var API_BASE_URL = 'http://localhost:8080';
+    var hoje = new Date().toISOString().slice(0, 10);
+
+    function atualizarTexto(id, valor) {
+        var elemento = document.getElementById(id);
+        if (elemento) {
+            elemento.textContent = valor;
+        }
+    }
+
+    function buscarDados(caminho) {
+        return fetch(API_BASE_URL + caminho)
+            .then(function(resposta) {
+                if (!resposta.ok) {
+                    throw new Error('Erro ao buscar ' + caminho);
+                }
+                return resposta.json();
+            });
+    }
+
+    function nomePaciente(consulta) {
+        if (consulta.paciente && consulta.paciente.name) return consulta.paciente.name;
+        if (consulta.user && consulta.user.name) return consulta.user.name;
+        if (consulta.nomePaciente) return consulta.nomePaciente;
+        return 'Consulta #' + consulta.id;
+    }
+
+    function nomeMedico(consulta) {
+        if (consulta.medico && consulta.medico.name) return 'Dr(a). ' + consulta.medico.name;
+        if (consulta.medico && consulta.medico.nome) return 'Dr(a). ' + consulta.medico.nome;
+        return 'Médico não informado';
+    }
+
+    function statusTexto(status) {
+        if (status === 'REALIZADA') return 'Realizada';
+        if (status === 'CANCELADA') return 'Cancelada';
+        return 'Agendada';
+    }
+
+    function statusClasse(status) {
+        if (status === 'REALIZADA') return 'done';
+        return 'pending';
+    }
+
+    function mostrarConsultas(consultas) {
+        var tabela = document.getElementById('consultas-hoje-tabela');
+        if (!tabela) return;
+
+        if (!consultas || consultas.length === 0) {
+            tabela.innerHTML = '<tr><td colspan="5">Nenhuma consulta encontrada para hoje.</td></tr>';
+            return;
+        }
+
+        tabela.innerHTML = '';
+
+        consultas.forEach(function(consulta) {
+            var status = consulta.status || 'AGENDADA';
+            var horario = consulta.horario || consulta.hora || '-';
+
+            tabela.innerHTML +=
+                '<tr>' +
+                    '<td><strong>' + nomePaciente(consulta) + '</strong></td>' +
+                    '<td>' + nomeMedico(consulta) + '</td>' +
+                    '<td>Consulta</td>' +
+                    '<td><strong>' + horario + '</strong></td>' +
+                    '<td><span class="status ' + statusClasse(status) + '">' + statusTexto(status) + '</span></td>' +
+                '</tr>';
+        });
+    }
+
+    function carregarDashboard() {
+        Promise.all([
+            buscarDados('/users/totalPacientes'),
+            buscarDados('/consultas/por-dia?data=' + hoje),
+            buscarDados('/cirurgias/total-agendadas'),
+            buscarDados('/consultas/por-dia/lista?data=' + hoje)
+        ])
+        .then(function(dados) {
+            var totalPacientes = dados[0];
+            var consultasHoje = dados[1];
+            var cirurgiasAgendadas = dados[2];
+            var consultas = dados[3];
+
+            atualizarTexto('total-pacientes', totalPacientes);
+            atualizarTexto('consultas-hoje', consultasHoje);
+            atualizarTexto('cirurgias-agendadas', cirurgiasAgendadas);
+            atualizarTexto('fila-espera', consultas.filter(function(consulta) {
+                return consulta.status === 'AGENDADA' || !consulta.status;
+            }).length);
+
+            mostrarConsultas(consultas);
+        })
+        .catch(function(erro) {
+            console.error(erro);
+            atualizarTexto('total-pacientes', '0');
+            atualizarTexto('consultas-hoje', '0');
+            atualizarTexto('cirurgias-agendadas', '0');
+            atualizarTexto('fila-espera', '0');
+
+            var tabela = document.getElementById('consultas-hoje-tabela');
+            if (tabela) {
+                tabela.innerHTML = '<tr><td colspan="5">Não foi possível carregar os dados do backend.</td></tr>';
+            }
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', carregarDashboard);
+</script>
 </body>
 </html>
