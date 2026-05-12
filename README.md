@@ -1,8 +1,8 @@
-# HealthLink - Sistema de Gestão Hospitalar
+# HealthLink - Sistema de Gestao Hospitalar
 
-## Descrição breve
+## Descricao breve
 
-O HealthLink é um sistema de gestão hospitalar com frontend em HTML/CSS e backend em Java com Spring Boot. O projeto reúne módulos de usuários, médicos, hospitais, prontuários, exames, consultas, cirurgias, atendimentos, agendamentos, fila de espera, relatórios e doação de sangue.
+O HealthLink e um sistema de gestao hospitalar com frontend em HTML/CSS/JavaScript e backend em Java com Spring Boot. O projeto organiza modulos de usuarios, medicos, hospitais, prontuarios, exames, consultas, cirurgias, atendimentos, agendamentos, fila de espera, relatorios e doacao de sangue.
 
 ## Tecnologias Utilizadas
 
@@ -11,21 +11,21 @@ O HealthLink é um sistema de gestão hospitalar com frontend em HTML/CSS e back
 - Spring Web
 - Spring Data JPA
 - PostgreSQL
-- H2 Database
-- Maven
+- Maven Wrapper
 - HTML5
 - CSS3
+- JavaScript
 - Font Awesome
 
 ## Como rodar o projeto
 
-### 1. Pré-requisitos
+### 1. Pre-requisitos
 
 - JDK 21
 - PostgreSQL
 - Git
 
-### 2. Clonar o repositório
+### 2. Clonar o repositorio
 
 ```bash
 git clone <url-do-repositorio>
@@ -34,7 +34,7 @@ cd FPB-a3-2026-01
 
 ### 3. Configurar o banco
 
-Crie o banco `hospital` no PostgreSQL e ajuste as credenciais em:
+Crie o banco `hospital` no PostgreSQL e confira as credenciais em:
 
 `backend/SistemaHospitalar/src/main/resources/application.properties`
 
@@ -53,26 +53,29 @@ No Windows:
 
 ### 5. Abrir o frontend
 
-Abra no navegador um dos arquivos da pasta:
+Abra no navegador:
 
-`frontend/src/a3/`
+- `frontend/healthlink/html/login.html`
+- `frontend/healthlink/html/index.html`
 
-Sugestão:
+Observacao:
 
-- `login.html`
-- `index.html`
+- o dashboard ja consome alguns endpoints reais da API
+- o login atual faz validacao visual simples e redireciona para o dashboard
 
-## Estrutura básica
+## Estrutura basica
 
-- `backend/` - código da API Spring Boot
+- `backend/` - codigo da API Spring Boot
 - `backend/SistemaHospitalar/src/main/java/.../entities` - entidades do banco
-- `backend/SistemaHospitalar/src/main/java/.../Enum` - enums de status do domínio
-- `backend/SistemaHospitalar/src/main/java/.../Repository` - repositórios JPA
-- `backend/SistemaHospitalar/src/main/java/.../services` - regras e consultas
+- `backend/SistemaHospitalar/src/main/java/.../Enum` - enums de status e dominio
+- `backend/SistemaHospitalar/src/main/java/.../Repository` - repositorios JPA
+- `backend/SistemaHospitalar/src/main/java/.../services` - servicos e regras de consulta
 - `backend/SistemaHospitalar/src/main/java/.../resources` - rotas da API
-- `frontend/src/a3/` - telas HTML/CSS do sistema
-- `DOCUMENTACAO.md` - documentação completa do projeto
+- `frontend/healthlink/html/` - telas do sistema
+- `frontend/healthlink/css/` - estilos
+- `frontend/healthlink/assets/` - imagens e arquivos visuais
+- `DOCUMENTACAO.md` - documentacao completa do projeto
 
-## Link para documentação completa
+## Link para documentacao completa
 
-Veja a documentação detalhada em [DOCUMENTACAO.md](./DOCUMENTACAO.md).
+Veja a documentacao detalhada em [DOCUMENTACAO.md](./DOCUMENTACAO.md).

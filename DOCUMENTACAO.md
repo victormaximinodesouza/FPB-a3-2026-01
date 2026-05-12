@@ -1,230 +1,204 @@
-# Documentação do Projeto
+# Documentacao do Projeto
 
-## 1. Descrição do Projeto
+## 1. Descricao do Projeto
 
-### Visão geral
+### Visao geral
 
-O projeto implementa um sistema de gestão hospitalar chamado **HealthLink**, com foco em centralizar operações administrativas e assistenciais em um único ambiente. A solução está dividida em dois blocos:
+O projeto implementa um sistema de gestao hospitalar chamado **HealthLink**, com foco em centralizar operacoes administrativas e assistenciais em um unico ambiente. A solucao esta dividida em dois blocos:
 
-- **Frontend**: conjunto de telas HTML/CSS para navegação visual do sistema.
-- **Backend**: API REST em Java com Spring Boot para modelar entidades hospitalares, consultar dados e acessar banco relacional.
+- **Frontend**: conjunto de telas HTML/CSS/JavaScript para navegacao e visualizacao de indicadores.
+- **Backend**: API REST em Java com Spring Boot para modelar entidades hospitalares, consultar dados e acessar o banco PostgreSQL.
 
 ### O que o sistema faz
 
-O sistema foi concebido para apoiar a gestão de:
+O sistema foi concebido para apoiar a gestao de:
 
-- usuários e pacientes
-- médicos
+- usuarios e pacientes
+- medicos
 - hospitais
-- prontuários
+- prontuarios
 - exames
 - consultas
 - atendimentos
 - agendamentos
 - fila de espera
 - cirurgias
-- salas cirúrgicas
+- salas cirurgicas
 - senhas de atendimento
-- relatórios gerenciais
-- doação de sangue e controle visual de estoque
+- relatorios gerenciais
+- doacao de sangue e controle visual de estoque
 
 ### Problema que resolve
 
-O projeto busca reduzir a fragmentação de informações hospitalares, reunindo em um único sistema visual e de dados os principais fluxos de uma operação clínica e administrativa.
+O projeto busca reduzir a fragmentacao de informacoes hospitalares, reunindo em um unico sistema os principais fluxos clinicos e administrativos da operacao.
 
 ### Objetivo do projeto
 
-O objetivo principal é construir uma base para um sistema distribuído de gestão hospitalar, com:
+O objetivo principal e construir uma base para um sistema distribuido de gestao hospitalar, com:
 
-- padronização de dados clínicos e administrativos
-- visualização centralizada de indicadores operacionais
-- organização de rotinas hospitalares por módulos
-- suporte a integrações futuras entre interface e API
+- organizacao modular do dominio
+- padronizacao de dados clinicos e administrativos
+- consulta centralizada de indicadores
+- suporte a evolucao futura da API e da interface
 
 ### Estado atual do projeto
 
-Atualmente, o projeto está em um estágio intermediário entre **protótipo funcional de interface** e **API backend em desenvolvimento**:
+Atualmente, o projeto esta em um estagio intermediario entre prototipo de interface e aplicacao integrada:
 
-- o frontend já possui várias telas prontas
-- o backend já possui estrutura completa em camadas
-- os módulos de usuários, médicos, hospitais, prontuários, exames, consultas e cirurgias já possuem leitura via API
-- foram adicionadas rotas analíticas para total de consultas por dia e total de cirurgias agendadas
-- o backend passou a usar enums de status para consultas e cirurgias
-- parte dos endpoints ainda segue em modo prototipado
-- o frontend ainda não consome a API
+- o frontend possui telas prontas para os principais modulos
+- o dashboard ja consome endpoints reais do backend
+- o login tem validacao visual simples no navegador
+- o backend ja possui leitura de dados em varios modulos
+- existem rotas analiticas para usuarios, consultas, cirurgias, atendimentos e exames
+- ainda nao existem rotas de criacao, atualizacao ou exclusao
+- alguns endpoints ainda seguem em modo prototipado
 
 ---
 
 ## 2. Requisitos Funcionais
 
-Com base na estrutura do código e nas telas existentes, os requisitos funcionais do sistema são:
+Com base no codigo atual e nas telas existentes, os requisitos funcionais do sistema sao:
 
-### Autenticação e acesso
+### Acesso
 
-- permitir acesso à tela de login
-- permitir preenchimento de e-mail e senha
-- permitir saída do sistema
+- abrir a tela de login
+- validar preenchimento de e-mail e senha no frontend
+- acessar o dashboard apos validacao visual
+- sair do sistema pela navegacao lateral
 
 ### Dashboard
 
-- exibir visão geral do sistema hospitalar
-- apresentar indicadores resumidos de pacientes, consultas, cirurgias e tempo médio de espera
-- apresentar tabelas e painéis de acompanhamento
+- exibir total de pacientes
+- exibir total de consultas do dia
+- exibir total de cirurgias agendadas
+- exibir quantidade de consultas agendadas do dia como fila de espera
+- exibir tabela de consultas do dia
 
-### Usuários e pacientes
+### Usuarios e pacientes
 
-- listar usuários cadastrados
-- exibir nome, e-mail, CPF e dados resumidos
-- visualizar prontuário associado ao usuário
-- visualizar exames vinculados ao usuário
-- permitir gestão visual de contas e permissões da equipe
+- listar usuarios cadastrados
+- consultar total de pacientes
+- visualizar dados basicos do usuario
+- visualizar prontuario associado ao usuario
+- visualizar exames vinculados ao usuario
+- manter relacao entre usuario e atendimentos
 
-### Médicos
+### Medicos
 
-- listar médicos cadastrados
-- exibir CRM, especialidade, telefone e cirurgias relacionadas
-- associar médicos a hospitais
-- associar médicos a cirurgias
+- listar medicos cadastrados
+- exibir CRM, especialidade e telefone
+- associar medicos a cirurgias
+- associar medicos a hospital
+- associar medicos a consultas e exames
 
 ### Hospitais
 
 - listar hospitais cadastrados
-- exibir dados básicos da unidade
-- associar usuários a hospitais
-- associar médicos a hospitais
+- exibir nome, numero e endereco
+- associar usuarios ao hospital
+- associar medicos ao hospital
 
-### Prontuários
+### Prontuarios
 
-- listar prontuários
-- relacionar prontuário a um usuário
-- exibir observações e data do registro
+- listar prontuarios
+- exibir observacoes e data
+- relacionar prontuario a um usuario
 
 ### Exames
 
 - listar exames
-- visualizar exames por paciente
-- registrar data de solicitação
-- registrar data de resultado
-- associar exames a usuários
-- exibir tela de solicitação e acompanhamento de exames
+- exibir tipo e status do exame
+- exibir paciente e medico relacionados
+- consultar total de exames por mes
+- consultar total de exames por status
 
 ### Consultas
 
-- representar consultas no backend
+- listar consultas
 - registrar status da consulta
 - registrar data da consulta
-- exibir observações da consulta
-- disponibilizar rota de listagem
-- permitir consulta de total de consultas por dia
-
-### Atendimentos
-
-- representar atendimentos clínicos
-- registrar diagnóstico e data de atendimento
-- exibir histórico resumido de atendimentos
-- permitir ações visuais como ver prontuário, adicionar anotações, prescrever e solicitar exame
-
-### Agendamentos
-
-- representar agendamentos no backend
-- permitir visualmente o cadastro de novos agendamentos
-- listar compromissos por paciente, médico, especialidade, data, horário e status
-
-### Fila de espera
-
-- exibir fila atual
-- identificar prioridade do paciente
-- mostrar tempo de espera
-- mostrar status da fila
-- permitir ações visuais de chamar e pular paciente
+- associar consulta a um medico
+- consultar total de consultas por dia
+- listar consultas de uma data especifica
 
 ### Cirurgias
 
 - listar cirurgias
-- exibir data, relatório e status cirúrgico
-- vincular médicos às cirurgias
-- apresentar agenda cirúrgica na interface
-- exibir sala, equipe, duração e prioridade
-- disponibilizar total de cirurgias agendadas
+- exibir nome, duracao, data e relatorio
+- exibir medicos relacionados
+- associar cirurgia a sala cirurgica
+- consultar total de cirurgias agendadas
 
-### Salas cirúrgicas
+### Salas cirurgicas
 
-- representar salas cirúrgicas
-- exibir número da sala
-- disponibilizar rota para consulta
+- listar salas cirurgicas
+- exibir numero da sala
+- exibir status da sala
+- exibir cirurgias relacionadas
 
-### Senha de atendimento
+### Atendimentos
 
-- representar senha de atendimento
-- exibir senha gerada
-- disponibilizar rota para consulta
+- listar atendimentos
+- registrar descricao, diagnostico e data
+- registrar status do atendimento
+- associar atendimento a usuario
+- consultar total de atendimentos por status
 
-### Doação de sangue
+### Agendamentos
 
-- exibir painel visual de estoque por tipo sanguíneo
-- exibir solicitações de sangue
-- exibir histórico de doações recentes
-- sinalizar níveis críticos de estoque
+- representar agendamentos no backend
+- exibir tela de gestao de agendamentos no frontend
 
-### Relatórios
+### Senhas de atendimento
 
-- exibir indicadores gerenciais
-- apresentar área de relatórios gerados
-- disponibilizar ações visuais para gerar e baixar relatórios
+- representar senha de atendimento no backend
+- exibir tela relacionada no frontend
 
-### API
+### Relatorios e indicadores
 
-- disponibilizar rotas REST para consulta de dados hospitalares
-- disponibilizar rotas analíticas por módulo
-- retornar entidades ou DTOs em formato JSON
+- exibir indicadores gerenciais no frontend
+- consultar metricas operacionais na API
 
 ---
 
-## 3. Requisitos Não Funcionais
+## 3. Requisitos Nao Funcionais
 
-### Segurança
+### Seguranca
 
-- o sistema deve restringir acesso a funcionalidades administrativas por autenticação
-- dados sensíveis de pacientes devem ser protegidos
-- credenciais de banco não devem ficar expostas em produção
-- a API deve evoluir para uso de autenticação e autorização
-- dados clínicos devem ser transmitidos e armazenados com cuidado
+- credenciais de banco nao devem ser expostas em producao
+- a API deve evoluir para autenticacao e autorizacao reais
+- dados clinicos devem ser protegidos
+- o login atual e apenas visual e nao autentica no backend
 
 ### Desempenho
 
-- consultas simples devem responder rapidamente
-- listagens devem ser eficientes para volumes moderados de dados
-- a camada de DTO deve evitar respostas excessivamente pesadas
-- endpoints analíticos devem usar consultas simples e diretas
-- o frontend deve carregar rapidamente por ser estático
+- listagens simples devem responder rapidamente
+- consultas analiticas devem usar contagens diretas no repositorio
+- o dashboard deve carregar indicadores sem recarregar a pagina inteira
 
 ### Usabilidade
 
-- a interface deve ser clara para perfis administrativos e clínicos
-- a navegação lateral deve manter consistência entre telas
-- filtros, tabelas e cartões devem facilitar leitura dos dados
-- o sistema deve ser compreensível mesmo para usuários não técnicos
+- a navegacao lateral deve ser consistente entre telas
+- o dashboard deve apresentar informacoes resumidas de forma clara
+- as tabelas devem facilitar leitura de dados hospitalares
 
 ### Confiabilidade
 
-- a API deve manter consistência entre entidades e banco de dados
-- relacionamentos entre usuários, prontuários, exames, médicos e cirurgias devem permanecer íntegros
-- o sistema deve lidar com falhas de conexão com banco de forma controlada
-- testes automatizados devem evoluir para validar comportamento real
+- os relacionamentos JPA devem manter coerencia entre entidades
+- o perfil `test` deve popular o banco para facilitar demonstracao e testes manuais
+- o sistema deve lidar com falhas de chamada no dashboard com mensagens de fallback
 
 ### Escalabilidade
 
 - a arquitetura em camadas favorece crescimento do backend
-- o uso de Spring Data JPA facilita expansão de consultas e regras de negócio
-- o sistema pode crescer por módulos
-- a interface pode ser evoluída para integração dinâmica com a API
+- o uso de enums padroniza estados de negocio
+- novas consultas podem ser adicionadas por repositorio e service
 
 ### Manutenibilidade
 
-- separação entre `entities`, `repositories`, `services`, `resources` e `DTO` facilita manutenção
-- o uso de enums de domínio melhora legibilidade das regras
-- o uso de CSS único centraliza identidade visual
-- a existência de controllers parcialmente prototipados exige padronização futura
+- separacao entre `entities`, `Repository`, `services`, `resources` e `DTO`
+- centralizacao do estilo frontend em uma folha principal
+- documentacao de API deve acompanhar a evolucao das rotas
 
 ---
 
@@ -235,6 +209,7 @@ Com base na estrutura do código e nas telas existentes, os requisitos funcionai
 - Java 21
 - HTML5
 - CSS3
+- JavaScript
 
 ### Frameworks e bibliotecas
 
@@ -249,31 +224,30 @@ Com base na estrutura do código e nas telas existentes, os requisitos funcionai
 ### Banco de dados
 
 - PostgreSQL
-- H2 Database
 
 ### Ferramentas e estrutura
 
 - Maven
 - IntelliJ IDEA
 - JPA / Hibernate
-- Jackson para serialização JSON
+- Jackson para serializacao JSON
 
-### Observações
+### Observacao
 
-- o PostgreSQL é o banco configurado para execução
-- o H2 está presente como dependência, mas não está configurado como banco ativo
+- a dependencia H2 foi removida do `pom.xml`
+- o banco ativo do projeto atual e apenas PostgreSQL
 
 ---
 
-## 5. Pré-requisitos
+## 5. Pre-requisitos
 
-Para executar o projeto adequadamente, é necessário ter instalado:
+Para executar o projeto adequadamente, e necessario ter instalado:
 
 ### Backend
 
-- **JDK 21** ou compatível com o `java.version=21`
-- **Maven** ou uso do wrapper `mvnw`
-- **PostgreSQL**
+- JDK 21
+- Maven ou uso do wrapper `mvnw`
+- PostgreSQL
 
 ### Frontend
 
@@ -285,55 +259,44 @@ Para executar o projeto adequadamente, é necessário ter instalado:
 - IntelliJ IDEA ou outra IDE Java
 - Postman ou Insomnia
 
-### Banco de dados esperado
+### Banco esperado
 
-O backend está configurado para acessar:
+Configuracao atual em `application.properties`:
 
 - host: `localhost`
 - porta: `5432`
 - banco: `hospital`
-- usuário: `postgres`
+- usuario: `postgres`
 - senha: `1234`
-
-Se esses dados forem diferentes no ambiente local, o arquivo `application.properties` precisa ser ajustado.
 
 ---
 
 ## 6. Como Instalar o Projeto
 
-### 1. Clonar o repositório
+### 1. Clonar o repositorio
 
 ```bash
 git clone <url-do-repositorio>
 cd FPB-a3-2026-01
 ```
 
-### 2. Preparar o PostgreSQL
-
-Criar um banco com o nome:
+### 2. Criar o banco
 
 ```sql
 CREATE DATABASE hospital;
 ```
 
-Garantir também que:
-
-- o PostgreSQL esteja em execução
-- o usuário e senha do arquivo `application.properties` estejam corretos
-
-### 3. Verificar o Java
-
-Confirmar que o ambiente possui **JDK**, não apenas JRE:
+### 3. Validar o Java
 
 ```bash
 java -version
 javac -version
 ```
 
-### 4. Conferir a estrutura principal
+### 4. Conferir os caminhos principais
 
-- backend em `backend/SistemaHospitalar`
-- frontend em `frontend/src/a3`
+- backend: `backend/SistemaHospitalar`
+- frontend: `frontend/healthlink`
 
 ---
 
@@ -341,7 +304,7 @@ javac -version
 
 ## Backend
 
-No diretório do backend:
+No diretorio do backend:
 
 ```bash
 cd backend/SistemaHospitalar
@@ -356,27 +319,22 @@ No Windows:
 
 ### Comportamento ao iniciar
 
-- o Spring Boot sobe a aplicação
-- o perfil ativo é `test`
-- o schema é recriado porque `spring.jpa.hibernate.ddl-auto=create`
-- dados iniciais são inseridos automaticamente pela classe `TestConfig`
-
-### Observação importante
-
-Sem **JDK** completo, o projeto não compila. Em análise local anterior, a execução falhou por ausência de compilador Java, o que indica execução sobre JRE naquele ambiente.
+- o Spring Boot sobe a aplicacao
+- o perfil ativo e `test`
+- o schema e recriado com `spring.jpa.hibernate.ddl-auto=create`
+- a classe `TestConfig` popula dados iniciais
 
 ## Frontend
 
-O frontend é estático. Para visualizar:
+Abra no navegador:
 
-1. abrir a pasta `frontend/src/a3`
-2. abrir `login.html` ou `index.html` no navegador
+- `frontend/healthlink/html/login.html`
+- `frontend/healthlink/html/index.html`
 
-Alternativamente, usar uma extensão de servidor local ou um servidor HTTP simples.
+### Observacoes
 
-### Observação importante
-
-O frontend atual não consome a API backend. As telas funcionam como interface visual estática.
+- o dashboard usa `fetch` para consultar a API em `http://localhost:8080`
+- o login atual so valida campos preenchidos e redireciona para `index.html`
 
 ---
 
@@ -405,143 +363,160 @@ FPB-a3-2026-01/
 │   └── src/
 │       └── Main.java
 ├── frontend/
+│   ├── healthlink/
+│   │   ├── assets/
+│   │   ├── css/
+│   │   └── html/
 │   ├── index.html
-│   ├── src/
-│   │   ├── Main.java
-│   │   └── a3/
-│   │       ├── index.html
-│   │       ├── login.html
-│   │       ├── style.css
-│   │       ├── login-style.css
-│   │       ├── agendamentos.html
-│   │       ├── atendimento.html
-│   │       ├── filadeespera.html
-│   │       ├── cirurgias.html
-│   │       ├── exames.html
-│   │       ├── doacaodesangue.html
-│   │       ├── relatorios.html
-│   │       ├── usuarios.html
-│   │       └── imagens/
-│   ├── frontend.iml
+│   └── src/
 ├── DOCUMENTACAO.md
 └── README.md
 ```
 
-### Explicação das principais pastas
+### Pastas principais
 
 #### `backend/SistemaHospitalar`
 
-Projeto Maven principal do backend.
+Projeto principal da API.
 
-#### `src/main/java/com/a3_20261/SistemaHospitalar/entities`
+#### `entities`
 
-Contém as entidades JPA que representam as tabelas do banco.
+Entidades JPA que representam as tabelas do banco.
 
-#### `src/main/java/com/a3_20261/SistemaHospitalar/Repository`
+#### `Repository`
 
-Contém os repositórios Spring Data JPA. Todos estendem `JpaRepository`.
+Repositorios Spring Data JPA com consultas padrao e consultas derivadas.
 
-#### `src/main/java/com/a3_20261/SistemaHospitalar/services`
+#### `services`
 
-Contém a camada de serviços. No estado atual, a maioria encapsula métodos `findAll()` e, em alguns módulos, também consultas analíticas.
+Camada de servicos com listagens e metricas analiticas.
 
-#### `src/main/java/com/a3_20261/SistemaHospitalar/resources`
+#### `resources`
 
-Contém os controllers REST da aplicação.
+Controllers REST e endpoints publicos da API.
 
-#### `src/main/java/com/a3_20261/SistemaHospitalar/DTO`
+#### `Enum`
 
-Contém DTOs completos e DTOs resumidos usados nas respostas da API.
-
-#### `src/main/java/com/a3_20261/SistemaHospitalar/Enum`
-
-Contém enums de domínio usados para padronizar estados de entidades, como:
+Enums de dominio usados para padronizar status e categorias:
 
 - `StatusConsulta`
 - `StatusCirurgia`
+- `AtendimentoStatus`
+- `ExameStatus`
+- `ExameTipo`
+- `MedicoSpecialty`
+- `StatusSalaCirurgica`
 
-#### `src/main/java/com/a3_20261/SistemaHospitalar/config`
+#### `frontend/healthlink/html`
 
-Contém a configuração de carga inicial de dados de teste.
+Telas do sistema, incluindo login e dashboard.
 
-#### `src/main/resources/application.properties`
+#### `frontend/healthlink/css`
 
-Arquivo de configuração da aplicação, banco e JPA.
+Folha de estilos principal do frontend.
 
-#### `frontend/src/a3`
+#### `frontend/healthlink/assets`
 
-Contém as telas HTML/CSS do sistema.
-
-### Arquivos principais
-
-- `pom.xml`: define dependências, plugins e versão Java
-- `SistemaHospitalarApplication.java`: ponto de entrada da aplicação Spring Boot
-- `TestConfig.java`: popula dados iniciais
-- `style.css`: folha de estilos principal do frontend
-- `login.html`: tela de autenticação visual
-- `index.html`: dashboard principal
-
-### Arquivos auxiliares não centrais
-
-- `backend/src/Main.java`: arquivo padrão da IDE, não participa do backend Spring Boot
-- `frontend/src/Main.java`: arquivo padrão da IDE, não participa do frontend HTML
-- `frontend/index.html`: arquivo vazio no estado atual
+Imagens e arquivos visuais.
 
 ---
 
-## 9. Documentação das Rotas
+## 9. Documentacao da API
 
-## Resumo
+## Visao geral da API
 
-A API atual expõe apenas rotas `GET`. Não foram encontrados `POST`, `PUT` ou `DELETE`. Parte das rotas retorna dados persistidos via JPA e parte ainda retorna objetos de teste.
+A API atual expõe apenas rotas `GET`. Ela mistura:
 
-## Base da API
+- endpoints de listagem
+- endpoints analiticos de contagem
+- alguns endpoints ainda prototipados
 
-Quando o backend estiver em execução local com configuração padrão, a base será:
+### Base URL
 
 ```text
 http://localhost:8080
 ```
 
-## Rotas disponíveis
+### Formato das respostas
 
-### 1. `GET /users`
+- JSON
+- algumas rotas retornam DTOs
+- outras retornam entidades diretamente
+- algumas rotas retornam apenas `Long`
 
-Lista usuários com informações resumidas e relacionamentos relevantes.
+### Limitacoes atuais
 
-**Recebe**
+- nao ha autenticacao
+- nao ha `POST`, `PUT` ou `DELETE`
+- nem todos os modulos usam DTO
+- alguns endpoints ainda nao representam o comportamento final do sistema
 
-- nada
+## Endpoints por modulo
 
-**Retorna**
+### Usuarios
 
-- lista de `UserDTO`
+#### `GET /users`
 
-**Campos principais**
+Lista usuarios em formato DTO.
+
+**Resposta**
+
+```json
+[
+  {
+    "id": 1,
+    "nome": "adm1",
+    "CPF": 1111111111,
+    "email": "adm1@gmail.com",
+    "dateBirth": null,
+    "address": "rua da macaxeira",
+    "number": "2",
+    "prontuario": {
+      "id": 1,
+      "date": null,
+      "OBS": "..."
+    },
+    "exame": []
+  }
+]
+```
+
+**Campos retornados**
 
 - `id`
 - `nome`
 - `CPF`
+- `email`
 - `dateBirth`
 - `address`
-- `email`
 - `number`
 - `prontuario`
 - `exame`
 
-### 2. `GET /medicos`
+#### `GET /users/totalPacientes`
 
-Lista médicos cadastrados.
+Retorna a quantidade total de usuarios cadastrados.
 
-**Recebe**
+**Resposta**
 
-- nada
+```json
+2
+```
 
-**Retorna**
+**Origem**
 
-- lista de `MedicoDTO`
+- `UserService.totalPacientes()`
+- `UserRepository.count()`
 
-**Campos principais**
+---
+
+### Medicos
+
+#### `GET /medicos`
+
+Lista medicos em formato DTO.
+
+**Campos retornados**
 
 - `id`
 - `name`
@@ -550,102 +525,54 @@ Lista médicos cadastrados.
 - `number`
 - `cirurgia`
 
-### 3. `GET /hospitais`
+**Observacoes**
 
-Lista hospitais cadastrados.
+- `specialty` usa enum `MedicoSpecialty`
+- as cirurgias sao retornadas em formato resumido
 
-**Recebe**
+---
 
-- nada
+### Hospitais
 
-**Retorna**
+#### `GET /hospitais`
 
-- lista de entidades `Hospital`
-
-**Observação**
-
-Essa rota retorna entidade diretamente, não DTO.
-
-### 4. `GET /cirurgias`
-
-Lista cirurgias cadastradas.
-
-**Recebe**
-
-- nada
-
-**Retorna**
-
-- lista de `CirurgiaDTO`
+Lista hospitais diretamente como entidade.
 
 **Campos principais**
 
 - `id`
-- `dateSurgery`
-- `report`
+- `name`
+- `number`
+- `address`
+- `users`
 - `medicos`
 
-### 5. `GET /cirurgias/total-agendadas`
+**Observacao**
 
-Retorna a quantidade de cirurgias com status `AGENDADA`.
+- esta rota nao usa DTO atualmente
 
-**Recebe**
+---
 
-- nada
+### Prontuarios
 
-**Retorna**
+#### `GET /prontuarios`
 
-- número inteiro (`Long`)
+Lista prontuarios em formato DTO.
 
-### 6. `GET /exames`
-
-Lista exames cadastrados.
-
-**Recebe**
-
-- nada
-
-**Retorna**
-
-- lista de `ExameDTO`
-
-**Campos principais**
+**Campos retornados**
 
 - `id`
-- `date_request`
-- `result`
-- `user`
-
-### 7. `GET /prontuarios`
-
-Lista prontuários cadastrados.
-
-**Recebe**
-
-- nada
-
-**Retorna**
-
-- lista de `ProntuarioDTO`
-
-**Campos principais**
-
-- `id`
-- `date`
 - `OBS`
+- `date`
 - `user`
 
-### 8. `GET /consultas`
+---
 
-Lista consultas cadastradas.
+### Consultas
 
-**Recebe**
+#### `GET /consultas`
 
-- nada
-
-**Retorna**
-
-- lista de entidades `Consulta`
+Lista consultas como entidade.
 
 **Campos principais**
 
@@ -653,114 +580,303 @@ Lista consultas cadastradas.
 - `status`
 - `data`
 - `obs`
+- `medico`
 
-### 9. `GET /consultas/por-dia?data=YYYY-MM-DD`
+**Observacoes**
 
-Retorna a quantidade de consultas em uma data específica.
+- `status` usa enum `StatusConsulta`
+- `data` usa `LocalDate`
 
-**Recebe**
+#### `GET /consultas/por-dia?data=YYYY-MM-DD`
 
-- parâmetro de query `data` no formato `YYYY-MM-DD`
+Retorna a quantidade de consultas em uma data especifica.
 
-**Retorna**
+**Exemplo**
 
-- número inteiro (`Long`)
+```text
+GET /consultas/por-dia?data=2026-05-12
+```
 
-### 10. `GET /atendimentos`
+**Resposta**
 
-Retorna um objeto de atendimento fixo.
+```json
+2
+```
 
-**Recebe**
+**Origem**
 
-- nada
+- `ConsultaService.totalConsultasPorDia(LocalDate data)`
+- `ConsultaRepository.countByData(LocalDate data)`
 
-**Retorna**
+#### `GET /consultas/por-dia/lista?data=YYYY-MM-DD`
 
-- objeto `Atendimento`
+Lista as consultas de uma data especifica.
 
-**Observação**
+**Exemplo**
 
-Atualmente não lê dados do banco.
+```text
+GET /consultas/por-dia/lista?data=2026-05-12
+```
 
-### 11. `GET /agendamentos`
+**Resposta**
 
-Retorna um objeto de agendamento vazio.
+- lista de entidades `Consulta`
 
-**Recebe**
+**Origem**
 
-- nada
+- `ConsultaService.buscarPorData(LocalDate data)`
+- `ConsultaRepository.findByData(LocalDate data)`
 
-**Retorna**
+**Uso atual no frontend**
 
-- objeto `Agendamento`
+- o dashboard consome essa rota para montar a tabela de consultas do dia
 
-**Observação**
+---
 
-Atualmente não lê dados do banco.
+### Cirurgias
 
-### 12. `GET /sala`
+#### `GET /cirurgias`
 
-Retorna um objeto fixo de sala cirúrgica.
+Lista cirurgias em formato DTO.
 
-**Recebe**
+**Campos retornados**
 
-- nada
+- `id`
+- `nome`
+- `duracao`
+- `dateSurgery`
+- `report`
+- `medicos`
+- `salaCirurgica`
 
-**Retorna**
+**Observacoes**
 
-- objeto `SalaCirurgica`
+- `status` existe na entidade `Cirurgia`, mas nao esta exposto no `CirurgiaDTO`
+- `salaCirurgica` esta sendo retornada diretamente
 
-**Observação**
+#### `GET /cirurgias/total-agendadas`
 
-Atualmente não consulta repositório.
+Retorna o total de cirurgias com status `AGENDADA`.
 
-### 13. `GET /senha`
+**Resposta**
 
-Retorna um objeto de senha de atendimento.
+```json
+0
+```
 
-**Recebe**
+**Origem**
 
-- nada
+- `CirurgiasService.totalAgendadas()`
+- `CirurgiasRepository.countByStatus(StatusCirurgia.AGENDADA)`
 
-**Retorna**
+**Uso atual no frontend**
 
-- objeto `SenhaAtendimento`
+- o dashboard consome essa rota para preencher o KPI de cirurgias agendadas
 
-**Observação**
+---
 
-Atualmente não consulta repositório e retorna objeto sem preenchimento significativo.
+### Exames
 
-## Limitações atuais das rotas
+#### `GET /exames`
 
-- ausência de autenticação
-- ausência de operações de escrita
-- falta de padronização entre uso de DTO e entidade
-- alguns módulos usam service e outros acessam repository diretamente
-- alguns endpoints são apenas protótipos de demonstração
-- os DTOs de consulta e alguns DTOs de resumo ainda estão vazios
+Lista exames em formato DTO.
+
+**Campos retornados**
+
+- `id`
+- `date_request`
+- `result`
+- `tipo`
+- `user`
+- `medico`
+- `status`
+
+**Observacoes**
+
+- `tipo` usa enum `ExameTipo`
+- `status` usa enum `ExameStatus`
+
+#### `GET /exames/por-mes?mes=MM&ano=YYYY`
+
+Retorna a quantidade de exames solicitados em um mes especifico.
+
+**Exemplo**
+
+```text
+GET /exames/por-mes?mes=5&ano=2026
+```
+
+**Resposta**
+
+```json
+0
+```
+
+**Origem**
+
+- `ExameService.totalExamePorMes(int mes, int ano)`
+- `ExameRepository.countByDateRequestBetween(Date inicio, Date fim)`
+
+#### `GET /exames/por-status?status=AGENDADO`
+
+Retorna a quantidade de exames por status.
+
+**Exemplo**
+
+```text
+GET /exames/por-status?status=AGENDADO
+```
+
+**Resposta**
+
+```json
+2
+```
+
+**Origem**
+
+- `ExameService.totalPorStatus(ExameStatus status)`
+- `ExameRepository.countByExameStatus(ExameStatus status)`
+
+---
+
+### Atendimentos
+
+#### `GET /atendimentos`
+
+Lista atendimentos como entidade.
+
+**Campos principais**
+
+- `id`
+- `descricao`
+- `diagnosis`
+- `service_date`
+- `atendimentoStatus`
+- `usuario`
+
+**Observacoes**
+
+- `atendimentoStatus` usa enum `AtendimentoStatus`
+- agora existe relacionamento `ManyToOne` com `User`
+
+#### `GET /atendimentos/por-status?status=ANDAMENTO`
+
+Retorna a quantidade de atendimentos por status.
+
+**Exemplo**
+
+```text
+GET /atendimentos/por-status?status=ANDAMENTO
+```
+
+**Resposta**
+
+```json
+1
+```
+
+**Origem**
+
+- `AtendimentoService.totalPorStatus(AtendimentoStatus status)`
+- `AtendimentoRepository.countByAtendimentoStatus(AtendimentoStatus status)`
+
+---
+
+### Salas cirurgicas
+
+#### `GET /sala`
+
+Lista salas cirurgicas diretamente como entidade.
+
+**Campos principais**
+
+- `id`
+- `number`
+- `status`
+- `cirurgias`
+
+**Observacoes**
+
+- `status` usa enum `StatusSalaCirurgica`
+- a rota deixou de retornar objeto fixo e agora usa `SalaCirurgicaService.findAll()`
+
+---
+
+### Agendamentos
+
+#### `GET /agendamentos`
+
+Retorna um objeto `Agendamento` vazio.
+
+**Status atual**
+
+- endpoint ainda prototipado
+- nao consulta o banco apesar de existir repository e service
+
+---
+
+### Senha de atendimento
+
+#### `GET /senha`
+
+Retorna um objeto `SenhaAtendimento` vazio.
+
+**Status atual**
+
+- endpoint ainda prototipado
+- nao consulta o banco apesar de existir repository e service
+
+---
+
+## Rotas usadas pelo frontend atual
+
+O dashboard em `frontend/healthlink/html/index.html` chama:
+
+- `GET /users/totalPacientes`
+- `GET /consultas/por-dia?data=YYYY-MM-DD`
+- `GET /cirurgias/total-agendadas`
+- `GET /consultas/por-dia/lista?data=YYYY-MM-DD`
+
+Essas rotas alimentam:
+
+- KPI total de pacientes
+- KPI consultas do dia
+- KPI cirurgias agendadas
+- KPI fila de espera
+- tabela de consultas de hoje
+
+## Oportunidades de melhoria na API
+
+- padronizar todas as respostas em DTO
+- criar rotas `POST`, `PUT` e `DELETE`
+- adicionar autenticacao
+- expor `status` no `CirurgiaDTO`
+- revisar enums com construtores inconsistentes
+- alinhar nomes de campos entre frontend e backend para reduzir logica de fallback no JavaScript
 
 ---
 
 ## 10. Banco de Dados
 
-## Visão geral
+## Visao geral
 
-O banco é relacional e modelado com JPA/Hibernate. As tabelas são geradas automaticamente a partir das entidades.
+O banco e relacional e modelado com JPA/Hibernate. As tabelas sao geradas automaticamente a partir das entidades.
 
-## Configuração atual
+## Configuracao atual
 
 - banco ativo: PostgreSQL
-- schema recriado a cada execução com `ddl-auto=create`
+- schema recriado a cada execucao com `ddl-auto=create`
 
-## Tabelas e colunas principais
+## Entidades e tabelas principais
 
 ### `tb_user`
 
-Representa usuários/pacientes.
+Representa usuarios/pacientes.
 
-**Colunas**
+**Colunas principais**
 
-- `id` - chave primária
+- `id`
 - `nome`
 - `CPF`
 - `dateBirth`
@@ -772,44 +888,40 @@ Representa usuários/pacientes.
 
 - `1:1` com `tb_prontuario`
 - `1:N` com `tb_exame`
+- `1:N` com `tb_Atendimento`
 
 ### `tb_prontuario`
 
-Representa prontuários.
+Representa prontuarios.
 
-**Colunas**
+**Colunas principais**
 
-- `id` - chave primária
+- `id`
 - `date`
 - `OBS`
-- referência para `user`
-
-**Relacionamentos**
-
-- `1:1` com `tb_user`
+- `user`
 
 ### `tb_exame`
 
 Representa exames.
 
-**Colunas**
+**Colunas principais**
 
-- `id` - chave primária
-- `Date_request`
+- `id`
+- `dateRequest`
 - `result`
 - `User_id`
-
-**Relacionamentos**
-
-- `N:1` com `tb_user`
+- `Medico_id`
+- `exameTipo`
+- `exameStatus`
 
 ### `tb_medico`
 
-Representa médicos.
+Representa medicos.
 
-**Colunas**
+**Colunas principais**
 
-- `id` - chave primária
+- `id`
 - `name`
 - `CRM`
 - `specialty`
@@ -818,318 +930,194 @@ Representa médicos.
 
 **Relacionamentos**
 
-- `N:1` com `tb_hospital`
-- `N:N` com `tb_Cirurgias`
-
-### `tb_Cirurgias`
-
-Representa cirurgias.
-
-**Colunas**
-
-- `id` - chave primária
-- `dateSurgery`
-- `report`
-- `status`
-
-**Relacionamentos**
-
-- `N:N` com `tb_medico`
-
-### `medico_cirurgia`
-
-Tabela de junção entre médicos e cirurgias.
-
-**Colunas**
-
-- `medico_id`
-- `cirurgia_id`
-
-### `tb_hospital`
-
-Representa hospitais.
-
-**Colunas**
-
-- `id` - chave primária
-- `name`
-- `number`
-- `address`
-
-**Relacionamentos**
-
-- `N:N` com `tb_user`
-- `1:N` com `tb_medico`
-
-### `hospital_user`
-
-Tabela de junção entre hospitais e usuários.
-
-**Colunas**
-
-- `hospital_id`
-- `user_id`
-
-### `tb_agendamento`
-
-Representa agendamentos.
-
-**Colunas**
-
-- `id` - chave primária
-- `data`
-
-### `tb_Atendimento`
-
-Representa atendimentos.
-
-**Colunas**
-
-- `id` - chave primária
-- `diagnosis`
-- `service_date`
+- `N:1` com hospital
+- `N:N` com cirurgia
+- `1:N` com consulta
+- `1:N` com exame
 
 ### `tb_Consulta`
 
 Representa consultas.
 
-**Colunas**
+**Colunas principais**
 
-- `id` - chave primária
+- `id`
 - `status`
 - `data`
 - `obs`
+- `medico_id`
+
+### `tb_Cirurgias`
+
+Representa cirurgias.
+
+**Colunas principais**
+
+- `id`
+- `nome`
+- `duracao`
+- `dateSurgery`
+- `report`
+- `status`
+- `SalaCirurgica_id`
+
+### `medico_cirurgia`
+
+Tabela de juncao entre medicos e cirurgias.
 
 ### `tb_sala`
 
-Representa salas cirúrgicas.
+Representa salas cirurgicas.
 
-**Colunas**
+**Colunas principais**
 
-- `id` - chave primária
+- `id`
 - `number`
+- `status`
+
+### `tb_Atendimento`
+
+Representa atendimentos.
+
+**Colunas principais**
+
+- `id`
+- `descricao`
+- `diagnosis`
+- `service_date`
+- `atendimentoStatus`
+- `usuario_id`
+
+### `tb_hospital`
+
+Representa hospitais.
+
+### `hospital_user`
+
+Tabela de juncao entre hospital e usuario.
+
+### `tb_agendamento`
+
+Representa agendamentos.
 
 ### `tb_senhaAtendimento`
 
 Representa senhas de atendimento.
 
-**Colunas**
-
-- `id` - chave primária
-- `senha`
-
-## Relacionamentos principais
-
-- um usuário pode ter um prontuário
-- um usuário pode possuir vários exames
-- um hospital pode ter vários médicos
-- um hospital pode estar relacionado a vários usuários
-- um médico pode participar de várias cirurgias
-- uma cirurgia pode possuir vários médicos
-
 ## Dados iniciais
 
-Ao subir a aplicação com perfil `test`, a classe `TestConfig` insere:
+Ao subir a aplicacao com perfil `test`, a classe `TestConfig` insere dados de:
 
-- médicos
-- cirurgias
-- atendimentos
-- consultas
-- exames
-- salas cirúrgicas
-- usuários
-- prontuários
+- usuarios
+- medicos
 - hospitais
-- senhas de atendimento
+- prontuarios
+- consultas
+- cirurgias
+- exames
+- atendimentos
+- salas cirurgicas
+- senhas
 - agendamentos
 
 ---
 
-## 11. Explicação das Principais Funções do Código
+## 11. Explicacao das Principais Funcoes do Codigo
 
 ## Backend
 
 ### `SistemaHospitalarApplication.main`
 
-Função principal do backend. Inicializa o contexto Spring Boot e sobe a aplicação.
+Inicializa o contexto Spring Boot e sobe a API.
 
 ### `TestConfig.run`
 
-Executada automaticamente no perfil `test`. Sua função é popular o banco com dados de exemplo para facilitar testes e visualização inicial dos módulos. Após as atualizações recentes, ela também cria consultas com `LocalDate` e mantém a carga inicial dos demais módulos.
+Executa automaticamente no perfil `test` e popula o banco com dados iniciais para testes e demonstracao.
 
-### Métodos `findAll()` dos services
+### Servicos principais
 
-Presentes em praticamente todos os serviços.
+#### `UserService.totalPacientes`
 
-**Função**
+Conta o total de usuarios no banco usando `repository.count()`.
 
-- chamar o repositório correspondente
-- buscar todos os registros da entidade
+#### `ConsultaService.totalConsultasPorDia`
 
-**Papel arquitetural**
+Conta consultas de uma data especifica.
 
-- separar o controller da camada de persistência
-- preparar o código para futura inclusão de regras de negócio
+#### `ConsultaService.buscarPorData`
 
-### `ConsultaService.totalConsultasPorDia`
+Retorna a lista de consultas de uma data especifica.
 
-Conta quantas consultas existem para uma data específica usando o método `countByData(LocalDate data)` do repositório.
+#### `CirurgiasService.totalAgendadas`
 
-### `CirurgiasService.totalAgendadas`
+Conta cirurgias com status `AGENDADA`.
 
-Conta quantas cirurgias estão com status `AGENDADA` usando o método `countByStatus(StatusCirurgia status)` do repositório.
+#### `AtendimentoService.totalPorStatus`
 
-### Controllers `findAll()` e métricas em `resources`
+Conta atendimentos por status.
 
-Cada controller expõe uma rota REST.
+#### `ExameService.totalExamePorMes`
 
-Exemplos:
+Conta exames entre o primeiro e o ultimo dia do mes informado.
 
-- `UserResources.findAll()`
-- `MedicoResources.findAll()`
-- `CirurgiasResources.findAll()`
-- `CirurgiasResources.totalAgendadas()`
-- `ConsultaResources.findAll()`
-- `ConsultaResources.totalPorDia()`
-- `ExameResources.findAll()`
-- `ProntuarioResources.findAll()`
+#### `ExameService.totalPorStatus`
 
-**Função**
+Conta exames por status.
 
-- receber a requisição HTTP
-- consultar service ou repository
-- converter entidade em DTO quando necessário
-- devolver resposta JSON
+### Repositorios com consultas derivadas importantes
 
-### Construtores de DTO
+- `UserRepository.count()`
+- `ConsultaRepository.countByData(LocalDate data)`
+- `ConsultaRepository.findByData(LocalDate data)`
+- `CirurgiasRepository.countByStatus(StatusCirurgia status)`
+- `AtendimentoRepository.countByAtendimentoStatus(AtendimentoStatus status)`
+- `ExameRepository.countByDateRequestBetween(Date inicio, Date fim)`
+- `ExameRepository.countByExameStatus(ExameStatus status)`
 
-Os construtores das classes DTO são fundamentais para o backend.
+### Controllers mais importantes para o estado atual
 
-**Função**
+- `UserResources`
+- `ConsultaResources`
+- `CirurgiasResources`
+- `AtendimentoResources`
+- `ExameResources`
 
-- transformar entidades JPA em objetos de saída
-- controlar o que será exposto na API
-- resumir relacionamentos aninhados
-
-Exemplos importantes:
-
-- `UserDTO(User entity)`
-- `MedicoDTO(Medico entity)`
-- `ProntuarioDTO(Prontuario entity)`
-- `ExameDTO(Exame entity)`
-- `HospitalDTO(Hospital entity)`
-- `CirurgiaDTO(Cirurgia entity)`
-
-### Repositórios Spring Data JPA
-
-Os repositórios são interfaces como:
-
-- `UserRepository`
-- `MedicoRepository`
-- `HospitalRepository`
-- `ExameRepository`
-- `ConsultaRepository`
-- `CirurgiasRepository`
-
-**Função**
-
-- fornecer operações de persistência
-- permitir uso de `findAll()`, `save()`, `findById()` e demais operações do `JpaRepository`
-- permitir consultas derivadas por nome de método, como `countByData` e `countByStatus`
-
-### Enums de status
-
-Os enums adicionados recentemente ajudam a padronizar estados de negócio:
-
-- `StatusConsulta`: `AGENDADA`, `CANCELADA`, `REALIZADA`
-- `StatusCirurgia`: `AGENDADA`, `REALIZADA`, `CANCELADA`
-
-Eles são persistidos com `@Enumerated(EnumType.STRING)`, o que deixa os valores mais legíveis no banco.
+Esses controllers concentram as rotas mais relevantes para o dashboard e para as metricas atuais do sistema.
 
 ## Frontend
 
-O frontend não possui funções JavaScript implementadas. Seu comportamento está concentrado em:
+### `frontend/healthlink/html/login.html`
 
-- organização visual das páginas HTML
-- navegação lateral
-- formulários visuais
-- tabelas e indicadores estáticos
+Implementa:
 
-### Arquivos HTML principais
+- validacao simples de campos
+- submit por clique
+- submit ao pressionar Enter
+- redirecionamento para o dashboard
 
-#### `login.html`
+### `frontend/healthlink/html/index.html`
 
-Responsável por exibir a tela de login com campos de e-mail e senha.
+Implementa:
 
-#### `index.html`
+- carga automatica do dashboard no `DOMContentLoaded`
+- chamadas `fetch` para a API
+- atualizacao dinamica dos KPIs
+- renderizacao da tabela de consultas do dia
+- fallback quando a API nao responde
 
-Responsável por exibir o dashboard inicial com visão geral do sistema.
+### `frontend/healthlink/css/style.css`
 
-#### `agendamentos.html`
+Centraliza:
 
-Mostra busca, filtros, tabela e ação para novo agendamento.
-
-#### `filadeespera.html`
-
-Mostra pacientes em espera, prioridade, tempo e ações de chamada.
-
-#### `atendimento.html`
-
-Mostra cartões de atendimentos, diagnósticos e ações clínicas.
-
-#### `cirurgias.html`
-
-Mostra agenda cirúrgica, status, equipe e detalhes operatórios.
-
-#### `exames.html`
-
-Mostra catálogo e acompanhamento de exames.
-
-#### `doacaodesangue.html`
-
-Mostra visão de estoque, solicitações e histórico de doações.
-
-#### `relatorios.html`
-
-Mostra indicadores analíticos e relatórios disponíveis.
-
-#### `usuarios.html`
-
-Mostra gestão de usuários e permissões.
-
-### `style.css`
-
-Arquivo responsável por:
-
-- layout principal com sidebar e header
-- estilos de cartões
-- estilos de tabelas
-- estilos específicos para módulos
-- identidade visual do sistema
-
-## Considerações finais sobre o código
-
-### Pontos fortes
-
-- boa separação em camadas no backend
-- modelagem inicial coerente para domínio hospitalar
-- enums de status já introduzidos para consultas e cirurgias
-- endpoints analíticos simples já disponíveis
-- variedade de módulos funcionais já prevista
-- frontend visualmente avançado para protótipo
-
-### Pontos que ainda precisam evoluir
-
-- integração real entre frontend e backend
-- implementação de rotas de criação, edição e exclusão
-- autenticação e controle de acesso
-- padronização dos endpoints
-- melhoria de codificação de caracteres em alguns arquivos HTML/CSS
-- ampliação dos testes automatizados
-- preenchimento dos DTOs ainda vazios de consulta e resumos correlatos
+- layout principal
+- sidebar
+- header
+- cards
+- tabelas
+- estilos comuns entre modulos
 
 ---
 
-## Conclusão
+## Conclusao
 
-O projeto já possui uma base sólida para um sistema de gestão hospitalar modular. O backend apresenta arquitetura apropriada para crescimento, enquanto o frontend já cobre os principais módulos da operação hospitalar em nível de interface. As mudanças recentes reforçaram o domínio com status tipados e rotas analíticas simples, deixando o projeto mais próximo de uma aplicação integrada e evolutiva.
+O projeto evoluiu de um prototipo visual para uma base mais consistente de sistema hospitalar com API de leitura e metricas. O ponto mais forte no momento esta no backend, que ja oferece rotas uteis para alimentar o dashboard e organizar o dominio com enums, relacionamentos e consultas analiticas. O proximo passo natural e padronizar os retornos da API, completar os endpoints ainda prototipados e adicionar operacoes de escrita e autenticacao.
