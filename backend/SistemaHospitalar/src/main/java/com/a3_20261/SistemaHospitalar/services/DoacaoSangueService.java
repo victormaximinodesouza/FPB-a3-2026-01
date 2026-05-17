@@ -26,7 +26,6 @@ public class DoacaoSangueService {
         DoacaoSangue estoque =
                 doacaoSangueRepository.findByTipoSanguineo(tipo);
 
-
         if(estoque == null){
             estoque = new DoacaoSangue();
             estoque.setTipoSanguineo(tipo);
@@ -36,5 +35,18 @@ public class DoacaoSangueService {
                 estoque.getQuantidadeBolsas() + quantidade
         );
         return doacaoSangueRepository.save(estoque);
+    }
+    public Integer quantidadeTotal(){
+
+        List<DoacaoSangue> lista = doacaoSangueRepository.findAll();
+
+        Integer total = 0;
+
+        for(DoacaoSangue d : lista){
+
+            total += d.getQuantidadeBolsas();
+        }
+
+        return total;
     }
 }

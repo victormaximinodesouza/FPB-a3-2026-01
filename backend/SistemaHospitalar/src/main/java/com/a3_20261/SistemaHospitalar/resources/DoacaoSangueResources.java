@@ -27,6 +27,10 @@ public class DoacaoSangueResources {
 
         return doacaoSangueService.adicionarBolsa(tipo, quantidade);
     }
+    @GetMapping ("/total")
+    public Integer quantidadeTotal(){
 
+        return doacaoSangueService.quantidadeTotal();
+    }
 
 }
