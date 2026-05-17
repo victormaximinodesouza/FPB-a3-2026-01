@@ -5,9 +5,7 @@ import com.a3_20261.SistemaHospitalar.entities.Cirurgia;
 import com.a3_20261.SistemaHospitalar.services.CirurgiasService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -27,6 +25,11 @@ public class CirurgiasResources {
     public ResponseEntity<Long> totalAgendadas() {
         long total = cirurgiasService.totalAgendadas();
         return ResponseEntity.ok(total);
+    }
+    @PostMapping
+
+    public Cirurgia insert(@RequestBody Cirurgia cirurgia) {
+        return cirurgiasService.insert(cirurgia);
     }
 
     }

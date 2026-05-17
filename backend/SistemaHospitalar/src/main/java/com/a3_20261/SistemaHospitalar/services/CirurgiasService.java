@@ -23,5 +23,9 @@ public class CirurgiasService {
         return cirurgiasRepository.countByStatus(StatusCirurgia.AGENDADA);
     }
 
+    public Cirurgia insert(Cirurgia cirurgia) {
+        return cirurgiasRepository.save(cirurgia);
+    }
+
 }
 
