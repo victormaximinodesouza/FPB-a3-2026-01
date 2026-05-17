@@ -8,10 +8,7 @@ import com.a3_20261.SistemaHospitalar.entities.Exame;
 import com.a3_20261.SistemaHospitalar.services.ExameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -45,6 +42,10 @@ public List<ExameDTO> findAll(){
         long total = exameService.totalPorStatus(status);
         return ResponseEntity.ok(total);
     }
+    @PostMapping
+    public Exame insert(@RequestBody Exame exame) {
+        return exameService.insert(exame);
     }
+}
 
 

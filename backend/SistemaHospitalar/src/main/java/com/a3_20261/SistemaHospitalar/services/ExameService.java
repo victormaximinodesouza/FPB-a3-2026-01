@@ -5,9 +5,11 @@ import com.a3_20261.SistemaHospitalar.Repository.AgendamentoRepository;
 import com.a3_20261.SistemaHospitalar.Repository.ExameRepository;
 import com.a3_20261.SistemaHospitalar.entities.Agendamento;
 import com.a3_20261.SistemaHospitalar.entities.Exame;
+import com.a3_20261.SistemaHospitalar.entities.Medico;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -41,5 +43,8 @@ public class ExameService {
         return exameRepository.countByExameStatus(status);
     }
 
+    public Exame insert(@RequestBody Exame exame) {
+        return exameRepository.save(exame);
+    }
 }
 

@@ -16,7 +16,8 @@ public class MedicoService {
     private MedicoRepository medicoRepository;
 
     @GetMapping
-    public List<Medico> findAll() {
+    public List<Medico> findAll()
+    {
         return medicoRepository.findAll();
     }
 
