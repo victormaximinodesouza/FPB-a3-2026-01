@@ -20,5 +20,16 @@ public class MedicoService {
         return medicoRepository.findAll();
     }
 
+    public Medico insert(Medico medico){
+
+        return medicoRepository.save(medico);
+    }
 }
+
+
+
+
+
+
+
 
