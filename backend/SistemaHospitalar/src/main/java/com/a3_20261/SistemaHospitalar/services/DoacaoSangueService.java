@@ -49,4 +49,16 @@ public class DoacaoSangueService {
 
         return total;
     }
+    public Integer quantidadePorTipo(TipoSanguineo tipo){
+
+        DoacaoSangue estoque =
+                doacaoSangueRepository.findByTipoSanguineo(tipo);
+
+        if(estoque == null){
+
+            return 0;
+        }
+
+        return estoque.getQuantidadeBolsas();
+    }
 }

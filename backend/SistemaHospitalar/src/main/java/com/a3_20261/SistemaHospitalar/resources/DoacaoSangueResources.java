@@ -32,5 +32,11 @@ public class DoacaoSangueResources {
 
         return doacaoSangueService.quantidadeTotal();
     }
+    @GetMapping("/tipo")
+    public Integer quantidadePorTipo(
+            @RequestParam TipoSanguineo tipo){
+
+        return doacaoSangueService.quantidadePorTipo(tipo);
+    }
 
 }
