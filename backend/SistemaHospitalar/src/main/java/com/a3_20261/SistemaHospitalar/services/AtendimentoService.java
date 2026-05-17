@@ -24,5 +24,10 @@ public class AtendimentoService {
     public long totalPorStatus(AtendimentoStatus status)
     {return atendimentoRepository.countByAtendimentoStatus(status);}
 
+    public Atendimento insert(Atendimento atendimento) {
+        return atendimentoRepository.save(atendimento);
+
+    }
+
 }
 
