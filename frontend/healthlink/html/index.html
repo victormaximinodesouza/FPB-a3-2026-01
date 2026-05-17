@@ -63,8 +63,7 @@
             <section class="cards-container">
                 <div class="card">
                     <div class="card-header">
-                        <i class="fa-solid fa-users icon-blue"></i>
-                        <span class="trend positive">+12,5%</span>
+                        <i class="fa-solid fa-users icon-blue"></i>      
                     </div>
                     <h2 id="total-pacientes">...</h2>
                     <p>Total de Pacientes</p>
@@ -85,13 +84,7 @@
                     <h2 id="cirurgias-agendadas">...</h2>
                     <p>Cirurgias Agendadas</p>
                 </div>
-                <div class="card">
-                    <div class="card-header">
-                        <i class="fa-solid fa-clock icon-purple"></i>
-                        <span class="trend positive">+5,4%</span>
-                    </div>
-                    <h2 id="fila-espera">...</h2>
-                    <p>Na Fila de Espera</p>
+               
                 </div>
             </section>
 
@@ -285,7 +278,7 @@
             atualizarTexto('total-pacientes', '0');
             atualizarTexto('consultas-hoje', '0');
             atualizarTexto('cirurgias-agendadas', '0');
-            atualizarTexto('fila-espera', '0');
+         
 
             var tabela = document.getElementById('consultas-hoje-tabela');
             if (tabela) {
