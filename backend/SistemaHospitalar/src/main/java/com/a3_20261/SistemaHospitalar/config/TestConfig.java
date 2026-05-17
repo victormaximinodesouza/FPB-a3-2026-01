@@ -2,6 +2,7 @@ package com.a3_20261.SistemaHospitalar.config;
 
 import com.a3_20261.SistemaHospitalar.Enum.AtendimentoStatus;
 import com.a3_20261.SistemaHospitalar.Enum.ExameStatus;
+import com.a3_20261.SistemaHospitalar.Enum.StatusCirurgia;
 import com.a3_20261.SistemaHospitalar.Enum.StatusSalaCirurgica;
 import com.a3_20261.SistemaHospitalar.Repository.*;
 import com.a3_20261.SistemaHospitalar.entities.*;
@@ -44,7 +45,7 @@ public class TestConfig implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        Cirurgia c1 = new Cirurgia(null,"Ponte de Safena",2,null,"feito com sucesso",null,new ArrayList<>(),null);
+        Cirurgia c1 = new Cirurgia(null,"Ponte de Safena",2,null,"feito com sucesso", StatusCirurgia.AGENDADA,new ArrayList<>(),null);
         Cirurgia c2 = new Cirurgia(null,"Joelho",3,null,"deu errado",null,new ArrayList<>(),null);
 
         Medico m1 = new Medico(null, "joao", 3232, null, 922992922,new ArrayList<>(),new ArrayList<>(),new ArrayList<>());
