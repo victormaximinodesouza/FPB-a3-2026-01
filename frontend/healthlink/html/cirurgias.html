@@ -81,11 +81,20 @@
 
         <section class="cards-summary">
           <div class="card-kpi">
+            <div class="kpi-icon-container green">
+              <i class="fa-solid fa-wave-square"></i>
+            </div>
+            <div class="kpi-body">
+              <h3 class="kpi-value" id="cirurgias-semana">...</h3>
+              <p class="kpi-subtext">Agendadas esta Semana</p>
+            </div>
+          </div>
+          <div class="card-kpi">
             <div class="kpi-icon-container blue">
               <i class="fa-regular fa-clock"></i>
             </div>
             <div class="kpi-body">
-              <h3 class="kpi-value">3</h3>
+              <h3 class="kpi-value" id="cirurgias-hoje">...</h3>
               <p class="kpi-subtext">Hoje</p>
             </div>
           </div>
@@ -94,69 +103,313 @@
               <i class="fa-solid fa-wave-square"></i>
             </div>
             <div class="kpi-body">
-              <h3 class="kpi-value">1</h3>
+              <h3 class="kpi-value" id="cirurgias-andamento">...</h3>
               <p class="kpi-subtext">Em Andamento</p>
             </div>
           </div>
+          <div class="card-kpi">
+            <div class="kpi-icon-container green">
+              <i class="fa-solid fa-wave-square"></i>
+            </div>
+            <div class="kpi-body">
+              <h3 class="kpi-value" id="taxa-sucesso">...</h3>
+              <p class="kpi-subtext">Taxa de Sucesso</p>
+            </div>
+          </div>
         </section>
 
-        <section class="surgery-list">
-          <div class="surgery-card">
-            <div class="surgery-card-header">
-              <div class="title-group">
-                <h3>Ponte de Safena</h3>
-                <span class="tag orange-light">Alta Prioridade</span>
-                <span class="tag purple-light">Agendado</span>
-              </div>
-              <div class="date-info">
-                <strong>2026-03-05</strong><span>08:00</span>
-              </div>
+        <section class="filter-bar-container">
+          <div class="filter-bar" style="width: 100%">
+            <div class="search-input">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input
+                type="text"
+                id="busca-cirurgia"
+                placeholder="Buscar cirurgias por paciente, procedimento ou cirurgião..."
+              />
             </div>
-            <p class="patient-name">Paciente: João Silva</p>
-            <div class="surgery-details-grid">
-              <div class="detail-item">
-                <span>CIRURGIÃO</span><strong>Dra. Sarah Santos</strong>
-              </div>
-              <div class="detail-item">
-                <span>DURAÇÃO</span
-                ><strong><i class="fa-regular fa-clock"></i> 4–5 horas</strong>
-              </div>
-              <div class="detail-item">
-                <span>SALA</span
-                ><strong><i class="fa-solid fa-location-dot"></i> CC-1</strong>
-              </div>
+            <div class="filter-options">
+              <select id="filtro-status">
+                <option value="">Todos os Status</option>
+                <option value="AGENDADA">Agendada</option>
+                <option value="REALIZADA">Realizada</option>
+                <option value="CANCELADA">Cancelada</option>
+              </select>
+              <input type="date" class="date-input" id="filtro-data" />
             </div>
           </div>
+        </section>
 
-          <div class="surgery-card">
-            <div class="surgery-card-header">
-              <div class="title-group">
-                <h3>Substituição de Joelho</h3>
-                <span class="tag blue-light">Prioridade Normal</span>
-                <span class="tag green-light">Confirmado</span>
-              </div>
-              <div class="date-info">
-                <strong>2026-03-02</strong><span>10:00</span>
-              </div>
-            </div>
-            <p class="patient-name">Paciente: Maria Wilson</p>
-            <div class="surgery-details-grid">
-              <div class="detail-item">
-                <span>CIRURGIÃO</span><strong>Dr. Michael Costa</strong>
-              </div>
-
-              <div class="detail-item">
-                <span>DURAÇÃO</span
-                ><strong><i class="fa-regular fa-clock"></i> 2–3 horas</strong>
-              </div>
-              <div class="detail-item">
-                <span>SALA</span
-                ><strong><i class="fa-solid fa-location-dot"></i> CC-2</strong>
-              </div>
-            </div>
-          </div>
+        <section class="surgery-list" id="cirurgias-lista">
+          <p>Carregando cirurgias...</p>
         </section>
       </main>
     </div>
+    <script>
+      const API_BASE_URL = '';
+      const hoje = new Date().toISOString().slice(0, 10);
+      let cirurgiasCarregadas = [];
+
+      function buscarDados(caminho) {
+        return fetch(API_BASE_URL + caminho)
+          .then(function (resposta) {
+            if (!resposta.ok) {
+              throw new Error('Erro ao buscar ' + caminho);
+            }
+            return resposta.json();
+          });
+      }
+
+      function atualizarTexto(id, valor) {
+        var elemento = document.getElementById(id);
+        if (elemento) {
+          elemento.textContent = valor;
+        }
+      }
+
+      function escaparHtml(valor) {
+        return String(valor || '')
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#039;');
+      }
+
+      function formatarData(dataString) {
+        if (!dataString) {
+          return '-';
+        }
+        return new Date(dataString).toLocaleDateString('pt-BR');
+      }
+
+      function formatarHora(dataString) {
+        if (!dataString) {
+          return '-';
+        }
+        return new Date(dataString).toLocaleTimeString('pt-BR', {
+          hour: '2-digit',
+          minute: '2-digit'
+        });
+      }
+
+      function dataIso(dataString) {
+        if (!dataString) {
+          return '';
+        }
+        return String(dataString).slice(0, 10);
+      }
+
+      function estaNaSemana(dataString) {
+        if (!dataString) {
+          return false;
+        }
+
+        var data = new Date(dataString);
+        var inicio = new Date();
+        inicio.setHours(0, 0, 0, 0);
+        var fim = new Date(inicio);
+        fim.setDate(inicio.getDate() + 7);
+
+        return data >= inicio && data < fim;
+      }
+
+      function obterPaciente(cirurgia) {
+        if (cirurgia.paciente && cirurgia.paciente.name) {
+          return cirurgia.paciente.name;
+        }
+        if (cirurgia.paciente && cirurgia.paciente.nome) {
+          return cirurgia.paciente.nome;
+        }
+        if (cirurgia.user && cirurgia.user.name) {
+          return cirurgia.user.name;
+        }
+        if (cirurgia.nomePaciente) {
+          return cirurgia.nomePaciente;
+        }
+        return 'Paciente não informado';
+      }
+
+      function nomeCirurgiao(cirurgia) {
+        if (cirurgia.medicos && cirurgia.medicos.length > 0) {
+          var medico = cirurgia.medicos[0];
+          return medico.name || medico.nome || 'Médico não informado';
+        }
+        return 'Médico não informado';
+      }
+
+      function assistentesCirurgia(cirurgia) {
+        if (cirurgia.medicos && cirurgia.medicos.length > 1) {
+          return cirurgia.medicos.slice(1).map(function (medico) {
+            return medico.name || medico.nome || 'Médico não informado';
+          }).join(', ');
+        }
+        return 'Assistentes não informados';
+      }
+
+      function salaCirurgica(cirurgia) {
+        if (cirurgia.salaCirurgica && cirurgia.salaCirurgica.number) {
+          return 'CC-' + cirurgia.salaCirurgica.number;
+        }
+        return 'Sala não informada';
+      }
+
+      function duracaoCirurgia(cirurgia) {
+        if (cirurgia.duracao) {
+          return cirurgia.duracao + ' min';
+        }
+        return 'Duração não informada';
+      }
+
+      function statusCirurgia(cirurgia) {
+        if (cirurgia.status === 'ANDAMENTO') {
+          return 'Em andamento';
+        }
+        if (cirurgia.status === 'REALIZADA') {
+          return 'Realizada';
+        }
+        if (cirurgia.status === 'CANCELADA') {
+          return 'Cancelada';
+        }
+        if (cirurgia.status === 'AGENDADA') {
+          return 'Agendada';
+        }
+        return 'Status não informado';
+      }
+
+      function prioridadeCirurgia(cirurgia) {
+        return cirurgia.prioridade || cirurgia.priority || 'Prioridade não informada';
+      }
+
+      function montarCardCirurgia(cirurgia) {
+        return (
+          '<div class="surgery-card">' +
+            '<div class="surgery-card-header">' +
+              '<div class="title-group">' +
+                '<h3>' + escaparHtml(cirurgia.nome || 'Cirurgia sem nome') + '</h3>' +
+                '<span class="tag orange-light">' + escaparHtml(prioridadeCirurgia(cirurgia)) + '</span>' +
+                '<span class="tag purple-light">' + escaparHtml(statusCirurgia(cirurgia)) + '</span>' +
+              '</div>' +
+              '<div class="date-info">' +
+                '<strong>' + escaparHtml(formatarData(cirurgia.dateSurgery)) + '</strong>' +
+                '<span>' + escaparHtml(formatarHora(cirurgia.dateSurgery)) + '</span>' +
+              '</div>' +
+            '</div>' +
+            '<p class="patient-name">Paciente: ' + escaparHtml(obterPaciente(cirurgia)) + '</p>' +
+            '<div class="surgery-details-grid">' +
+              '<div class="detail-item">' +
+                '<span>CIRURGIÃO</span><strong>' + escaparHtml(nomeCirurgiao(cirurgia)) + '</strong>' +
+              '</div>' +
+              '<div class="detail-item">' +
+                '<span>ASSISTENTES</span><strong>' + escaparHtml(assistentesCirurgia(cirurgia)) + '</strong>' +
+              '</div>' +
+              '<div class="detail-item">' +
+                '<span>DURAÇÃO</span><strong><i class="fa-regular fa-clock"></i> ' + escaparHtml(duracaoCirurgia(cirurgia)) + '</strong>' +
+              '</div>' +
+              '<div class="detail-item">' +
+                '<span>SALA</span><strong><i class="fa-solid fa-location-dot"></i> ' + escaparHtml(salaCirurgica(cirurgia)) + '</strong>' +
+              '</div>' +
+            '</div>' +
+          '</div>'
+        );
+      }
+
+      function mostrarCirurgias(cirurgias) {
+        var lista = document.getElementById('cirurgias-lista');
+        if (!lista) {
+          return;
+        }
+
+        if (!cirurgias || cirurgias.length === 0) {
+          lista.innerHTML = '<p>Nenhuma cirurgia encontrada.</p>';
+          return;
+        }
+
+        lista.innerHTML = cirurgias.map(montarCardCirurgia).join('');
+      }
+
+      function aplicarFiltrosCirurgias() {
+        var busca = (document.getElementById('busca-cirurgia')?.value || '').toLowerCase();
+        var statusFiltro = document.getElementById('filtro-status')?.value || '';
+        var dataFiltro = document.getElementById('filtro-data')?.value || '';
+
+        var cirurgiasFiltradas = cirurgiasCarregadas.filter(function (cirurgia) {
+          var paciente = obterPaciente(cirurgia).toLowerCase();
+          var procedimento = (cirurgia.nome || '').toLowerCase();
+          var cirurgiao = nomeCirurgiao(cirurgia).toLowerCase();
+          var status = cirurgia.status || '';
+          var dataCirurgia = dataIso(cirurgia.dateSurgery);
+          var textoBusca = paciente + ' ' + procedimento + ' ' + cirurgiao;
+
+          var correspondeBusca = !busca || textoBusca.indexOf(busca) !== -1;
+          var correspondeStatus = !statusFiltro || status === statusFiltro;
+          var correspondeData = !dataFiltro || dataCirurgia === dataFiltro;
+
+          return correspondeBusca && correspondeStatus && correspondeData;
+        });
+
+        mostrarCirurgias(cirurgiasFiltradas);
+      }
+
+      function carregarCirurgias() {
+        buscarDados('/cirurgias')
+          .then(function (cirurgias) {
+            cirurgias = cirurgias || [];
+            var totalHoje = cirurgias.filter(function (cirurgia) {
+              return cirurgia.dateSurgery && cirurgia.dateSurgery.slice(0, 10) === hoje;
+            }).length;
+            var totalSemana = cirurgias.filter(function (cirurgia) {
+              return estaNaSemana(cirurgia.dateSurgery);
+            }).length;
+            var totalAndamento = cirurgias.filter(function (cirurgia) {
+              return cirurgia.status === 'ANDAMENTO';
+            }).length;
+            var totalRealizadas = cirurgias.filter(function (cirurgia) {
+              return cirurgia.status === 'REALIZADA';
+            }).length;
+            var totalFinalizadas = cirurgias.filter(function (cirurgia) {
+              return cirurgia.status === 'REALIZADA' || cirurgia.status === 'CANCELADA';
+            }).length;
+            var taxaSucesso = totalFinalizadas > 0 ? Math.round((totalRealizadas / totalFinalizadas) * 100) + '%' : '0%';
+
+            cirurgiasCarregadas = cirurgias;
+            atualizarTexto('cirurgias-semana', totalSemana);
+            atualizarTexto('cirurgias-hoje', totalHoje);
+            atualizarTexto('cirurgias-andamento', totalAndamento);
+            atualizarTexto('taxa-sucesso', taxaSucesso);
+            aplicarFiltrosCirurgias();
+          })
+          .catch(function (erro) {
+            console.error('Erro ao carregar cirurgias:', erro);
+            atualizarTexto('cirurgias-semana', '0');
+            atualizarTexto('cirurgias-hoje', '0');
+            atualizarTexto('cirurgias-andamento', '0');
+            atualizarTexto('taxa-sucesso', '0%');
+
+            var lista = document.getElementById('cirurgias-lista');
+            if (lista) {
+              lista.innerHTML = '<p>Não foi possível carregar as cirurgias.</p>';
+            }
+          });
+      }
+
+      document.addEventListener('DOMContentLoaded', function () {
+        carregarCirurgias();
+
+        var busca = document.getElementById('busca-cirurgia');
+        var filtroStatus = document.getElementById('filtro-status');
+        var filtroData = document.getElementById('filtro-data');
+
+        if (busca) {
+          busca.addEventListener('input', aplicarFiltrosCirurgias);
+        }
+        if (filtroStatus) {
+          filtroStatus.addEventListener('change', aplicarFiltrosCirurgias);
+        }
+        if (filtroData) {
+          filtroData.addEventListener('change', aplicarFiltrosCirurgias);
+        }
+      });
+    </script>
   </body>
 </html>
