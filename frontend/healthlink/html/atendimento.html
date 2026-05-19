@@ -85,11 +85,20 @@
         <!-- KPIs -->
         <section class="cards-summary">
           <div class="card-kpi">
+            <div class="kpi-icon icon-green-light">
+              <i class="fa-solid fa-stethoscope"></i>
+            </div>
+            <div class="kpi-data">
+              <span class="kpi-value" id="consultas-hoje">...</span>
+              <span class="kpi-label">Consultas Hoje</span>
+            </div>
+          </div>
+          <div class="card-kpi">
             <div class="kpi-icon icon-blue-light">
               <i class="fa-regular fa-clock"></i>
             </div>
             <div class="kpi-data">
-              <span class="kpi-value">3</span>
+              <span class="kpi-value" id="atendimentos-andamento">...</span>
               <span class="kpi-label">Em Andamento</span>
             </div>
           </div>
@@ -98,44 +107,260 @@
               <i class="fa-regular fa-file-lines"></i>
             </div>
             <div class="kpi-data">
-              <span class="kpi-value">42</span>
+              <span class="kpi-value" id="atendimentos-concluidos">...</span>
               <span class="kpi-label">Concluídos</span>
             </div>
           </div>
         </section>
 
-        <!-- Cards de atendimento -->
-        <section class="attendance-list">
-          <div class="attendance-card">
-            <div class="card-top">
-              <div class="patient-main-info">
-                <div class="avatar-circle blue-solid">JS</div>
-                <div class="name-details">
-                  <h3>João Silva</h3>
-                  <span
-                    ><i class="fa-solid fa-user-doctor"></i> Dra. Sarah Santos
-                    &nbsp;•&nbsp; <i class="fa-regular fa-clock"></i> 2026-03-01
-                    às 09:00</span
-                  >
-                </div>
-              </div>
-              <span class="status-tag finished">Concluído</span>
+        <section class="filter-bar-container">
+          <div class="filter-bar" style="width: 100%">
+            <div class="search-input">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input
+                type="text"
+                id="busca-atendimento"
+                placeholder="Buscar por paciente, médico ou diagnóstico..."
+              />
             </div>
-            <div class="card-body-grid">
-              <div class="info-block">
-                <label>Queixa Principal</label>
-                <p>Dor no peito e falta de ar</p>
-              </div>
-              <div class="info-block"></div>
-            </div>
-            <div class="card-footer">
-              <button class="btn-action-primary">
-                Ver Prontuário Completo
-              </button>
+            <div class="filter-options">
+              <select id="filtro-status">
+                <option value="">Todos os Status</option>
+                <option value="AGENDADO">Agendado</option>
+                <option value="ANDAMENTO">Em andamento</option>
+                <option value="CONCLUIDO">Concluído</option>
+              </select>
+              <input type="date" class="date-input" id="filtro-data" />
             </div>
           </div>
         </section>
+
+        <!-- Cards de atendimento -->
+        <section class="attendance-list" id="atendimentos-lista">
+          <p>Carregando atendimentos...</p>
+        </section>
       </main>
     </div>
+    <script>
+      const API_BASE_URL = '';
+      const hoje = new Date().toISOString().slice(0, 10);
+      let atendimentosCarregados = [];
+
+      function buscarDados(caminho) {
+        return fetch(API_BASE_URL + caminho)
+          .then(function (resposta) {
+            if (!resposta.ok) {
+              throw new Error('Erro ao buscar ' + caminho);
+            }
+            return resposta.json();
+          });
+      }
+
+      function atualizarTexto(id, valor) {
+        var elemento = document.getElementById(id);
+        if (elemento) {
+          elemento.textContent = valor;
+        }
+      }
+
+      function escaparHtml(valor) {
+        return String(valor || '')
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#039;');
+      }
+
+      function formatarData(dataString) {
+        if (!dataString) {
+          return '-';
+        }
+
+        var data = new Date(dataString);
+        return data.toLocaleDateString('pt-BR');
+      }
+
+      function dataIso(dataString) {
+        if (!dataString) {
+          return '';
+        }
+        return String(dataString).slice(0, 10);
+      }
+
+      function obterPaciente(atendimento) {
+        if (atendimento.usuario && atendimento.usuario.name) {
+          return atendimento.usuario.name;
+        }
+        if (atendimento.usuario && atendimento.usuario.nome) {
+          return atendimento.usuario.nome;
+        }
+        return 'Paciente não informado';
+      }
+
+      function obterMedico(atendimento) {
+        if (atendimento.medico && atendimento.medico.name) {
+          return atendimento.medico.name;
+        }
+        if (atendimento.medico && atendimento.medico.nome) {
+          return atendimento.medico.nome;
+        }
+        return '';
+      }
+
+      function iniciais(nome) {
+        return nome
+          .split(' ')
+          .map(function (parte) {
+            return parte.charAt(0);
+          })
+          .join('')
+          .slice(0, 2)
+          .toUpperCase();
+      }
+
+      function statusTexto(status) {
+        if (status === 'CONCLUIDO') {
+          return 'Concluído';
+        }
+        if (status === 'ANDAMENTO') {
+          return 'Em andamento';
+        }
+        return 'Agendado';
+      }
+
+      function statusClasse(status) {
+        if (status === 'CONCLUIDO') {
+          return 'finished';
+        }
+        return 'in-progress';
+      }
+
+      function montarCardAtendimento(atendimento) {
+        var paciente = obterPaciente(atendimento);
+        var status = atendimento.atendimentoStatus || 'AGENDADO';
+        var descricao = atendimento.descricao || 'Descrição não informada';
+        var diagnostico = atendimento.diagnosis || 'Diagnóstico não informado';
+        var data = formatarData(atendimento.service_date);
+
+        return (
+          '<div class="attendance-card">' +
+            '<div class="card-top">' +
+              '<div class="patient-main-info">' +
+                '<div class="avatar-circle blue">' + escaparHtml(iniciais(paciente)) + '</div>' +
+                '<div class="name-details">' +
+                  '<h3>' + escaparHtml(paciente) + '</h3>' +
+                  '<span><i class="fa-regular fa-clock"></i> ' + escaparHtml(data) + '</span>' +
+                '</div>' +
+              '</div>' +
+              '<span class="status-tag ' + statusClasse(status) + '">' + statusTexto(status) + '</span>' +
+            '</div>' +
+            '<div class="card-body-grid">' +
+              '<div class="info-block">' +
+                '<label>Queixa Principal</label>' +
+                '<p>' + escaparHtml(descricao) + '</p>' +
+              '</div>' +
+              '<div class="info-block">' +
+                '<label>Diagnóstico</label>' +
+                '<p>' + escaparHtml(diagnostico) + '</p>' +
+              '</div>' +
+            '</div>' +
+            '<div class="card-footer">' +
+              '<button class="btn-action-primary">Ver Prontuário Completo</button>' +
+            '</div>' +
+          '</div>'
+        );
+      }
+
+      function mostrarAtendimentos(atendimentos) {
+        var lista = document.getElementById('atendimentos-lista');
+        if (!lista) {
+          return;
+        }
+
+        if (!atendimentos || atendimentos.length === 0) {
+          lista.innerHTML = '<p>Nenhum atendimento encontrado.</p>';
+          return;
+        }
+
+        lista.innerHTML = atendimentos.map(montarCardAtendimento).join('');
+      }
+
+      function aplicarFiltrosAtendimentos() {
+        var busca = (document.getElementById('busca-atendimento')?.value || '').toLowerCase();
+        var statusFiltro = document.getElementById('filtro-status')?.value || '';
+        var dataFiltro = document.getElementById('filtro-data')?.value || '';
+
+        var atendimentosFiltrados = atendimentosCarregados.filter(function (atendimento) {
+          var paciente = obterPaciente(atendimento).toLowerCase();
+          var medico = obterMedico(atendimento).toLowerCase();
+          var diagnostico = (atendimento.diagnosis || '').toLowerCase();
+          var descricao = (atendimento.descricao || '').toLowerCase();
+          var status = atendimento.atendimentoStatus || 'AGENDADO';
+          var dataAtendimento = dataIso(atendimento.service_date);
+          var textoBusca = paciente + ' ' + medico + ' ' + diagnostico + ' ' + descricao;
+
+          var correspondeBusca = !busca || textoBusca.indexOf(busca) !== -1;
+          var correspondeStatus = !statusFiltro || status === statusFiltro;
+          var correspondeData = !dataFiltro || dataAtendimento === dataFiltro;
+
+          return correspondeBusca && correspondeStatus && correspondeData;
+        });
+
+        mostrarAtendimentos(atendimentosFiltrados);
+      }
+
+      function carregarAtendimentos() {
+        Promise.all([
+          buscarDados('/atendimentos'),
+          buscarDados('/consultas/por-dia?data=' + hoje)
+        ])
+          .then(function (dados) {
+            var atendimentos = dados[0] || [];
+            var consultasHoje = dados[1] || 0;
+            var emAndamento = atendimentos.filter(function (atendimento) {
+              return atendimento.atendimentoStatus === 'ANDAMENTO';
+            }).length;
+            var concluidos = atendimentos.filter(function (atendimento) {
+              return atendimento.atendimentoStatus === 'CONCLUIDO';
+            }).length;
+
+            atendimentosCarregados = atendimentos;
+            atualizarTexto('consultas-hoje', consultasHoje);
+            atualizarTexto('atendimentos-andamento', emAndamento);
+            atualizarTexto('atendimentos-concluidos', concluidos);
+            aplicarFiltrosAtendimentos();
+          })
+          .catch(function (erro) {
+            console.error('Erro ao carregar atendimentos:', erro);
+            atualizarTexto('consultas-hoje', '0');
+            atualizarTexto('atendimentos-andamento', '0');
+            atualizarTexto('atendimentos-concluidos', '0');
+
+            var lista = document.getElementById('atendimentos-lista');
+            if (lista) {
+              lista.innerHTML = '<p>Não foi possível carregar os atendimentos.</p>';
+            }
+          });
+      }
+
+      document.addEventListener('DOMContentLoaded', function () {
+        carregarAtendimentos();
+
+        var busca = document.getElementById('busca-atendimento');
+        var filtroStatus = document.getElementById('filtro-status');
+        var filtroData = document.getElementById('filtro-data');
+
+        if (busca) {
+          busca.addEventListener('input', aplicarFiltrosAtendimentos);
+        }
+        if (filtroStatus) {
+          filtroStatus.addEventListener('change', aplicarFiltrosAtendimentos);
+        }
+        if (filtroData) {
+          filtroData.addEventListener('change', aplicarFiltrosAtendimentos);
+        }
+      });
+    </script>
   </body>
 </html>
