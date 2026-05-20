@@ -1,9 +1,6 @@
 package com.a3_20261.SistemaHospitalar.config;
 
-import com.a3_20261.SistemaHospitalar.Enum.AtendimentoStatus;
-import com.a3_20261.SistemaHospitalar.Enum.ExameStatus;
-import com.a3_20261.SistemaHospitalar.Enum.StatusCirurgia;
-import com.a3_20261.SistemaHospitalar.Enum.StatusSalaCirurgica;
+import com.a3_20261.SistemaHospitalar.Enum.*;
 import com.a3_20261.SistemaHospitalar.Repository.*;
 import com.a3_20261.SistemaHospitalar.entities.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -105,8 +102,8 @@ public class TestConfig implements CommandLineRunner {
 
         atendimentoRepository.saveAll(Arrays.asList(a1, a2));
 
-        SenhaAtendimento se1 =new SenhaAtendimento("20",null);
-        SenhaAtendimento se2 =new SenhaAtendimento("30",null);
+        SenhaAtendimento se1 =new SenhaAtendimento(null,u1,StatusSenha.ESPERANDO);
+        SenhaAtendimento se2 =new SenhaAtendimento(null,u2,StatusSenha.ESPERANDO);
 
         senhaAtendimentoRepository.saveAll(Arrays.asList(se1,se2));
 

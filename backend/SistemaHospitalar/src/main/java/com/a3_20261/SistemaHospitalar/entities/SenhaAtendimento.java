@@ -1,5 +1,6 @@
 package com.a3_20261.SistemaHospitalar.entities;
 
+import com.a3_20261.SistemaHospitalar.Enum.StatusSenha;
 import jakarta.persistence.*;
 
 import java.io.Serial;
@@ -14,14 +15,18 @@ public class SenhaAtendimento implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String senha;
+    @OneToOne(mappedBy =  "senhaAtendimento")
+    private User user;
+    @Enumerated(EnumType.STRING)
+    private StatusSenha statusSenha;
 
     public SenhaAtendimento() {
     }
 
-    public SenhaAtendimento(String senha, Integer id) {
-        this.senha = senha;
+    public SenhaAtendimento(Integer id, User user, StatusSenha statusSenha) {
         this.id = id;
+        this.user = user;
+        this.statusSenha = statusSenha;
     }
 
     public Integer getId() {
@@ -32,12 +37,20 @@ public class SenhaAtendimento implements Serializable {
         this.id = id;
     }
 
-    public String getSenha() {
-        return senha;
+    public User getUser() {
+        return user;
     }
 
-    public void setSenha(String senha) {
-        this.senha = senha;
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public StatusSenha getStatusSenha() {
+        return statusSenha;
+    }
+
+    public void setStatusSenha(StatusSenha statusSenha) {
+        this.statusSenha = statusSenha;
     }
 
     @Override

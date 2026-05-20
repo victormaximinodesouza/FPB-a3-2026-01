@@ -15,10 +15,23 @@ public class SenhaAtendimentoService {
     @Autowired
     private SenhaAtendimentoRepository senhaAtendimentoRepository;
 
-    @GetMapping
-    public List<SenhaAtendimento> findAll() {
-        return senhaAtendimentoRepository.findAll();
+    public List<SenhaAtendimento> listarFila() {
+        return senhaAtendimentoRepository.findAllByOrderByIdAsc();
     }
 
+    public SenhaAtendimento adicionar(SenhaAtendimento senha) {
+        return senhaAtendimentoRepository.save(senha);
+    }
+
+    public SenhaAtendimento chamarProximo() {
+        List<SenhaAtendimento> fila = listarFila();
+        if (fila.isEmpty()) {
+            return null;
+        }
+        SenhaAtendimento proximo = fila.get(0);
+        senhaAtendimentoRepository.delete(proximo);
+        return proximo;
+    }
 }
+
 

@@ -33,6 +33,9 @@ public class User implements Serializable {
     @OneToMany(mappedBy = "usuario")
     @JsonIgnore
     private List<Atendimento> atendimentos = new ArrayList<>();
+    @OneToOne
+    @JoinColumn(name = "senha_atendimento_id")
+    private SenhaAtendimento senhaAtendimento;
 
 
     public User() {
