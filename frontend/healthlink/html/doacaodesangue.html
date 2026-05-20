@@ -17,37 +17,17 @@
           <i class="fa-solid fa-heart-pulse"></i><span>HealthLink</span>
         </div>
         <nav>
-          <a href="index.html"
-            ><i class="fa-solid fa-table-columns"></i> <span>Dashboard</span></a
-          >
-          <a href="agendamentos.html"
-            ><i class="fa-solid fa-calendar-days"></i>
-            <span>Agendamentos</span></a
-          >
-          <a href="filadeespera.html"
-            ><i class="fa-solid fa-clock"></i> <span>Fila de Espera</span></a
-          >
-          <a href="atendimento.html"
-            ><i class="fa-solid fa-stethoscope"></i> <span>Atendimento</span></a
-          >
-          <a href="cirurgias.html"
-            ><i class="fa-solid fa-heart-pulse"></i> <span>Cirurgias</span></a
-          >
-          <a href="exames.html"
-            ><i class="fa-solid fa-file-medical"></i> <span>Exames</span></a
-          >
-          <a href="doacaodesangue.html" class="active"
-            ><i class="fa-solid fa-droplet"></i>
-            <span>Doação de Sangue</span></a
-          >
-          <a href="usuarios.html"
-            ><i class="fa-solid fa-user-group"></i> <span>Usuários</span></a
-          >
+          <a href="index.html"><i class="fa-solid fa-table-columns"></i> <span>Dashboard</span></a>
+          <a href="agendamentos.html"><i class="fa-solid fa-calendar-days"></i> <span>Agendamentos</span></a>
+          <a href="filadeespera.html"><i class="fa-solid fa-clock"></i> <span>Fila de Espera</span></a>
+          <a href="atendimento.html"><i class="fa-solid fa-stethoscope"></i> <span>Atendimento</span></a>
+          <a href="cirurgias.html"><i class="fa-solid fa-heart-pulse"></i> <span>Cirurgias</span></a>
+          <a href="exames.html"><i class="fa-solid fa-file-medical"></i> <span>Exames</span></a>
+          <a href="doacaodesangue.html" class="active"><i class="fa-solid fa-droplet"></i> <span>Doação de Sangue</span></a>
+          <a href="usuarios.html"><i class="fa-solid fa-user-group"></i> <span>Usuários</span></a>
         </nav>
         <div class="logout">
-          <a href="login.html"
-            ><i class="fa-solid fa-right-from-bracket"></i> <span>Sair</span></a
-          >
+          <a href="login.html"><i class="fa-solid fa-right-from-bracket"></i> <span>Sair</span></a>
         </div>
       </aside>
 
@@ -85,7 +65,7 @@
               <i class="fa-solid fa-droplet"></i>
             </div>
             <div class="kpi-body">
-              <h3 class="kpi-value">185</h3>
+              <h3 class="kpi-value" id="total-unidades">...</h3>
               <p class="kpi-subtext">Unidades Disponíveis</p>
             </div>
           </div>
@@ -93,92 +73,133 @@
 
         <div class="card-base inventory-levels">
           <h3>Níveis de Estoque por Tipo Sanguíneo</h3>
-          <div class="levels-list">
-            <div class="level-row">
-              <div class="level-head">
-                <span><i class="fa-solid fa-droplet icon-ap"></i> A+</span
-                ><span>45 unidades</span>
-              </div>
-              <div class="progress-bar">
-                <div class="progress bar-green" style="width: 85%"></div>
-              </div>
-            </div>
-            <div class="level-row">
-              <div class="level-head">
-                <span><i class="fa-solid fa-droplet icon-an"></i> A-</span
-                ><span
-                  >12 unidades
-                  <i class="fa-solid fa-circle-exclamation warn"></i
-                ></span>
-              </div>
-              <div class="progress-bar">
-                <div class="progress bar-orange" style="width: 25%"></div>
-              </div>
-            </div>
-            <div class="level-row">
-              <div class="level-head">
-                <span><i class="fa-solid fa-droplet icon-bp"></i> B+</span
-                ><span>38 unidades</span>
-              </div>
-              <div class="progress-bar">
-                <div class="progress bar-green" style="width: 70%"></div>
-              </div>
-            </div>
-            <div class="level-row">
-              <div class="level-head">
-                <span><i class="fa-solid fa-droplet icon-bn"></i> B-</span
-                ><span
-                  >8 unidades <i class="fa-solid fa-circle-exclamation warn"></i
-                ></span>
-              </div>
-              <div class="progress-bar">
-                <div class="progress bar-orange" style="width: 15%"></div>
-              </div>
-            </div>
-            <div class="level-row">
-              <div class="level-head">
-                <span><i class="fa-solid fa-droplet icon-abp"></i> AB+</span
-                ><span>15 unidades</span>
-              </div>
-              <div class="progress-bar">
-                <div class="progress bar-blue" style="width: 30%"></div>
-              </div>
-            </div>
-            <div class="level-row">
-              <div class="level-head">
-                <span><i class="fa-solid fa-droplet icon-abn"></i> AB-</span
-                ><span
-                  >5 unidades <i class="fa-solid fa-circle-exclamation warn"></i
-                ></span>
-              </div>
-              <div class="progress-bar">
-                <div class="progress bar-orange" style="width: 10%"></div>
-              </div>
-            </div>
-            <div class="level-row">
-              <div class="level-head">
-                <span><i class="fa-solid fa-droplet icon-op"></i> O+</span
-                ><span>52 unidades</span>
-              </div>
-              <div class="progress-bar">
-                <div class="progress bar-green" style="width: 95%"></div>
-              </div>
-            </div>
-            <div class="level-row">
-              <div class="level-head">
-                <span><i class="fa-solid fa-droplet icon-on"></i> O-</span
-                ><span
-                  >10 unidades
-                  <i class="fa-solid fa-circle-exclamation warn"></i
-                ></span>
-              </div>
-              <div class="progress-bar">
-                <div class="progress bar-orange" style="width: 20%"></div>
-              </div>
-            </div>
+          <div class="levels-list" id="estoque-lista">
+            <p>Carregando estoque...</p>
           </div>
         </div>
       </main>
     </div>
+
+    <script>
+      var API_BASE_URL = 'http://localhost:8080';
+
+      
+      var TIPOS_SANGUINEOS = [
+        { label: 'A+',  chaveApi: 'A_POSITIVO',  icone: 'icon-ap'  },
+        { label: 'A-',  chaveApi: 'A_NEGATIVO',  icone: 'icon-an'  },
+        { label: 'B+',  chaveApi: 'B_POSITIVO',  icone: 'icon-bp'  },
+        { label: 'B-',  chaveApi: 'B_NEGATIVO',  icone: 'icon-bn'  },
+        { label: 'AB+', chaveApi: 'AB_POSITIVO', icone: 'icon-abp' },
+        { label: 'AB-', chaveApi: 'AB_NEGATIVO', icone: 'icon-abn' },
+        { label: 'O+',  chaveApi: 'O_POSITIVO',  icone: 'icon-op'  },
+        { label: 'O-',  chaveApi: 'O_NEGATIVO',  icone: 'icon-on'  }
+      ];
+
+      var CAPACIDADE_MAXIMA = 60;
+      var LIMIAR_ALERTA = 20;
+
+      function buscarTipo(chaveApi) {
+        return fetch(API_BASE_URL + '/doacaoSangue/tipo?tipo=' + chaveApi)
+          .then(function (resposta) {
+            if (!resposta.ok) {
+              throw new Error('Erro ao buscar tipo ' + chaveApi);
+            }
+            return resposta.json();
+          });
+      }
+
+      function atualizarTexto(id, valor) {
+        var elemento = document.getElementById(id);
+        if (elemento) {
+          elemento.textContent = valor;
+        }
+      }
+
+      function escaparHtml(valor) {
+        return String(valor || '')
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#039;');
+      }
+
+      function obterQuantidade(dado) {
+      
+        if (typeof dado === 'number') return dado;
+        return dado.quantity || dado.quantidade || dado.total || dado.units || 0;
+      }
+
+      function calcularPorcentagem(quantidade) {
+        var pct = Math.round((quantidade / CAPACIDADE_MAXIMA) * 100);
+        return Math.min(pct, 100);
+      }
+
+      function classeBarra(porcentagem) {
+        if (porcentagem <= 30) return 'bar-orange';
+        if (porcentagem <= 60) return 'bar-blue';
+        return 'bar-green';
+      }
+
+      function montarLinhaEstoque(tipo, quantidade) {
+        var porcentagem = calcularPorcentagem(quantidade);
+        var classBarra = classeBarra(porcentagem);
+        var alertaHtml = quantidade <= LIMIAR_ALERTA
+          ? ' <i class="fa-solid fa-circle-exclamation warn"></i>'
+          : '';
+
+        return (
+          '<div class="level-row">' +
+            '<div class="level-head">' +
+              '<span><i class="fa-solid fa-droplet ' + escaparHtml(tipo.icone) + '"></i> ' + escaparHtml(tipo.label) + '</span>' +
+              '<span>' + quantidade + ' unidades' + alertaHtml + '</span>' +
+            '</div>' +
+            '<div class="progress-bar">' +
+              '<div class="progress ' + classBarra + '" style="width: ' + porcentagem + '%"></div>' +
+            '</div>' +
+          '</div>'
+        );
+      }
+
+      function carregarEstoque() {
+        var chamadas = TIPOS_SANGUINEOS.map(function (tipo) {
+          return buscarTipo(tipo.chaveApi)
+            .then(function (dado) {
+              return { tipo: tipo, quantidade: obterQuantidade(dado) };
+            })
+            .catch(function () {
+              
+              return { tipo: tipo, quantidade: 0 };
+            });
+        });
+
+        Promise.all(chamadas)
+          .then(function (resultados) {
+            var lista = document.getElementById('estoque-lista');
+            if (!lista) return;
+
+            var total = resultados.reduce(function (soma, item) {
+              return soma + item.quantidade;
+            }, 0);
+
+            atualizarTexto('total-unidades', total);
+            lista.innerHTML = resultados.map(function (item) {
+              return montarLinhaEstoque(item.tipo, item.quantidade);
+            }).join('');
+          })
+          .catch(function (erro) {
+            console.error('Erro ao carregar estoque de sangue:', erro);
+            atualizarTexto('total-unidades', '0');
+            var lista = document.getElementById('estoque-lista');
+            if (lista) {
+              lista.innerHTML = '<p>Não foi possível carregar o estoque de sangue.</p>';
+            }
+          });
+      }
+
+      document.addEventListener('DOMContentLoaded', function () {
+        carregarEstoque();
+      });
+    </script>
   </body>
 </html>
