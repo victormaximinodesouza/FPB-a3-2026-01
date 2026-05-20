@@ -1,111 +1,316 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-br">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="../css/style.css" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <title>HealthLink - Fila de Espera</title>
-  </head>
-  <body>
-    <div class="wrapper">
-      <aside class="sidebar">
+</head>
+<body>
+<div class="wrapper">
+
+    <aside class="sidebar">
         <div class="logo">
-          <i class="fa-solid fa-heart-pulse"></i>
-          <span>HealthLink</span>
+            <i class="fa-solid fa-heart-pulse"></i>
+            <span>HealthLink</span>
         </div>
         <nav>
-          <a href="index.html"
-            ><i class="fa-solid fa-table-columns"></i> <span>Dashboard</span></a
-          >
-          <a href="agendamentos.html"
-            ><i class="fa-solid fa-calendar-days"></i>
-            <span>Agendamentos</span></a
-          >
-          <a href="filadeespera.html" class="active"
-            ><i class="fa-solid fa-clock"></i> <span>Fila de Espera</span></a
-          >
-          <a href="atendimento.html"
-            ><i class="fa-solid fa-stethoscope"></i> <span>Atendimento</span></a
-          >
-          <a href="cirurgias.html"
-            ><i class="fa-solid fa-heart-pulse"></i> <span>Cirurgias</span></a
-          >
-          <a href="exames.html"
-            ><i class="fa-solid fa-file-medical"></i> <span>Exames</span></a
-          >
-          <a href="doacaodesangue.html"
-            ><i class="fa-solid fa-droplet"></i>
-            <span>Doação de Sangue</span></a
-          >
-          <a href="usuarios.html"
-            ><i class="fa-solid fa-user-group"></i> <span>Usuários</span></a
-          >
+            <a href="index.html"><i class="fa-solid fa-table-columns"></i> <span>Dashboard</span></a>
+            <a href="agendamentos.html"><i class="fa-solid fa-calendar-days"></i> <span>Agendamentos</span></a>
+            <a href="filadeespera.html" class="active"><i class="fa-solid fa-clock"></i> <span>Fila de Espera</span></a>
+            <a href="atendimento.html"><i class="fa-solid fa-stethoscope"></i> <span>Atendimento</span></a>
+            <a href="cirurgias.html"><i class="fa-solid fa-heart-pulse"></i> <span>Cirurgias</span></a>
+            <a href="exames.html"><i class="fa-solid fa-file-medical"></i> <span>Exames</span></a>
+            <a href="doacaodesangue.html"><i class="fa-solid fa-droplet"></i> <span>Doação de Sangue</span></a>
+            <a href="usuarios.html"><i class="fa-solid fa-user-group"></i> <span>Usuários</span></a>
         </nav>
         <div class="logout">
-          <a href="login.html"
-            ><i class="fa-solid fa-right-from-bracket"></i> <span>Sair</span></a
-          >
+            <a href="login.html"><i class="fa-solid fa-right-from-bracket"></i> <span>Sair</span></a>
         </div>
-      </aside>
+    </aside>
 
-      <main class="main-content">
+    <main class="main-content">
+
         <header>
-          <div class="header-titles">
-            <h1>Sistema de Gestão Hospitalar</h1>
-            <p>Gestão integrada e distribuída</p>
-          </div>
-          <div class="header-user">
-            <i class="fa-solid fa-bell notification-icon"></i>
-            <i class="fa-solid fa-gear"></i>
-            <div class="user-profile">
-              <div class="user-info">
-                <strong>Dr. Administrador</strong><span>Administrador</span>
-              </div>
-              <div class="avatar">DR</div>
+            <div class="header-titles">
+                <h1>Sistema de Gestão Hospitalar</h1>
+                <p>Gestão integrada e distribuída</p>
             </div>
-          </div>
+            <div class="header-user">
+                <i class="fa-solid fa-bell notification-icon"></i>
+                <i class="fa-solid fa-gear"></i>
+                <div class="user-profile">
+                    <div class="user-info"><strong>Dr. Administrador</strong><span>Administrador</span></div>
+                    <div class="avatar">DR</div>
+                </div>
+            </div>
         </header>
 
         <section class="dashboard-head">
-          <div class="head-left">
-            <h2>Fila de Espera</h2>
-            <small>Pacientes aguardando atendimento em tempo real</small>
-          </div>
-          <button class="btn-primary">
-            <i class="fa-solid fa-user-plus"></i> Chamar Próximo
-          </button>
+            <div class="head-left">
+                <h2>Fila de Espera</h2>
+                <small>Pacientes aguardando atendimento em tempo real</small>
+            </div>
+            <button class="btn-primary">
+                <i class="fa-solid fa-user-plus"></i> Chamar Próximo
+            </button>
         </section>
 
         <section class="cards-summary">
-          <div class="card-kpi">
-            <div class="kpi-icon-container orange">
-              <i class="fa-solid fa-clock"></i>
+            <div class="card-kpi">
+                <div class="kpi-icon-container orange"><i class="fa-solid fa-clock"></i></div>
+                <div class="kpi-body"><h3 class="kpi-value" id="total-aguardando">...</h3><p class="kpi-subtext">Aguardando</p></div>
             </div>
-            <div class="kpi-body">
-              <h3 class="kpi-value">7</h3>
-              <p class="kpi-subtext">Aguardando</p>
+            <div class="card-kpi">
+                <div class="kpi-icon-container blue"><i class="fa-solid fa-stethoscope"></i></div>
+                <div class="kpi-body"><h3 class="kpi-value" id="total-atendimento">...</h3><p class="kpi-subtext">Em Atendimento</p></div>
             </div>
-          </div>
+            <div class="card-kpi">
+                <div class="kpi-icon-container green"><i class="fa-solid fa-hourglass-half"></i></div>
+                <div class="kpi-body"><h3 class="kpi-value" id="tempo-medio">...</h3><p class="kpi-subtext">Tempo Médio de Espera</p></div>
+            </div>
         </section>
-        <section class="filter-bar-container"></section>
 
-        <section class="waiting-list">
-          <div class="waiting-card">
-            <div class="waiting-number">1</div>
-            <div class="avatar-circle blue">JS</div>
-            <div class="waiting-info">
-              <h3>João Silva</h3>
+        <section class="filter-bar-container">
+            <div class="filter-bar" style="width: 100%">
+                <div class="search-box">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" id="busca-fila" placeholder="Buscar paciente na fila...">
+                </div>
+                <div class="filter-options">
+                    <select class="filter-select" id="filtro-status">
+                        <option value="">Todos os Status</option>
+                        <option value="AGENDADA">Aguardando</option>
+                        <option value="ANDAMENTO">Em Atendimento</option>
+                    </select>
+                </div>
             </div>
-
-            <span class="status pending">Aguardando</span>
-            <button class="btn-green">Chamar</button>
-          </div>
         </section>
-      </main>
-    </div>
-  </body>
+
+        <section class="waiting-list" id="fila-lista">
+            <p>Carregando fila de espera...</p>
+        </section>
+
+    </main>
+</div>
+<script>
+    const API_BASE_URL = 'http://localhost:8080';
+    let filaCarregada = [];
+
+    function buscarDados(caminho) {
+        return fetch(API_BASE_URL + caminho)
+            .then(function (resposta) {
+                if (!resposta.ok) {
+                    throw new Error('Erro ao buscar ' + caminho);
+                }
+                return resposta.json();
+            });
+    }
+
+    function atualizarTexto(id, valor) {
+        var elemento = document.getElementById(id);
+        if (elemento) {
+            elemento.textContent = valor;
+        }
+    }
+
+    function escaparHtml(valor) {
+        return String(valor || '')
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
+    }
+
+    function obterPaciente(consulta) {
+        if (consulta.paciente && consulta.paciente.name) {
+            return consulta.paciente.name;
+        }
+        if (consulta.user && consulta.user.name) {
+            return consulta.user.name;
+        }
+        if (consulta.nomePaciente) {
+            return consulta.nomePaciente;
+        }
+        return 'Paciente não informado';
+    }
+
+    function obterMedico(consulta) {
+        if (consulta.medico && consulta.medico.name) {
+            return consulta.medico.name;
+        }
+        if (consulta.medico && consulta.medico.nome) {
+            return consulta.medico.nome;
+        }
+        return 'Médico não informado';
+    }
+
+    function obterEspecialidade(consulta) {
+        if (consulta.medico && consulta.medico.specialty) {
+            return consulta.medico.specialty;
+        }
+        return 'Especialidade não informada';
+    }
+
+    function iniciais(nome) {
+        return nome
+            .split(' ')
+            .map(function (parte) {
+                return parte.charAt(0);
+            })
+            .join('')
+            .slice(0, 2)
+            .toUpperCase();
+    }
+
+    function statusTexto(status) {
+        if (status === 'ANDAMENTO') {
+            return 'Em Atendimento';
+        }
+        return 'Aguardando';
+    }
+
+    function statusClasse(status) {
+        if (status === 'ANDAMENTO') {
+            return 'progress';
+        }
+        return 'pending';
+    }
+
+    function classeBotao(status) {
+        if (status === 'ANDAMENTO') {
+            return 'btn-outline';
+        }
+        return 'btn-green';
+    }
+
+    function textoBotao(status) {
+        if (status === 'ANDAMENTO') {
+            return 'Detalhes';
+        }
+        return 'Chamar';
+    }
+
+    function minutosEspera(consulta) {
+        var data = consulta.data || consulta.date;
+        var hora = consulta.hora || consulta.horario;
+        if (!data || !hora) {
+            return 0;
+        }
+
+        var inicio = new Date(String(data).slice(0, 10) + 'T' + hora);
+        var diferenca = Math.floor((Date.now() - inicio.getTime()) / 60000);
+        return diferenca > 0 ? diferenca : 0;
+    }
+
+    function montarCardFila(consulta, indice) {
+        var paciente = obterPaciente(consulta);
+        var medico = obterMedico(consulta);
+        var especialidade = obterEspecialidade(consulta);
+        var status = consulta.status || 'AGENDADA';
+        var espera = minutosEspera(consulta);
+
+        return (
+            '<div class="waiting-card">' +
+                '<div class="waiting-number">' + (indice + 1) + '</div>' +
+                '<div class="avatar-circle blue">' + escaparHtml(iniciais(paciente)) + '</div>' +
+                '<div class="waiting-info"><h3>' + escaparHtml(paciente) + '</h3><span>' + escaparHtml(especialidade) + ' • ' + escaparHtml(medico) + '</span></div>' +
+                '<div class="wait-time"><i class="fa-regular fa-clock"></i> ' + espera + ' min aguardando</div>' +
+                '<span class="status ' + statusClasse(status) + '">' + statusTexto(status) + '</span>' +
+                '<button class="' + classeBotao(status) + '">' + textoBotao(status) + '</button>' +
+            '</div>'
+        );
+    }
+
+    function mostrarFila(consultas) {
+        var lista = document.getElementById('fila-lista');
+        if (!lista) {
+            return;
+        }
+
+        if (!consultas || consultas.length === 0) {
+            lista.innerHTML = '<p>Nenhum paciente encontrado na fila.</p>';
+            return;
+        }
+
+        lista.innerHTML = consultas.map(montarCardFila).join('');
+    }
+
+    function atualizarIndicadores(consultas) {
+        var aguardando = consultas.filter(function (consulta) {
+            return consulta.status === 'AGENDADA' || !consulta.status;
+        });
+        var emAtendimento = consultas.filter(function (consulta) {
+            return consulta.status === 'ANDAMENTO';
+        });
+        var tempos = aguardando.map(minutosEspera);
+        var media = tempos.length > 0
+            ? Math.round(tempos.reduce(function (total, tempo) { return total + tempo; }, 0) / tempos.length) + ' min'
+            : '0 min';
+
+        atualizarTexto('total-aguardando', aguardando.length);
+        atualizarTexto('total-atendimento', emAtendimento.length);
+        atualizarTexto('tempo-medio', media);
+    }
+
+    function aplicarFiltrosFila() {
+        var busca = (document.getElementById('busca-fila')?.value || '').toLowerCase();
+        var statusFiltro = document.getElementById('filtro-status')?.value || '';
+
+        var filtradas = filaCarregada.filter(function (consulta) {
+            var paciente = obterPaciente(consulta).toLowerCase();
+            var medico = obterMedico(consulta).toLowerCase();
+            var especialidade = obterEspecialidade(consulta).toLowerCase();
+            var status = consulta.status || 'AGENDADA';
+            var textoBusca = paciente + ' ' + medico + ' ' + especialidade;
+
+            var correspondeBusca = !busca || textoBusca.indexOf(busca) !== -1;
+            var correspondeStatus = !statusFiltro || status === statusFiltro;
+
+            return correspondeBusca && correspondeStatus;
+        });
+
+        mostrarFila(filtradas);
+    }
+
+    function carregarFila() {
+        buscarDados('/consultas')
+            .then(function (consultas) {
+                filaCarregada = (consultas || []).filter(function (consulta) {
+                    return consulta.status === 'AGENDADA' || consulta.status === 'ANDAMENTO' || !consulta.status;
+                });
+
+                atualizarIndicadores(filaCarregada);
+                aplicarFiltrosFila();
+            })
+            .catch(function (erro) {
+                console.error('Erro ao carregar fila de espera:', erro);
+                atualizarTexto('total-aguardando', '0');
+                atualizarTexto('total-atendimento', '0');
+                atualizarTexto('tempo-medio', '0 min');
+
+                var lista = document.getElementById('fila-lista');
+                if (lista) {
+                    lista.innerHTML = '<p>Não foi possível carregar a fila de espera.</p>';
+                }
+            });
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        carregarFila();
+
+        var busca = document.getElementById('busca-fila');
+        var filtroStatus = document.getElementById('filtro-status');
+
+        if (busca) {
+            busca.addEventListener('input', aplicarFiltrosFila);
+        }
+        if (filtroStatus) {
+            filtroStatus.addEventListener('change', aplicarFiltrosFila);
+        }
+    });
+</script>
+</body>
 </html>

@@ -17,37 +17,17 @@
           <i class="fa-solid fa-heart-pulse"></i><span>HealthLink</span>
         </div>
         <nav>
-          <a href="index.html"
-            ><i class="fa-solid fa-table-columns"></i> <span>Dashboard</span></a
-          >
-          <a href="agendamentos.html"
-            ><i class="fa-solid fa-calendar-days"></i>
-            <span>Agendamentos</span></a
-          >
-          <a href="filadeespera.html"
-            ><i class="fa-solid fa-clock"></i> <span>Fila de Espera</span></a
-          >
-          <a href="atendimento.html"
-            ><i class="fa-solid fa-stethoscope"></i> <span>Atendimento</span></a
-          >
-          <a href="cirurgias.html"
-            ><i class="fa-solid fa-heart-pulse"></i> <span>Cirurgias</span></a
-          >
-          <a href="exames.html"
-            ><i class="fa-solid fa-file-medical"></i> <span>Exames</span></a
-          >
-          <a href="doacaodesangue.html"
-            ><i class="fa-solid fa-droplet"></i>
-            <span>Doação de Sangue</span></a
-          >
-          <a href="usuarios.html" class="active"
-            ><i class="fa-solid fa-user-group"></i> <span>Usuários</span></a
-          >
+          <a href="index.html"><i class="fa-solid fa-table-columns"></i> <span>Dashboard</span></a>
+          <a href="agendamentos.html"><i class="fa-solid fa-calendar-days"></i> <span>Agendamentos</span></a>
+          <a href="filadeespera.html"><i class="fa-solid fa-clock"></i> <span>Fila de Espera</span></a>
+          <a href="atendimento.html"><i class="fa-solid fa-stethoscope"></i> <span>Atendimento</span></a>
+          <a href="cirurgias.html"><i class="fa-solid fa-heart-pulse"></i> <span>Cirurgias</span></a>
+          <a href="exames.html"><i class="fa-solid fa-file-medical"></i> <span>Exames</span></a>
+          <a href="doacaodesangue.html"><i class="fa-solid fa-droplet"></i> <span>Doação de Sangue</span></a>
+          <a href="usuarios.html" class="active"><i class="fa-solid fa-user-group"></i> <span>Usuários</span></a>
         </nav>
         <div class="logout">
-          <a href="login.html"
-            ><i class="fa-solid fa-right-from-bracket"></i> <span>Sair</span></a
-          >
+          <a href="login.html"><i class="fa-solid fa-right-from-bracket"></i> <span>Sair</span></a>
         </div>
       </aside>
 
@@ -85,22 +65,117 @@
               <i class="fa-solid fa-user-group"></i>
             </div>
             <div class="kpi-body">
-              <h3 class="kpi-value">48</h3>
+              <h3 class="kpi-value" id="total-usuarios">...</h3>
               <p class="kpi-subtext">Total de Usuários</p>
             </div>
           </div>
         </section>
 
-        <section class="users-grid">
-          <div class="user-card">
-            <div class="avatar-large">SS</div>
-            <h3>Dra. Sarah Santos</h3>
-         
-            
-            </div>
-          </div>
+        <section class="users-grid" id="usuarios-grid">
+          <p>Carregando usuários...</p>
         </section>
       </main>
     </div>
+
+    <script>
+      var API_BASE_URL = 'http://localhost:8080';
+
+      function buscarDados(caminho) {
+        return fetch(API_BASE_URL + caminho)
+          .then(function (resposta) {
+            if (!resposta.ok) {
+              throw new Error('Erro ao buscar ' + caminho);
+            }
+            return resposta.json();
+          });
+      }
+
+      function atualizarTexto(id, valor) {
+        var elemento = document.getElementById(id);
+        if (elemento) {
+          elemento.textContent = valor;
+        }
+      }
+
+      function escaparHtml(valor) {
+        return String(valor || '')
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#039;');
+      }
+
+      function obterNome(usuario) {
+        // A API retorna o campo "nome" conforme documentação
+        return usuario.nome || usuario.name || 'Usuário sem nome';
+      }
+
+      function obterEmail(usuario) {
+        return usuario.email || '';
+      }
+
+      function obterCpf(usuario) {
+        return usuario.CPF || '';
+      }
+
+      function iniciais(nome) {
+        return nome
+          .split(' ')
+          .map(function (parte) { return parte.charAt(0); })
+          .join('')
+          .slice(0, 2)
+          .toUpperCase();
+      }
+
+      function montarCardUsuario(usuario) {
+        var nome = obterNome(usuario);
+        var email = obterEmail(usuario);
+        var cpf = obterCpf(usuario);
+
+        return (
+          '<div class="user-card">' +
+            '<div class="avatar-large">' + escaparHtml(iniciais(nome)) + '</div>' +
+            '<h3>' + escaparHtml(nome) + '</h3>' +
+            (email ? '<p class="user-email"><i class="fa-solid fa-envelope"></i> ' + escaparHtml(email) + '</p>' : '') +
+            (cpf ? '<p class="user-cpf"><i class="fa-solid fa-id-card"></i> ' + escaparHtml(String(cpf)) + '</p>' : '') +
+          '</div>'
+        );
+      }
+
+      function mostrarUsuarios(usuarios) {
+        var grid = document.getElementById('usuarios-grid');
+        if (!grid) {
+          return;
+        }
+
+        if (!usuarios || usuarios.length === 0) {
+          grid.innerHTML = '<p>Nenhum usuário encontrado.</p>';
+          return;
+        }
+
+        atualizarTexto('total-usuarios', usuarios.length);
+        grid.innerHTML = usuarios.map(montarCardUsuario).join('');
+      }
+
+      function carregarUsuarios() {
+        buscarDados('/users')
+          .then(function (usuarios) {
+            mostrarUsuarios(usuarios || []);
+          })
+          .catch(function (erro) {
+            console.error('Erro ao carregar usuários:', erro);
+            atualizarTexto('total-usuarios', '0');
+            var grid = document.getElementById('usuarios-grid');
+            if (grid) {
+              grid.innerHTML = '<p>Não foi possível carregar os usuários.</p>';
+            }
+          });
+      }
+
+      document.addEventListener('DOMContentLoaded', function () {
+        carregarUsuarios();
+      });
+    </script>
   </body>
 </html>

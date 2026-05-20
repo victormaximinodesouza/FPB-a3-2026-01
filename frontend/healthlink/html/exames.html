@@ -87,7 +87,7 @@
               <i class="fa-solid fa-flask-vial"></i>
             </div>
             <div class="kpi-body">
-              <span class="kpi-value">156</span
+              <span class="kpi-value" id="exames-total-mes">...</span
               ><span class="kpi-subtext">Total este mês</span>
             </div>
           </div>
@@ -96,7 +96,7 @@
               <i class="fa-solid fa-hourglass-half"></i>
             </div>
             <div class="kpi-body">
-              <span class="kpi-value">24</span
+              <span class="kpi-value" id="exames-pendentes">...</span
               ><span class="kpi-subtext">Pendentes</span>
             </div>
           </div>
@@ -105,7 +105,7 @@
               <i class="fa-solid fa-rotate"></i>
             </div>
             <div class="kpi-body">
-              <span class="kpi-value">8</span
+              <span class="kpi-value" id="exames-andamento">...</span
               ><span class="kpi-subtext">Em Andamento</span>
             </div>
           </div>
@@ -114,8 +114,29 @@
               <i class="fa-solid fa-circle-check"></i>
             </div>
             <div class="kpi-body">
-              <span class="kpi-value">124</span
+              <span class="kpi-value" id="exames-concluidos">...</span
               ><span class="kpi-subtext">Concluídos</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="filter-bar-container">
+          <div class="filter-bar" style="width: 100%">
+            <div class="search-input">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input
+                type="text"
+                id="busca-exame"
+                placeholder="Buscar por paciente, exame ou médico..."
+              />
+            </div>
+            <div class="filter-options">
+              <select id="filtro-status">
+                <option value="">Todos os Status</option>
+                <option value="AGENDADO">Agendado</option>
+                <option value="ANDAMENTO">Em andamento</option>
+                <option value="CONCLUIDO">Concluído</option>
+              </select>
             </div>
           </div>
         </section>
@@ -125,7 +146,7 @@
           <div class="table-head-row">
             <div>
               <h3>Lista de Exames</h3>
-              <p>Mostrando 6 de 156 exames</p>
+              <p id="resumo-exames">Carregando exames...</p>
             </div>
           </div>
 
@@ -139,47 +160,247 @@
                 <th>STATUS</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody id="exames-tabela">
               <tr>
-                <td>
-                  <div class="patient-cell">
-                    <div class="avatar-mini purple">JS</div>
-                    <div>
-                      <strong>João Silva</strong>
-                      <div
-                        style="font-size: 0.72rem; color: var(--text-muted)"
-                      ></div>
-                    </div>
-                  </div>
-                </td>
-                <td>
-                  <div class="exam-type-cell">
-                    <div class="exam-cat-dot lab"></div>
-                    <div>
-                      <strong>Hemograma Completo</strong>
-                      <div style="font-size: 0.72rem; color: var(--text-muted)">
-                        Exame de sangue
-                      </div>
-                    </div>
-                  </div>
-                </td>
-
-                <td>Dra. Sarah Santos</td>
-                <td>
-                  <div>2026-03-01</div>
-                  <div style="font-size: 0.72rem; color: var(--text-muted)">
-                    <i class="fa-regular fa-clock"></i> Agend. 03-02
-                  </div>
-                </td>
-                <td><span class="status-pill scheduled">Agendado</span></td>
-                <td>
-                  <div class="action-btns"></div>
-                </td>
+                <td colspan="5">Carregando exames...</td>
               </tr>
             </tbody>
           </table>
         </section>
       </main>
     </div>
+    <script>
+      const API_BASE_URL = 'http://localhost:8080';
+      const hoje = new Date();
+      let examesCarregados = [];
+
+      function buscarDados(caminho) {
+        return fetch(API_BASE_URL + caminho)
+          .then(function (resposta) {
+            if (!resposta.ok) {
+              throw new Error('Erro ao buscar ' + caminho);
+            }
+            return resposta.json();
+          });
+      }
+
+      function atualizarTexto(id, valor) {
+        var elemento = document.getElementById(id);
+        if (elemento) {
+          elemento.textContent = valor;
+        }
+      }
+
+      function escaparHtml(valor) {
+        return String(valor || '')
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#039;');
+      }
+
+      function formatarData(dataString) {
+        if (!dataString) {
+          return '-';
+        }
+        return new Date(dataString).toLocaleDateString('pt-BR');
+      }
+
+      function obterPaciente(exame) {
+        if (exame.user && exame.user.name) {
+          return exame.user.name;
+        }
+        if (exame.user && exame.user.nome) {
+          return exame.user.nome;
+        }
+        return 'Paciente não informado';
+      }
+
+      function obterMedico(exame) {
+        if (exame.medico && exame.medico.name) {
+          return exame.medico.name;
+        }
+        if (exame.medico && exame.medico.nome) {
+          return exame.medico.nome;
+        }
+        return 'Médico não informado';
+      }
+
+      function iniciais(nome) {
+        return nome
+          .split(' ')
+          .map(function (parte) {
+            return parte.charAt(0);
+          })
+          .join('')
+          .slice(0, 2)
+          .toUpperCase();
+      }
+
+      function tipoTexto(tipo) {
+        if (!tipo) {
+          return 'Tipo não informado';
+        }
+        return tipo
+          .replace(/_/g, ' ')
+          .replace(/\b\w/g, function (letra) {
+            return letra.toUpperCase();
+          });
+      }
+
+      function categoriaExame(tipo) {
+        if (tipo === 'RAIO_X' || tipo === 'Ressonancia_Magnetica') {
+          return 'img';
+        }
+        if (tipo === 'ELETROCARDIOGRAMA') {
+          return 'card';
+        }
+        return 'lab';
+      }
+
+      function statusTexto(status) {
+        if (status === 'CONCLUIDO') {
+          return 'Concluído';
+        }
+        if (status === 'ANDAMENTO') {
+          return 'Em andamento';
+        }
+        return 'Agendado';
+      }
+
+      function statusClasse(status) {
+        if (status === 'CONCLUIDO') {
+          return 'finished-green';
+        }
+        return 'scheduled';
+      }
+
+      function dataExame(exame) {
+        return exame.date_request || exame.Date_request || exame.dateRequest;
+      }
+
+      function montarLinhaExame(exame) {
+        var paciente = obterPaciente(exame);
+        var medico = obterMedico(exame);
+        var tipo = exame.tipo || exame.exameTipo;
+        var status = exame.status || exame.exameStatus || 'AGENDADO';
+        var data = dataExame(exame);
+
+        return (
+          '<tr>' +
+            '<td>' +
+              '<div class="patient-cell">' +
+                '<div class="avatar-mini purple">' + escaparHtml(iniciais(paciente)) + '</div>' +
+                '<div><strong>' + escaparHtml(paciente) + '</strong></div>' +
+              '</div>' +
+            '</td>' +
+            '<td>' +
+              '<div class="exam-type-cell">' +
+                '<div class="exam-cat-dot ' + categoriaExame(tipo) + '"></div>' +
+                '<div><strong>' + escaparHtml(tipoTexto(tipo)) + '</strong></div>' +
+              '</div>' +
+            '</td>' +
+            '<td>' + escaparHtml(medico) + '</td>' +
+            '<td><div>' + escaparHtml(formatarData(data)) + '</div></td>' +
+            '<td><span class="status-pill ' + statusClasse(status) + '">' + statusTexto(status) + '</span></td>' +
+          '</tr>'
+        );
+      }
+
+      function mostrarExames(exames) {
+        var tabela = document.getElementById('exames-tabela');
+        if (!tabela) {
+          return;
+        }
+
+        atualizarTexto('resumo-exames', 'Mostrando ' + exames.length + ' de ' + examesCarregados.length + ' exames');
+
+        if (!exames || exames.length === 0) {
+          tabela.innerHTML = '<tr><td colspan="5">Nenhum exame encontrado.</td></tr>';
+          return;
+        }
+
+        tabela.innerHTML = exames.map(montarLinhaExame).join('');
+      }
+
+      function atualizarIndicadores(exames, totalMes) {
+        var pendentes = exames.filter(function (exame) {
+          return exame.status === 'AGENDADO' || exame.exameStatus === 'AGENDADO' || !exame.status;
+        }).length;
+        var andamento = exames.filter(function (exame) {
+          return exame.status === 'ANDAMENTO' || exame.exameStatus === 'ANDAMENTO';
+        }).length;
+        var concluidos = exames.filter(function (exame) {
+          return exame.status === 'CONCLUIDO' || exame.exameStatus === 'CONCLUIDO';
+        }).length;
+
+        atualizarTexto('exames-total-mes', totalMes);
+        atualizarTexto('exames-pendentes', pendentes);
+        atualizarTexto('exames-andamento', andamento);
+        atualizarTexto('exames-concluidos', concluidos);
+      }
+
+      function aplicarFiltrosExames() {
+        var busca = (document.getElementById('busca-exame')?.value || '').toLowerCase();
+        var statusFiltro = document.getElementById('filtro-status')?.value || '';
+
+        var filtrados = examesCarregados.filter(function (exame) {
+          var paciente = obterPaciente(exame).toLowerCase();
+          var medico = obterMedico(exame).toLowerCase();
+          var tipo = tipoTexto(exame.tipo || exame.exameTipo).toLowerCase();
+          var status = exame.status || exame.exameStatus || 'AGENDADO';
+          var textoBusca = paciente + ' ' + medico + ' ' + tipo;
+
+          var correspondeBusca = !busca || textoBusca.indexOf(busca) !== -1;
+          var correspondeStatus = !statusFiltro || status === statusFiltro;
+
+          return correspondeBusca && correspondeStatus;
+        });
+
+        mostrarExames(filtrados);
+      }
+
+      function carregarExames() {
+        Promise.all([
+          buscarDados('/exames'),
+          buscarDados('/exames/por-mes?mes=' + (hoje.getMonth() + 1) + '&ano=' + hoje.getFullYear())
+        ])
+          .then(function (dados) {
+            examesCarregados = dados[0] || [];
+            var totalMes = dados[1] || 0;
+
+            atualizarIndicadores(examesCarregados, totalMes);
+            aplicarFiltrosExames();
+          })
+          .catch(function (erro) {
+            console.error('Erro ao carregar exames:', erro);
+            atualizarTexto('exames-total-mes', '0');
+            atualizarTexto('exames-pendentes', '0');
+            atualizarTexto('exames-andamento', '0');
+            atualizarTexto('exames-concluidos', '0');
+            atualizarTexto('resumo-exames', 'Não foi possível carregar os exames.');
+
+            var tabela = document.getElementById('exames-tabela');
+            if (tabela) {
+              tabela.innerHTML = '<tr><td colspan="5">Não foi possível carregar os exames.</td></tr>';
+            }
+          });
+      }
+
+      document.addEventListener('DOMContentLoaded', function () {
+        carregarExames();
+
+        var busca = document.getElementById('busca-exame');
+        var filtroStatus = document.getElementById('filtro-status');
+
+        if (busca) {
+          busca.addEventListener('input', aplicarFiltrosExames);
+        }
+        if (filtroStatus) {
+          filtroStatus.addEventListener('change', aplicarFiltrosExames);
+        }
+      });
+    </script>
   </body>
 </html>
