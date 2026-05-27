@@ -19,7 +19,6 @@ public class JWTService {
         SecretKey key = Keys.hmacShaKeyFor(
                 SECRET_KEY.getBytes(StandardCharsets.UTF_8)
         );
-
         return Jwts.builder()
                 .subject(email)
                 .issuedAt(new Date())
@@ -27,5 +26,4 @@ public class JWTService {
                 .signWith(key)
                 .compact();
     }
-
 }
