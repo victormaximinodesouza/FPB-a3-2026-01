@@ -54,7 +54,7 @@
             <h2>Gestão de Doação de Sangue</h2>
             <small>Gerenciar doações de sangue e estoque</small>
           </div>
-          <button class="btn-primary">
+          <button class="btn-primary" id="abrir-modal-doacao">
             <i class="fa-solid fa-plus"></i> Nova Doação
           </button>
         </section>
@@ -78,6 +78,51 @@
           </div>
         </div>
       </main>
+    </div>
+
+    <div class="modal-overlay" id="modal-doacao" aria-hidden="true">
+      <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="modal-doacao-titulo">
+        <div class="modal-header">
+          <div>
+            <h3 id="modal-doacao-titulo">Nova Doação</h3>
+            <p>Registre a entrada de bolsas no estoque.</p>
+          </div>
+          <button class="modal-close" id="fechar-modal-doacao" type="button" aria-label="Fechar">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+
+        <form id="form-doacao" class="modal-form">
+          <label>
+            Tipo sanguíneo
+            <select id="tipo-doacao" required>
+              <option value="">Selecione</option>
+              <option value="A_POSITIVO">A+</option>
+              <option value="A_NEGATIVO">A-</option>
+              <option value="B_POSITIVO">B+</option>
+              <option value="B_NEGATIVO">B-</option>
+              <option value="AB_POSITIVO">AB+</option>
+              <option value="AB_NEGATIVO">AB-</option>
+              <option value="O_POSITIVO">O+</option>
+              <option value="O_NEGATIVO">O-</option>
+            </select>
+          </label>
+
+          <label>
+            Quantidade de bolsas
+            <input id="quantidade-doacao" type="number" min="1" step="1" required />
+          </label>
+
+          <p class="form-message" id="mensagem-doacao"></p>
+
+          <div class="modal-actions">
+            <button class="btn-secondary" id="cancelar-doacao" type="button">Cancelar</button>
+            <button class="btn-primary" id="salvar-doacao" type="submit">
+              <i class="fa-solid fa-floppy-disk"></i> Salvar
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
 
     <script>
@@ -106,6 +151,19 @@
             }
             return resposta.json();
           });
+      }
+
+      function registrarDoacao(tipo, quantidade) {
+        var params = '?tipo=' + encodeURIComponent(tipo) + '&quantidade=' + encodeURIComponent(quantidade);
+
+        return fetch(API_BASE_URL + '/doacaoSangue' + params, {
+          method: 'POST'
+        }).then(function (resposta) {
+          if (!resposta.ok) {
+            throw new Error('Erro ao registrar doação');
+          }
+          return resposta.json();
+        });
       }
 
       function atualizarTexto(id, valor) {
@@ -197,8 +255,90 @@
           });
       }
 
+      function abrirModalDoacao() {
+        var modal = document.getElementById('modal-doacao');
+        var mensagem = document.getElementById('mensagem-doacao');
+
+        if (mensagem) {
+          mensagem.textContent = '';
+          mensagem.className = 'form-message';
+        }
+
+        if (modal) {
+          modal.classList.add('is-open');
+          modal.setAttribute('aria-hidden', 'false');
+        }
+      }
+
+      function fecharModalDoacao() {
+        var modal = document.getElementById('modal-doacao');
+        var form = document.getElementById('form-doacao');
+
+        if (modal) {
+          modal.classList.remove('is-open');
+          modal.setAttribute('aria-hidden', 'true');
+        }
+
+        if (form) {
+          form.reset();
+        }
+      }
+
+      function mostrarMensagemDoacao(texto, tipo) {
+        var mensagem = document.getElementById('mensagem-doacao');
+        if (!mensagem) return;
+
+        mensagem.textContent = texto;
+        mensagem.className = 'form-message ' + (tipo || '');
+      }
+
+      function enviarDoacao(evento) {
+        evento.preventDefault();
+
+        var tipo = document.getElementById('tipo-doacao').value;
+        var quantidade = Number(document.getElementById('quantidade-doacao').value);
+        var botaoSalvar = document.getElementById('salvar-doacao');
+
+        if (!tipo || !quantidade || quantidade < 1) {
+          mostrarMensagemDoacao('Informe o tipo sanguíneo e uma quantidade válida.', 'error');
+          return;
+        }
+
+        if (botaoSalvar) {
+          botaoSalvar.disabled = true;
+          botaoSalvar.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Salvando';
+        }
+
+        registrarDoacao(tipo, quantidade)
+          .then(function () {
+            mostrarMensagemDoacao('Doação registrada com sucesso.', 'success');
+            carregarEstoque();
+            setTimeout(fecharModalDoacao, 700);
+          })
+          .catch(function (erro) {
+            console.error('Erro ao registrar doação:', erro);
+            mostrarMensagemDoacao('Não foi possível registrar a doação.', 'error');
+          })
+          .finally(function () {
+            if (botaoSalvar) {
+              botaoSalvar.disabled = false;
+              botaoSalvar.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Salvar';
+            }
+          });
+      }
+
       document.addEventListener('DOMContentLoaded', function () {
         carregarEstoque();
+
+        document.getElementById('abrir-modal-doacao').addEventListener('click', abrirModalDoacao);
+        document.getElementById('fechar-modal-doacao').addEventListener('click', fecharModalDoacao);
+        document.getElementById('cancelar-doacao').addEventListener('click', fecharModalDoacao);
+        document.getElementById('form-doacao').addEventListener('submit', enviarDoacao);
+        document.getElementById('modal-doacao').addEventListener('click', function (evento) {
+          if (evento.target.id === 'modal-doacao') {
+            fecharModalDoacao();
+          }
+        });
       });
     </script>
   </body>
