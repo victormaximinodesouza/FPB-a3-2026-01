@@ -27,5 +27,5 @@ public class JWTService {
                 .signWith(key)
                 .compact();
     }
-    
+
 }
