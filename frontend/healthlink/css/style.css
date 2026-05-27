@@ -399,6 +399,13 @@ select:focus, .filter-select:focus { border-color: var(--green-mid); }
 }
 .btn-outline:hover { border-color: var(--green-mid); color: var(--green-mid); }
 
+.btn-secondary {
+  background: var(--bg-white); color: var(--text-dark);
+  border: 1px solid var(--border); border-radius: var(--radius-sm);
+  padding: 10px 16px; font-size: .875rem; font-weight: 600;
+}
+.btn-secondary:hover { border-color: var(--green-mid); color: var(--green-mid); }
+
 .btn-action-primary {
   background: var(--green-mid); color: var(--text-white);
   border: none; border-radius: var(--radius-sm);
@@ -702,6 +709,52 @@ tbody tr:hover { background: #f9fafb; }
 .blood-badge.b-neg  { background: #fef3c7; color: #92400e; }
 .blood-badge.a-neg  { background: #d1fae5; color: #065f46; }
 .blood-badge.o-pos  { background: #fee2e2; color: #991b1b; }
+
+.modal-overlay {
+  position: fixed; inset: 0; z-index: 200;
+  display: none; align-items: center; justify-content: center;
+  padding: 24px; background: rgba(17,24,39,.45);
+}
+.modal-overlay.is-open { display: flex; }
+
+.modal-box {
+  width: min(460px, 100%); background: var(--bg-white);
+  border: 1px solid var(--border); border-radius: var(--radius);
+  box-shadow: var(--shadow-md); padding: 20px;
+}
+
+.modal-header {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  gap: 16px; margin-bottom: 18px;
+}
+.modal-header h3 { font-size: 1.05rem; font-weight: 700; }
+.modal-header p { color: var(--text-muted); font-size: .82rem; margin-top: 3px; }
+
+.modal-close {
+  width: 34px; height: 34px; border: 1px solid var(--border);
+  border-radius: var(--radius-sm); background: var(--bg-white);
+  color: var(--text-muted); display: flex; align-items: center; justify-content: center;
+}
+.modal-close:hover { color: var(--green-mid); border-color: var(--green-mid); }
+
+.modal-form { display: flex; flex-direction: column; gap: 14px; }
+.modal-form label {
+  display: flex; flex-direction: column; gap: 7px;
+  font-size: .84rem; font-weight: 600;
+}
+.modal-form input, .modal-form select {
+  width: 100%; border: 1px solid var(--border); border-radius: var(--radius-sm);
+  padding: 10px 12px; font-size: .9rem; outline: none;
+}
+.modal-form input:focus, .modal-form select:focus { border-color: var(--green-mid); }
+
+.modal-actions {
+  display: flex; justify-content: flex-end; gap: 10px;
+  margin-top: 4px;
+}
+.form-message { min-height: 18px; font-size: .82rem; color: var(--text-muted); }
+.form-message.success { color: var(--green-mid); }
+.form-message.error { color: var(--red-mid); }
 
 /* ============================================================
    FILA DE ESPERA
