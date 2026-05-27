@@ -80,8 +80,8 @@ public class TestConfig implements CommandLineRunner {
 
         salaCirurgicaRepository.saveAll(Arrays.asList(s1,s2));
 
-        User u1 =new User(null,"adm1",1111111111,null,"rua da macaxeira","adm1@gmail.com","2",null,new ArrayList<>(),new ArrayList<>());
-        User u2 =new User(null,"adm2",111113311,null,"rua da severina","adm2@gmail.com","3",null,new ArrayList<>(),new ArrayList<>());
+        User u1 =new User(null,"adm1",1111111111,null,"rua da macaxeira","adm1@gmail.com","2",null,null,new ArrayList<>(),new ArrayList<>());
+        User u2 =new User(null,"adm2",111113311,null,"rua da severina","adm2@gmail.com",null,"3",null,new ArrayList<>(),new ArrayList<>());
 
         userRepository.saveAll(Arrays.asList(u1,u2));
 

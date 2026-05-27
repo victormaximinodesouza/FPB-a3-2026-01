@@ -25,6 +25,7 @@ public class User implements Serializable {
     private String address;
     private String number;
     private String email;
+    private String senha;
     @OneToOne(mappedBy = "user")
     @JsonIgnoreProperties("user")
     private Prontuario prontuario;
@@ -41,13 +42,14 @@ public class User implements Serializable {
     public User() {
     }
 
-    public User(Integer id, String nome, Integer CPF, Date dateBirth, String address, String email, String number,Prontuario prontuario,List<Exame> exames,List<Atendimento> atendimentos) {
+    public User(Integer id, String nome, Integer CPF, Date dateBirth, String address, String email,String senha, String number,Prontuario prontuario,List<Exame> exames,List<Atendimento> atendimentos) {
         this.id = id;
         this.nome = nome;
         this.CPF = CPF;
         this.dateBirth = dateBirth;
         this.address = address;
         this.email = email;
+        this.senha = senha;
         this.number = number;
         this.prontuario = prontuario;
         this.exames = exames;
@@ -62,6 +64,12 @@ public class User implements Serializable {
         this.email = email;
     }
 
+    public String getSenha() {
+        return senha;
+    }
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
     public Integer getId() {
         return id;
     }

@@ -1,5 +1,6 @@
 package com.a3_20261.SistemaHospitalar.resources;
 
+import com.a3_20261.SistemaHospitalar.DTO.LoginDTO;
 import com.a3_20261.SistemaHospitalar.DTO.UserDTO;
 import com.a3_20261.SistemaHospitalar.Repository.UserRepository;
 import com.a3_20261.SistemaHospitalar.entities.Prontuario;
@@ -37,6 +38,14 @@ public class UserResources {
         return userService.insert(user);
 
     }
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody LoginDTO loginDTO) {
+
+        String token =userService.login(loginDTO);
+
+        return ResponseEntity.ok(token);
+    }
+
 
     }
 
