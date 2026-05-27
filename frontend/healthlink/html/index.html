@@ -146,7 +146,15 @@
 </div>
 <script>
     var API_BASE_URL = 'http://localhost:8080';
-    var hoje = new Date().toISOString().slice(0, 10);
+
+    function formatarDataLocal(data) {
+        var ano = data.getFullYear();
+        var mes = String(data.getMonth() + 1).padStart(2, '0');
+        var dia = String(data.getDate()).padStart(2, '0');
+        return ano + '-' + mes + '-' + dia;
+    }
+
+    var hoje = formatarDataLocal(new Date());
 
     function atualizarTexto(id, valor) {
         var elemento = document.getElementById(id);
@@ -331,12 +339,30 @@
 
     function carregarDashboard() {
         Promise.all([
-            buscarDados('/users/totalPacientes'),
-            buscarDados('/consultas/por-dia?data=' + hoje),
-            buscarDados('/cirurgias/total-agendadas'),
-            buscarDados('/consultas/por-dia/lista?data=' + hoje),
-            buscarDados('/consultas'),
-            buscarDados('/cirurgias')
+            buscarDados('/users/totalPacientes').catch(function(erro) {
+                console.error('Erro ao carregar total de pacientes:', erro);
+                return 0;
+            }),
+            buscarDados('/consultas/por-dia?data=' + hoje).catch(function(erro) {
+                console.error('Erro ao carregar consultas de hoje:', erro);
+                return 0;
+            }),
+            buscarDados('/cirurgias/total-agendadas').catch(function(erro) {
+                console.error('Erro ao carregar cirurgias agendadas:', erro);
+                return 0;
+            }),
+            buscarDados('/consultas/por-dia/lista?data=' + hoje).catch(function(erro) {
+                console.error('Erro ao carregar lista de consultas de hoje:', erro);
+                return [];
+            }),
+            buscarDados('/consultas').catch(function(erro) {
+                console.error('Erro ao carregar consultas:', erro);
+                return [];
+            }),
+            buscarDados('/cirurgias').catch(function(erro) {
+                console.error('Erro ao carregar cirurgias:', erro);
+                return [];
+            })
         ])
         .then(function(dados) {
             var totalPacientes = dados[0];
