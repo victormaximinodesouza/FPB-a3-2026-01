@@ -208,46 +208,31 @@
       }
 
       function obterPaciente(exame) {
-        if (!exame) {
-          return 'Paciente não informado';
-        }
-        if (exame.usuario && exame.usuario.nome) {
-          return exame.usuario.nome;
-        }
-        if (exame.usuario && exame.usuario.name) {
-          return exame.usuario.name;
-        }
-        if (exame.paciente && exame.paciente.nome) {
-          return exame.paciente.nome;
-        }
-        if (exame.paciente && exame.paciente.name) {
-          return exame.paciente.name;
-        }
-        if (exame.user && exame.user.nome) {
-          return exame.user.nome;
-        }
-        if (exame.user && exame.user.name) {
-          return exame.user.name;
-        }
-        if (exame.nomePaciente) {
-          return exame.nomePaciente;
-        }
-        if (exame.pacienteNome) {
-          return exame.pacienteNome;
-        }
-        if (exame.nome) {
-          return exame.nome;
-        }
+        if (!exame) return 'Paciente não informado';
+        // consulta aninhada (ex: exame.consulta.usuario)
+        if (exame.consulta && exame.consulta.usuario && (exame.consulta.usuario.nome || exame.consulta.usuario.name))
+          return exame.consulta.usuario.nome || exame.consulta.usuario.name;
+        if (exame.consulta && exame.consulta.user && (exame.consulta.user.nome || exame.consulta.user.name))
+          return exame.consulta.user.nome || exame.consulta.user.name;
+        if (exame.consulta && exame.consulta.paciente && (exame.consulta.paciente.nome || exame.consulta.paciente.name))
+          return exame.consulta.paciente.nome || exame.consulta.paciente.name;
+        // direto no exame
+        if (exame.usuario)  return exame.usuario.nome  || exame.usuario.name  || null;
+        if (exame.paciente) return exame.paciente.nome || exame.paciente.name || null;
+        if (exame.user)     return exame.user.nome     || exame.user.name     || null;
+        if (exame.nomePaciente) return exame.nomePaciente;
+        if (exame.pacienteNome) return exame.pacienteNome;
+        if (exame.nome)         return exame.nome;
         return 'Paciente não informado';
       }
 
       function obterMedico(exame) {
-        if (exame.medico && exame.medico.name) {
-          return exame.medico.name;
-        }
-        if (exame.medico && exame.medico.nome) {
-          return exame.medico.nome;
-        }
+        if (!exame) return 'Médico não informado';
+        // consulta aninhada
+        if (exame.consulta && exame.consulta.medico)
+          return exame.consulta.medico.name || exame.consulta.medico.nome || null;
+        if (exame.medico) return exame.medico.name || exame.medico.nome || null;
+        if (exame.nomeMedico) return exame.nomeMedico;
         return 'Médico não informado';
       }
 
@@ -388,27 +373,23 @@
 
       function carregarExames() {
         Promise.all([
-          buscarDados('/exames'),
-          buscarDados('/exames/por-mes?mes=' + (hoje.getMonth() + 1) + '&ano=' + hoje.getFullYear())
+          buscarDados('/exames').catch(function () { return []; }),
+          buscarDados('/exames/por-mes?mes=' + (hoje.getMonth() + 1) + '&ano=' + hoje.getFullYear()).catch(function () { return 0; })
         ])
           .then(function (dados) {
             examesCarregados = dados[0] || [];
-            var totalMes = dados[1] || 0;
+            var totalMes = dados[1] || examesCarregados.length;
+
+            if (examesCarregados.length > 0) {
+              console.log('[EXAMES] primeiro registro:', JSON.stringify(examesCarregados[0], null, 2));
+            }
 
             atualizarIndicadores(examesCarregados, totalMes);
             aplicarFiltrosExames();
-          })
-          .catch(function (erro) {
-            console.error('Erro ao carregar exames:', erro);
-            atualizarTexto('exames-total-mes', '0');
-            atualizarTexto('exames-pendentes', '0');
-            atualizarTexto('exames-andamento', '0');
-            atualizarTexto('exames-concluidos', '0');
-            atualizarTexto('resumo-exames', 'Não foi possível carregar os exames.');
 
-            var tabela = document.getElementById('exames-tabela');
-            if (tabela) {
-              tabela.innerHTML = '<tr><td colspan="5">Não foi possível carregar os exames.</td></tr>';
+            if (examesCarregados.length === 0) {
+              var tabela = document.getElementById('exames-tabela');
+              if (tabela) tabela.innerHTML = '<tr><td colspan="5">Nenhum exame encontrado.</td></tr>';
             }
           });
       }
