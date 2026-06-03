@@ -208,11 +208,35 @@
       }
 
       function obterPaciente(exame) {
-        if (exame.user && exame.user.name) {
-          return exame.user.name;
+        if (!exame) {
+          return 'Paciente não informado';
+        }
+        if (exame.usuario && exame.usuario.nome) {
+          return exame.usuario.nome;
+        }
+        if (exame.usuario && exame.usuario.name) {
+          return exame.usuario.name;
+        }
+        if (exame.paciente && exame.paciente.nome) {
+          return exame.paciente.nome;
+        }
+        if (exame.paciente && exame.paciente.name) {
+          return exame.paciente.name;
         }
         if (exame.user && exame.user.nome) {
           return exame.user.nome;
+        }
+        if (exame.user && exame.user.name) {
+          return exame.user.name;
+        }
+        if (exame.nomePaciente) {
+          return exame.nomePaciente;
+        }
+        if (exame.pacienteNome) {
+          return exame.pacienteNome;
+        }
+        if (exame.nome) {
+          return exame.nome;
         }
         return 'Paciente não informado';
       }
@@ -228,8 +252,9 @@
       }
 
       function iniciais(nome) {
-        return nome
+        return String(nome || '-')
           .split(' ')
+          .filter(Boolean)
           .map(function (parte) {
             return parte.charAt(0);
           })
