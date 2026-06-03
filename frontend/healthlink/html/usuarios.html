@@ -54,7 +54,7 @@
             <h2>Usuários do Sistema</h2>
             <small>Gerenciar médicos, enfermeiros e administradores</small>
           </div>
-          <button class="btn-primary">
+          <button class="btn-primary" type="button" id="abrir-modal-usuario">
             <i class="fa-solid fa-user-plus"></i> Novo Usuário
           </button>
         </section>
@@ -77,24 +77,56 @@
       </main>
     </div>
 
+    <div class="modal-overlay" id="modal-usuario" aria-hidden="true">
+      <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="modal-usuario-titulo">
+        <div class="modal-header">
+          <div>
+            <h3 id="modal-usuario-titulo">Novo Usuário</h3>
+            <p>Cadastre um usuário para exibir na lista</p>
+          </div>
+          <button class="modal-close" id="fechar-modal-usuario" type="button" aria-label="Fechar">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+
+        <form id="form-usuario" class="modal-form">
+          <label for="usuario-nome">Nome</label>
+          <input type="text" id="usuario-nome" required placeholder="Nome completo" />
+
+          <label for="usuario-email">E-mail</label>
+          <input type="email" id="usuario-email" placeholder="email@exemplo.com" />
+
+          <label for="usuario-cpf">CPF</label>
+          <input type="text" id="usuario-cpf" inputmode="numeric" placeholder="Somente números" />
+
+          <p class="form-message" id="mensagem-usuario"></p>
+
+          <div class="modal-actions">
+            <button class="btn-outline" id="cancelar-usuario" type="button">Cancelar</button>
+            <button class="btn-primary" type="submit">Cadastrar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
     <script>
       var API_BASE_URL = 'http://localhost:8080';
+      var USUARIOS_LOCAIS_KEY = 'healthlink_usuarios_locais';
+      var usuariosCarregados = [];
+
+      
 
       function buscarDados(caminho) {
         return fetch(API_BASE_URL + caminho)
           .then(function (resposta) {
-            if (!resposta.ok) {
-              throw new Error('Erro ao buscar ' + caminho);
-            }
+            if (!resposta.ok) throw new Error('Erro ao buscar ' + caminho);
             return resposta.json();
           });
       }
 
       function atualizarTexto(id, valor) {
-        var elemento = document.getElementById(id);
-        if (elemento) {
-          elemento.textContent = valor;
-        }
+        var el = document.getElementById(id);
+        if (el) el.textContent = valor;
       }
 
       function escaparHtml(valor) {
@@ -106,75 +138,185 @@
           .replace(/'/g, '&#039;');
       }
 
-      function obterNome(usuario) {
-        // A API retorna o campo "nome" conforme documentação
-        return usuario.nome || usuario.name || 'Usuário sem nome';
-      }
-
-      function obterEmail(usuario) {
-        return usuario.email || '';
-      }
-
-      function obterCpf(usuario) {
-        return usuario.CPF || '';
-      }
-
       function iniciais(nome) {
-        return nome
+        return String(nome || '-')
           .split(' ')
-          .map(function (parte) { return parte.charAt(0); })
+          .filter(Boolean)
+          .map(function (p) { return p.charAt(0); })
           .join('')
           .slice(0, 2)
           .toUpperCase();
       }
 
+      function obterNome(u)  { return u.nome  || u.name  || 'Usuário sem nome'; }
+      function obterEmail(u) { return u.email || ''; }
+      function obterCpf(u)   { return u.CPF   || u.cpf   || ''; }
+
+      
+
+      function lerUsuariosLocais() {
+        try { return JSON.parse(localStorage.getItem(USUARIOS_LOCAIS_KEY)) || []; }
+        catch (e) { return []; }
+      }
+
+      function salvarUsuariosLocais(lista) {
+        localStorage.setItem(USUARIOS_LOCAIS_KEY, JSON.stringify(lista));
+      }
+
+      
+
       function montarCardUsuario(usuario) {
-        var nome = obterNome(usuario);
+        var nome  = obterNome(usuario);
         var email = obterEmail(usuario);
-        var cpf = obterCpf(usuario);
+        var cpf   = obterCpf(usuario);
 
         return (
           '<div class="user-card">' +
             '<div class="avatar-large">' + escaparHtml(iniciais(nome)) + '</div>' +
             '<h3>' + escaparHtml(nome) + '</h3>' +
             (email ? '<p class="user-email"><i class="fa-solid fa-envelope"></i> ' + escaparHtml(email) + '</p>' : '') +
-            (cpf ? '<p class="user-cpf"><i class="fa-solid fa-id-card"></i> ' + escaparHtml(String(cpf)) + '</p>' : '') +
+            (cpf   ? '<p class="user-cpf"><i class="fa-solid fa-id-card"></i> '   + escaparHtml(String(cpf))   + '</p>' : '') +
           '</div>'
         );
       }
 
-      function mostrarUsuarios(usuarios) {
+      function mostrarUsuarios(lista) {
         var grid = document.getElementById('usuarios-grid');
-        if (!grid) {
-          return;
-        }
+        if (!grid) return;
 
-        if (!usuarios || usuarios.length === 0) {
+        if (!lista || lista.length === 0) {
           grid.innerHTML = '<p>Nenhum usuário encontrado.</p>';
+          atualizarTexto('total-usuarios', '0');
           return;
         }
 
-        atualizarTexto('total-usuarios', usuarios.length);
-        grid.innerHTML = usuarios.map(montarCardUsuario).join('');
+        atualizarTexto('total-usuarios', lista.length);
+        grid.innerHTML = lista.map(montarCardUsuario).join('');
       }
 
       function carregarUsuarios() {
         buscarDados('/users')
           .then(function (usuarios) {
-            mostrarUsuarios(usuarios || []);
+            usuariosCarregados = usuarios || [];
+           
+            var locais = lerUsuariosLocais();
+            mostrarUsuarios(usuariosCarregados.concat(locais));
           })
           .catch(function (erro) {
             console.error('Erro ao carregar usuários:', erro);
-            atualizarTexto('total-usuarios', '0');
-            var grid = document.getElementById('usuarios-grid');
-            if (grid) {
-              grid.innerHTML = '<p>Não foi possível carregar os usuários.</p>';
+            
+            var locais = lerUsuariosLocais();
+            mostrarUsuarios(locais);
+            if (locais.length === 0) {
+              var grid = document.getElementById('usuarios-grid');
+              if (grid) grid.innerHTML = '<p>Não foi possível carregar os usuários.</p>';
+              atualizarTexto('total-usuarios', '0');
             }
           });
       }
 
+      
+
+      function abrirModal() {
+        var modal = document.getElementById('modal-usuario');
+        if (!modal) return;
+        modal.setAttribute('aria-hidden', 'false');
+        modal.style.display = 'flex';
+        document.getElementById('usuario-nome').focus();
+      }
+
+      function fecharModal() {
+        var modal = document.getElementById('modal-usuario');
+        if (!modal) return;
+        modal.setAttribute('aria-hidden', 'true');
+        modal.style.display = 'none';
+        document.getElementById('form-usuario').reset();
+        atualizarTexto('mensagem-usuario', '');
+      }
+
+      function mostrarMensagem(texto, tipo) {
+        var el = document.getElementById('mensagem-usuario');
+        if (!el) return;
+        el.textContent = texto;
+        el.style.color = tipo === 'erro' ? 'var(--color-danger, #c0392b)' : 'var(--color-success, #27ae60)';
+      }
+
+      
+
+      function cadastrarUsuario(evento) {
+        evento.preventDefault();
+
+        var nome  = document.getElementById('usuario-nome').value.trim();
+        var email = document.getElementById('usuario-email').value.trim();
+        var cpf   = document.getElementById('usuario-cpf').value.trim();
+
+        if (!nome) {
+          mostrarMensagem('O nome é obrigatório.', 'erro');
+          return;
+        }
+
+        var novoUsuario = { nome: nome, email: email, CPF: cpf, local: true };
+
+        
+        fetch(API_BASE_URL + '/users', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(novoUsuario)
+        })
+          .then(function (resposta) {
+            if (!resposta.ok) throw new Error('Falha na API');
+            return resposta.json();
+          })
+          .then(function (usuarioCriado) {
+            usuariosCarregados.push(usuarioCriado);
+            var locais = lerUsuariosLocais();
+            mostrarUsuarios(usuariosCarregados.concat(locais));
+            mostrarMensagem('Usuário cadastrado com sucesso!', 'sucesso');
+            setTimeout(fecharModal, 1200);
+          })
+          .catch(function () {
+            
+            var locais = lerUsuariosLocais();
+            novoUsuario.id = 'local_' + Date.now();
+            locais.push(novoUsuario);
+            salvarUsuariosLocais(locais);
+            mostrarUsuarios(usuariosCarregados.concat(locais));
+            mostrarMensagem('Usuário salvo localmente.', 'sucesso');
+            setTimeout(fecharModal, 1200);
+          });
+      }
+
+      
+
       document.addEventListener('DOMContentLoaded', function () {
         carregarUsuarios();
+
+        
+        var btnAbrir = document.getElementById('abrir-modal-usuario');
+        if (btnAbrir) btnAbrir.addEventListener('click', abrirModal);
+
+        
+        var btnFechar   = document.getElementById('fechar-modal-usuario');
+        var btnCancelar = document.getElementById('cancelar-usuario');
+        if (btnFechar)   btnFechar.addEventListener('click', fecharModal);
+        if (btnCancelar) btnCancelar.addEventListener('click', fecharModal);
+
+        
+        var overlay = document.getElementById('modal-usuario');
+        if (overlay) {
+          overlay.addEventListener('click', function (e) {
+            if (e.target === overlay) fecharModal();
+          });
+        }
+
+        
+        document.addEventListener('keydown', function (e) {
+          if (e.key === 'Escape') fecharModal();
+        });
+
+        
+        var form = document.getElementById('form-usuario');
+        if (form) form.addEventListener('submit', cadastrarUsuario);
       });
     </script>
   </body>
