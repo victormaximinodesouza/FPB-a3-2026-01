@@ -188,13 +188,44 @@
         if (!consulta) {
           return '-';
         }
+        if (consulta.usuario && consulta.usuario.nome) {
+          return consulta.usuario.nome;
+        }
+        if (consulta.usuario && consulta.usuario.name) {
+          return consulta.usuario.name;
+        }
+        if (consulta.user && consulta.user.nome) {
+          return consulta.user.nome;
+        }
         if (consulta.user && consulta.user.name) {
           return consulta.user.name;
+        }
+        if (consulta.paciente && consulta.paciente.nome) {
+          return consulta.paciente.nome;
         }
         if (consulta.paciente && consulta.paciente.name) {
           return consulta.paciente.name;
         }
+        if (consulta.nomePaciente) {
+          return consulta.nomePaciente;
+        }
+        if (consulta.pacienteNome) {
+          return consulta.pacienteNome;
+        }
+        if (consulta.nome) {
+          return consulta.nome;
+        }
         return 'Paciente não informado';
+      }
+
+      function iniciais(nome) {
+        return String(nome || '-')
+          .split(' ')
+          .filter(Boolean)
+          .map(function(word){ return word.charAt(0); })
+          .join('')
+          .slice(0, 2)
+          .toUpperCase();
       }
 
       function obterEspecialidade(consulta) {
@@ -227,7 +258,7 @@
           '<tr>' +
             '<td>' +
               '<div class="patient-info">' +
-                '<div class="avatar-circle blue">' + paciente.split(' ').map(function(word){ return word.charAt(0); }).join('').slice(0,2).toUpperCase() + '</div>' +
+                '<div class="avatar-circle blue">' + iniciais(paciente) + '</div>' +
                 '<span>' + paciente + '</span>' +
               '</div>' +
             '</td>' +
