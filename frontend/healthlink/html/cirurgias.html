@@ -74,7 +74,7 @@
             <h2>Gestão de Cirurgias</h2>
             <small>Agendar e gerenciar procedimentos cirúrgicos</small>
           </div>
-          <button class="btn-primary">
+          <button class="btn-primary" id="abrir-modal-cirurgia" type="button">
             <i class="fa-solid fa-plus"></i> Agendar Cirurgia
           </button>
         </section>
@@ -128,17 +128,18 @@
       </main>
     </div>
     <script>
-      const API_BASE_URL = "http://localhost:8080";
+      const API_BASE_URL = 'http://localhost:8080';
       const hoje = new Date().toISOString().slice(0, 10);
       let cirurgiasCarregadas = [];
 
       function buscarDados(caminho) {
-        return fetch(API_BASE_URL + caminho).then(function (resposta) {
-          if (!resposta.ok) {
-            throw new Error("Erro ao buscar " + caminho);
-          }
-          return resposta.json();
-        });
+        return fetch(API_BASE_URL + caminho)
+          .then(function (resposta) {
+            if (!resposta.ok) {
+              throw new Error('Erro ao buscar ' + caminho);
+            }
+            return resposta.json();
+          });
       }
 
       function atualizarTexto(id, valor) {
@@ -149,34 +150,34 @@
       }
 
       function escaparHtml(valor) {
-        return String(valor || "")
-          .replace(/&/g, "&amp;")
-          .replace(/</g, "&lt;")
-          .replace(/>/g, "&gt;")
-          .replace(/"/g, "&quot;")
-          .replace(/'/g, "&#039;");
+        return String(valor || '')
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#039;');
       }
 
       function formatarData(dataString) {
         if (!dataString) {
-          return "-";
+          return '-';
         }
-        return new Date(dataString).toLocaleDateString("pt-BR");
+        return new Date(dataString).toLocaleDateString('pt-BR');
       }
 
       function formatarHora(dataString) {
         if (!dataString) {
-          return "-";
+          return '-';
         }
-        return new Date(dataString).toLocaleTimeString("pt-BR", {
-          hour: "2-digit",
-          minute: "2-digit",
+        return new Date(dataString).toLocaleTimeString('pt-BR', {
+          hour: '2-digit',
+          minute: '2-digit'
         });
       }
 
       function dataIso(dataString) {
         if (!dataString) {
-          return "";
+          return '';
         }
         return String(dataString).slice(0, 10);
       }
@@ -196,241 +197,251 @@
       }
 
       function obterPaciente(cirurgia) {
-        if (cirurgia.paciente && cirurgia.paciente.name) {
-          return cirurgia.paciente.name;
-        }
-        if (cirurgia.paciente && cirurgia.paciente.nome) {
-          return cirurgia.paciente.nome;
-        }
-        if (cirurgia.user && cirurgia.user.name) {
-          return cirurgia.user.name;
-        }
-        if (cirurgia.nomePaciente) {
-          return cirurgia.nomePaciente;
-        }
-        return "Paciente não informado";
+        if (cirurgia.paciente && (cirurgia.paciente.name || cirurgia.paciente.nome))
+          return cirurgia.paciente.name || cirurgia.paciente.nome;
+        if (cirurgia.usuario && (cirurgia.usuario.name || cirurgia.usuario.nome))
+          return cirurgia.usuario.name || cirurgia.usuario.nome;
+        if (cirurgia.user && (cirurgia.user.name || cirurgia.user.nome))
+          return cirurgia.user.name || cirurgia.user.nome;
+        if (cirurgia.nomePaciente) return cirurgia.nomePaciente;
+        if (cirurgia.pacienteNome) return cirurgia.pacienteNome;
+        return 'Paciente não informado';
       }
 
       function nomeCirurgiao(cirurgia) {
         if (cirurgia.medicos && cirurgia.medicos.length > 0) {
           var medico = cirurgia.medicos[0];
-          return medico.name || medico.nome || "Médico não informado";
+          return medico.name || medico.nome || 'Médico não informado';
         }
-        return "Médico não informado";
+        return 'Médico não informado';
       }
 
       function assistentesCirurgia(cirurgia) {
         if (cirurgia.medicos && cirurgia.medicos.length > 1) {
-          return cirurgia.medicos
-            .slice(1)
-            .map(function (medico) {
-              return medico.name || medico.nome || "Médico não informado";
-            })
-            .join(", ");
+          return cirurgia.medicos.slice(1).map(function (medico) {
+            return medico.name || medico.nome || 'Médico não informado';
+          }).join(', ');
         }
-        return "Assistentes não informados";
+        return 'Assistentes não informados';
       }
 
       function salaCirurgica(cirurgia) {
-        if (cirurgia.salaCirurgica && cirurgia.salaCirurgica.number) {
-          return "CC-" + cirurgia.salaCirurgica.number;
-        }
-        return "Sala não informada";
+        if (cirurgia.salaCirurgica && cirurgia.salaCirurgica.number)
+          return 'CC-' + cirurgia.salaCirurgica.number;
+        if (cirurgia.salaCirurgica && cirurgia.salaCirurgica.nome)
+          return cirurgia.salaCirurgica.nome;
+        if (cirurgia.sala && cirurgia.sala.number)
+          return 'CC-' + cirurgia.sala.number;
+        if (cirurgia.sala && typeof cirurgia.sala === 'string')
+          return cirurgia.sala;
+        if (cirurgia.salaNumero) return 'CC-' + cirurgia.salaNumero;
+        return 'Sala não informada';
       }
 
       function duracaoCirurgia(cirurgia) {
         if (cirurgia.duracao) {
-          return cirurgia.duracao + " min";
+          return cirurgia.duracao + ' min';
         }
-        return "Duração não informada";
+        return 'Duração não informada';
       }
 
       function statusCirurgia(cirurgia) {
-        if (cirurgia.status === "ANDAMENTO") {
-          return "Em andamento";
+        if (cirurgia.status === 'ANDAMENTO') {
+          return 'Em andamento';
         }
-        if (cirurgia.status === "REALIZADA") {
-          return "Realizada";
+        if (cirurgia.status === 'REALIZADA') {
+          return 'Realizada';
         }
-        if (cirurgia.status === "CANCELADA") {
-          return "Cancelada";
+        if (cirurgia.status === 'CANCELADA') {
+          return 'Cancelada';
         }
-        if (cirurgia.status === "AGENDADA") {
-          return "Agendada";
+        if (cirurgia.status === 'AGENDADA') {
+          return 'Agendada';
         }
-        return "Status não informado";
+        return 'Status não informado';
       }
 
       function prioridadeCirurgia(cirurgia) {
-        return (
-          cirurgia.prioridade || cirurgia.priority || "Prioridade não informada"
-        );
+        return cirurgia.prioridade || cirurgia.priority || 'Prioridade não informada';
       }
 
       function montarCardCirurgia(cirurgia) {
         return (
           '<div class="surgery-card">' +
-          '<div class="surgery-card-header">' +
-          '<div class="title-group">' +
-          "<h3>" +
-          escaparHtml(cirurgia.nome || "Cirurgia sem nome") +
-          "</h3>" +
-          '<span class="tag orange-light">' +
-          escaparHtml(prioridadeCirurgia(cirurgia)) +
-          "</span>" +
-          '<span class="tag purple-light">' +
-          escaparHtml(statusCirurgia(cirurgia)) +
-          "</span>" +
-          "</div>" +
-          '<div class="date-info">' +
-          "<strong>" +
-          escaparHtml(formatarData(cirurgia.dateSurgery)) +
-          "</strong>" +
-          "<span>" +
-          escaparHtml(formatarHora(cirurgia.dateSurgery)) +
-          "</span>" +
-          "</div>" +
-          "</div>" +
-          '<p class="patient-name">Paciente: ' +
-          escaparHtml(obterPaciente(cirurgia)) +
-          "</p>" +
-          '<div class="surgery-details-grid">' +
-          '<div class="detail-item">' +
-          "<span>CIRURGIÃO</span><strong>" +
-          escaparHtml(nomeCirurgiao(cirurgia)) +
-          "</strong>" +
-          "</div>" +
-          '<div class="detail-item">' +
-          "<span>ASSISTENTES</span><strong>" +
-          escaparHtml(assistentesCirurgia(cirurgia)) +
-          "</strong>" +
-          "</div>" +
-          '<div class="detail-item">' +
-          '<span>DURAÇÃO</span><strong><i class="fa-regular fa-clock"></i> ' +
-          escaparHtml(duracaoCirurgia(cirurgia)) +
-          "</strong>" +
-          "</div>" +
-          '<div class="detail-item">' +
-          '<span>SALA</span><strong><i class="fa-solid fa-location-dot"></i> ' +
-          escaparHtml(salaCirurgica(cirurgia)) +
-          "</strong>" +
-          "</div>" +
-          "</div>" +
-          "</div>"
+            '<div class="surgery-card-header">' +
+              '<div class="title-group">' +
+                '<h3>' + escaparHtml(cirurgia.nome || 'Cirurgia sem nome') + '</h3>' +
+                '<span class="tag orange-light">' + escaparHtml(prioridadeCirurgia(cirurgia)) + '</span>' +
+                '<span class="tag purple-light">' + escaparHtml(statusCirurgia(cirurgia)) + '</span>' +
+              '</div>' +
+              '<div class="date-info">' +
+                '<strong>' + escaparHtml(formatarData(cirurgia.dateSurgery)) + '</strong>' +
+                '<span>' + escaparHtml(formatarHora(cirurgia.dateSurgery)) + '</span>' +
+              '</div>' +
+            '</div>' +
+            '<p class="patient-name">Paciente: ' + escaparHtml(obterPaciente(cirurgia)) + '</p>' +
+            '<div class="surgery-details-grid">' +
+              '<div class="detail-item">' +
+                '<span>CIRURGIÃO</span><strong>' + escaparHtml(nomeCirurgiao(cirurgia)) + '</strong>' +
+              '</div>' +
+              '<div class="detail-item">' +
+                '<span>ASSISTENTES</span><strong>' + escaparHtml(assistentesCirurgia(cirurgia)) + '</strong>' +
+              '</div>' +
+              '<div class="detail-item">' +
+                '<span>DURAÇÃO</span><strong><i class="fa-regular fa-clock"></i> ' + escaparHtml(duracaoCirurgia(cirurgia)) + '</strong>' +
+              '</div>' +
+              '<div class="detail-item">' +
+                '<span>SALA</span><strong><i class="fa-solid fa-location-dot"></i> ' + escaparHtml(salaCirurgica(cirurgia)) + '</strong>' +
+              '</div>' +
+            '</div>' +
+          '</div>'
         );
       }
 
       function mostrarCirurgias(cirurgias) {
-        var lista = document.getElementById("cirurgias-lista");
+        var lista = document.getElementById('cirurgias-lista');
         if (!lista) {
           return;
         }
 
         if (!cirurgias || cirurgias.length === 0) {
-          lista.innerHTML = "<p>Nenhuma cirurgia encontrada.</p>";
+          lista.innerHTML = '<p>Nenhuma cirurgia encontrada.</p>';
           return;
         }
 
-        lista.innerHTML = cirurgias.map(montarCardCirurgia).join("");
+        lista.innerHTML = cirurgias.map(montarCardCirurgia).join('');
       }
 
       function aplicarFiltrosCirurgias() {
-        var busca = (
-          document.getElementById("busca-cirurgia")?.value || ""
-        ).toLowerCase();
-        var statusFiltro =
-          document.getElementById("filtro-status")?.value || "";
-        var dataFiltro = document.getElementById("filtro-data")?.value || "";
+        var busca = (document.getElementById('busca-cirurgia')?.value || '').toLowerCase();
+        var statusFiltro = document.getElementById('filtro-status')?.value || '';
+        var dataFiltro = document.getElementById('filtro-data')?.value || '';
 
-        var cirurgiasFiltradas = cirurgiasCarregadas.filter(
-          function (cirurgia) {
-            var paciente = obterPaciente(cirurgia).toLowerCase();
-            var procedimento = (cirurgia.nome || "").toLowerCase();
-            var cirurgiao = nomeCirurgiao(cirurgia).toLowerCase();
-            var status = cirurgia.status || "";
-            var dataCirurgia = dataIso(cirurgia.dateSurgery);
-            var textoBusca = paciente + " " + procedimento + " " + cirurgiao;
+        var cirurgiasFiltradas = cirurgiasCarregadas.filter(function (cirurgia) {
+          var paciente = obterPaciente(cirurgia).toLowerCase();
+          var procedimento = (cirurgia.nome || '').toLowerCase();
+          var cirurgiao = nomeCirurgiao(cirurgia).toLowerCase();
+          var status = cirurgia.status || '';
+          var dataCirurgia = dataIso(cirurgia.dateSurgery);
+          var textoBusca = paciente + ' ' + procedimento + ' ' + cirurgiao;
 
-            var correspondeBusca = !busca || textoBusca.indexOf(busca) !== -1;
-            var correspondeStatus = !statusFiltro || status === statusFiltro;
-            var correspondeData = !dataFiltro || dataCirurgia === dataFiltro;
+          var correspondeBusca = !busca || textoBusca.indexOf(busca) !== -1;
+          var correspondeStatus = !statusFiltro || status === statusFiltro;
+          var correspondeData = !dataFiltro || dataCirurgia === dataFiltro;
 
-            return correspondeBusca && correspondeStatus && correspondeData;
-          },
-        );
+          return correspondeBusca && correspondeStatus && correspondeData;
+        });
 
         mostrarCirurgias(cirurgiasFiltradas);
       }
 
       function carregarCirurgias() {
-        buscarDados("/cirurgias")
+        buscarDados('/cirurgias')
           .then(function (cirurgias) {
             cirurgias = cirurgias || [];
             var totalHoje = cirurgias.filter(function (cirurgia) {
-              return (
-                cirurgia.dateSurgery &&
-                cirurgia.dateSurgery.slice(0, 10) === hoje
-              );
+              return cirurgia.dateSurgery && cirurgia.dateSurgery.slice(0, 10) === hoje;
             }).length;
             var totalSemana = cirurgias.filter(function (cirurgia) {
               return estaNaSemana(cirurgia.dateSurgery);
             }).length;
             var totalAndamento = cirurgias.filter(function (cirurgia) {
-              return cirurgia.status === "ANDAMENTO";
+              return cirurgia.status === 'ANDAMENTO';
             }).length;
             var totalRealizadas = cirurgias.filter(function (cirurgia) {
-              return cirurgia.status === "REALIZADA";
+              return cirurgia.status === 'REALIZADA';
             }).length;
             var totalFinalizadas = cirurgias.filter(function (cirurgia) {
-              return (
-                cirurgia.status === "REALIZADA" ||
-                cirurgia.status === "CANCELADA"
-              );
+              return cirurgia.status === 'REALIZADA' || cirurgia.status === 'CANCELADA';
             }).length;
-            var taxaSucesso =
-              totalFinalizadas > 0
-                ? Math.round((totalRealizadas / totalFinalizadas) * 100) + "%"
-                : "0%";
+            var taxaSucesso = totalFinalizadas > 0 ? Math.round((totalRealizadas / totalFinalizadas) * 100) + '%' : '0%';
 
             cirurgiasCarregadas = cirurgias;
-            atualizarTexto("cirurgias-semana", totalSemana);
-            atualizarTexto("cirurgias-hoje", totalHoje);
-            atualizarTexto("cirurgias-andamento", totalAndamento);
-            atualizarTexto("taxa-sucesso", taxaSucesso);
+            atualizarTexto('cirurgias-hoje', totalHoje);
+            atualizarTexto('cirurgias-andamento', totalAndamento);
             aplicarFiltrosCirurgias();
           })
           .catch(function (erro) {
-            console.error("Erro ao carregar cirurgias:", erro);
-            atualizarTexto("cirurgias-semana", "0");
-            atualizarTexto("cirurgias-hoje", "0");
-            atualizarTexto("cirurgias-andamento", "0");
-            atualizarTexto("taxa-sucesso", "0%");
+            console.error('Erro ao carregar cirurgias:', erro);
+            atualizarTexto('cirurgias-hoje', '0');
+            atualizarTexto('cirurgias-andamento', '0');
 
-            var lista = document.getElementById("cirurgias-lista");
+            var lista = document.getElementById('cirurgias-lista');
             if (lista) {
-              lista.innerHTML =
-                "<p>Não foi possível carregar as cirurgias.</p>";
+              lista.innerHTML = '<p>Não foi possível carregar as cirurgias.</p>';
             }
           });
       }
 
-      document.addEventListener("DOMContentLoaded", function () {
+      document.addEventListener('DOMContentLoaded', function () {
         carregarCirurgias();
 
-        var busca = document.getElementById("busca-cirurgia");
-        var filtroStatus = document.getElementById("filtro-status");
-        var filtroData = document.getElementById("filtro-data");
+        var busca = document.getElementById('busca-cirurgia');
+        var filtroStatus = document.getElementById('filtro-status');
+        var filtroData = document.getElementById('filtro-data');
 
         if (busca) {
-          busca.addEventListener("input", aplicarFiltrosCirurgias);
+          busca.addEventListener('input', aplicarFiltrosCirurgias);
         }
         if (filtroStatus) {
-          filtroStatus.addEventListener("change", aplicarFiltrosCirurgias);
+          filtroStatus.addEventListener('change', aplicarFiltrosCirurgias);
         }
         if (filtroData) {
-          filtroData.addEventListener("change", aplicarFiltrosCirurgias);
+          filtroData.addEventListener('change', aplicarFiltrosCirurgias);
         }
       });
+    </script>
+
+    <div class="modal-overlay" id="modal-cirurgia" aria-hidden="true">
+      <div class="modal-box" role="dialog" aria-modal="true">
+        <div class="modal-header">
+          <div>
+            <h3>Agendar Cirurgia</h3>
+            <p>Preencha os dados do procedimento</p>
+          </div>
+          <button class="modal-close" id="fechar-modal-cirurgia" type="button" aria-label="Fechar">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+        <form id="form-cirurgia" class="modal-form">
+          <label for="cirurgia-nome">Procedimento</label>
+          <input type="text" id="cirurgia-nome" required placeholder="Ex: Apendicectomia" />
+
+          <label for="cirurgia-paciente">Paciente</label>
+          <input type="text" id="cirurgia-paciente" required placeholder="Nome do paciente" />
+
+          <label for="cirurgia-data">Data e Hora</label>
+          <input type="datetime-local" id="cirurgia-data" required />
+
+          <p class="form-message" id="mensagem-cirurgia"></p>
+
+          <div class="modal-actions">
+            <button class="btn-outline" id="cancelar-cirurgia" type="button">Cancelar</button>
+            <button class="btn-primary" type="submit">Agendar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      document.getElementById('abrir-modal-cirurgia').addEventListener('click', function () {
+        var m = document.getElementById('modal-cirurgia');
+        m.classList.add('is-open');
+        m.setAttribute('aria-hidden', 'false');
+      });
+      function fecharCirurgia() {
+        var m = document.getElementById('modal-cirurgia');
+        m.classList.remove('is-open');
+        m.setAttribute('aria-hidden', 'true');
+        document.getElementById('form-cirurgia').reset();
+        document.getElementById('mensagem-cirurgia').textContent = '';
+      }
+      document.getElementById('fechar-modal-cirurgia').addEventListener('click', fecharCirurgia);
+      document.getElementById('cancelar-cirurgia').addEventListener('click', fecharCirurgia);
+      document.getElementById('modal-cirurgia').addEventListener('click', function (e) {
+        if (e.target === this) fecharCirurgia();
+      });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') fecharCirurgia(); });
     </script>
   </body>
 </html>
