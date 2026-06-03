@@ -52,7 +52,7 @@
                 <h2>Fila de Espera</h2>
                 <small>Pacientes aguardando atendimento em tempo real</small>
             </div>
-            <button class="btn-primary">
+            <button class="btn-primary" type="button" id="chamar-proximo">
                 <i class="fa-solid fa-user-plus"></i> Chamar Próximo
             </button>
         </section>
@@ -65,10 +65,6 @@
             <div class="card-kpi">
                 <div class="kpi-icon-container blue"><i class="fa-solid fa-stethoscope"></i></div>
                 <div class="kpi-body"><h3 class="kpi-value" id="total-atendimento">...</h3><p class="kpi-subtext">Em Atendimento</p></div>
-            </div>
-            <div class="card-kpi">
-                <div class="kpi-icon-container green"><i class="fa-solid fa-hourglass-half"></i></div>
-                <div class="kpi-body"><h3 class="kpi-value" id="tempo-medio">...</h3><p class="kpi-subtext">Tempo Médio de Espera</p></div>
             </div>
         </section>
 
@@ -125,14 +121,35 @@
     }
 
     function obterPaciente(consulta) {
+        if (!consulta) {
+            return 'Paciente não informado';
+        }
+        if (consulta.usuario && consulta.usuario.nome) {
+            return consulta.usuario.nome;
+        }
+        if (consulta.usuario && consulta.usuario.name) {
+            return consulta.usuario.name;
+        }
+        if (consulta.user && consulta.user.nome) {
+            return consulta.user.nome;
+        }
         if (consulta.paciente && consulta.paciente.name) {
             return consulta.paciente.name;
+        }
+        if (consulta.paciente && consulta.paciente.nome) {
+            return consulta.paciente.nome;
         }
         if (consulta.user && consulta.user.name) {
             return consulta.user.name;
         }
         if (consulta.nomePaciente) {
             return consulta.nomePaciente;
+        }
+        if (consulta.pacienteNome) {
+            return consulta.pacienteNome;
+        }
+        if (consulta.nome) {
+            return consulta.nome;
         }
         return 'Paciente não informado';
     }
@@ -155,8 +172,9 @@
     }
 
     function iniciais(nome) {
-        return nome
+        return String(nome || '-')
             .split(' ')
+            .filter(Boolean)
             .map(function (parte) {
                 return parte.charAt(0);
             })
@@ -219,7 +237,7 @@
                 '<div class="waiting-info"><h3>' + escaparHtml(paciente) + '</h3><span>' + escaparHtml(especialidade) + ' • ' + escaparHtml(medico) + '</span></div>' +
                 '<div class="wait-time"><i class="fa-regular fa-clock"></i> ' + espera + ' min aguardando</div>' +
                 '<span class="status ' + statusClasse(status) + '">' + statusTexto(status) + '</span>' +
-                '<button class="' + classeBotao(status) + '">' + textoBotao(status) + '</button>' +
+                '<button class="' + classeBotao(status) + '" type="button" data-fila-index="' + consulta._filaIndex + '">' + textoBotao(status) + '</button>' +
             '</div>'
         );
     }
@@ -238,6 +256,28 @@
         lista.innerHTML = consultas.map(montarCardFila).join('');
     }
 
+    function atualizarFilaNaTela() {
+        atualizarIndicadores(filaCarregada);
+        aplicarFiltrosFila();
+    }
+
+    function chamarConsulta(consulta) {
+        if (!consulta || consulta.status === 'ANDAMENTO') {
+            return;
+        }
+
+        consulta.status = 'ANDAMENTO';
+        atualizarFilaNaTela();
+    }
+
+    function chamarProximo() {
+        var proxima = filaCarregada.find(function (consulta) {
+            return consulta.status === 'AGENDADA' || !consulta.status;
+        });
+
+        chamarConsulta(proxima);
+    }
+
     function atualizarIndicadores(consultas) {
         var aguardando = consultas.filter(function (consulta) {
             return consulta.status === 'AGENDADA' || !consulta.status;
@@ -245,14 +285,8 @@
         var emAtendimento = consultas.filter(function (consulta) {
             return consulta.status === 'ANDAMENTO';
         });
-        var tempos = aguardando.map(minutosEspera);
-        var media = tempos.length > 0
-            ? Math.round(tempos.reduce(function (total, tempo) { return total + tempo; }, 0) / tempos.length) + ' min'
-            : '0 min';
-
         atualizarTexto('total-aguardando', aguardando.length);
         atualizarTexto('total-atendimento', emAtendimento.length);
-        atualizarTexto('tempo-medio', media);
     }
 
     function aplicarFiltrosFila() {
@@ -280,6 +314,9 @@
             .then(function (consultas) {
                 filaCarregada = (consultas || []).filter(function (consulta) {
                     return consulta.status === 'AGENDADA' || consulta.status === 'ANDAMENTO' || !consulta.status;
+                }).map(function (consulta, indice) {
+                    consulta._filaIndex = indice;
+                    return consulta;
                 });
 
                 atualizarIndicadores(filaCarregada);
@@ -289,7 +326,6 @@
                 console.error('Erro ao carregar fila de espera:', erro);
                 atualizarTexto('total-aguardando', '0');
                 atualizarTexto('total-atendimento', '0');
-                atualizarTexto('tempo-medio', '0 min');
 
                 var lista = document.getElementById('fila-lista');
                 if (lista) {
@@ -309,6 +345,24 @@
         }
         if (filtroStatus) {
             filtroStatus.addEventListener('change', aplicarFiltrosFila);
+        }
+
+        var chamarProximoBotao = document.getElementById('chamar-proximo');
+        if (chamarProximoBotao) {
+            chamarProximoBotao.addEventListener('click', chamarProximo);
+        }
+
+        var lista = document.getElementById('fila-lista');
+        if (lista) {
+            lista.addEventListener('click', function (evento) {
+                var botao = evento.target.closest('button[data-fila-index]');
+                if (!botao) {
+                    return;
+                }
+
+                var indice = Number(botao.getAttribute('data-fila-index'));
+                chamarConsulta(filaCarregada[indice]);
+            });
         }
     });
 </script>
