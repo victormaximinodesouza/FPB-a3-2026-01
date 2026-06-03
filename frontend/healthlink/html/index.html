@@ -91,7 +91,7 @@
             </section>
 
             <!-- Gráfico -->
-            <div class="charts-grid">
+            <div class="charts-grid single-chart">
                 <div class="card" style="padding:20px;">
                     <h3>Visão Mensal</h3>
                     <p class="subtitle">Últimos 6 meses</p>
@@ -104,13 +104,6 @@
                     </div>
                 </div>
 
-                <div class="card" style="padding:20px;">
-                    <h3>Distribuição por Especialidade</h3>
-                    <p class="subtitle">Mês atual</p>
-                    <div id="distribuicao-especialidade" style="display:flex;flex-direction:column;gap:10px;margin-top:8px;">
-                        <p>Carregando especialidades...</p>
-                    </div>
-                </div>
             </div>
 
             <!-- Tabela consultas hoje -->
@@ -184,8 +177,14 @@
 
     function nomePaciente(consulta) {
         if (consulta.paciente && consulta.paciente.name) return consulta.paciente.name;
+        if (consulta.paciente && consulta.paciente.nome) return consulta.paciente.nome;
         if (consulta.user && consulta.user.name) return consulta.user.name;
+        if (consulta.user && consulta.user.nome) return consulta.user.nome;
+        if (consulta.usuario && consulta.usuario.name) return consulta.usuario.name;
+        if (consulta.usuario && consulta.usuario.nome) return consulta.usuario.nome;
         if (consulta.nomePaciente) return consulta.nomePaciente;
+        if (consulta.pacienteNome) return consulta.pacienteNome;
+        if (consulta.nome) return consulta.nome;
         return 'Consulta #' + consulta.id;
     }
 
@@ -272,46 +271,6 @@
         }).join('');
     }
 
-    function mostrarEspecialidades(consultas) {
-        var container = document.getElementById('distribuicao-especialidade');
-        if (!container) return;
-
-        var contagem = (consultas || []).reduce(function(acumulador, consulta) {
-            var especialidade = consulta.medico && consulta.medico.specialty ? consulta.medico.specialty : 'Não informado';
-            acumulador[especialidade] = (acumulador[especialidade] || 0) + 1;
-            return acumulador;
-        }, {});
-
-        var itens = Object.keys(contagem).map(function(nome) {
-            return { nome: nome, total: contagem[nome] };
-        }).sort(function(a, b) {
-            return b.total - a.total;
-        });
-
-        var total = itens.reduce(function(soma, item) {
-            return soma + item.total;
-        }, 0);
-
-        if (total === 0) {
-            container.innerHTML = '<p>Nenhuma especialidade encontrada.</p>';
-            return;
-        }
-
-        container.innerHTML = itens.slice(0, 4).map(function(item, indice) {
-            var porcentagem = Math.round((item.total / total) * 100);
-            var barra = indice % 3 === 1 ? 'bar-blue' : indice % 3 === 2 ? 'bar-orange' : 'bar-green';
-
-            return (
-                '<div>' +
-                    '<div style="display:flex;justify-content:space-between;font-size:.82rem;margin-bottom:4px;">' +
-                        '<span>' + escaparHtml(item.nome) + '</span><span>' + porcentagem + '%</span>' +
-                    '</div>' +
-                    '<div class="progress-bar"><div class="progress ' + barra + '" style="width:' + porcentagem + '%;"></div></div>' +
-                '</div>'
-            );
-        }).join('');
-    }
-
     function mostrarConsultas(consultas) {
         var tabela = document.getElementById('consultas-hoje-tabela');
         if (!tabela) return;
@@ -378,7 +337,6 @@
 
             mostrarConsultas(consultas);
             mostrarGraficoMensal(todasConsultas, cirurgias);
-            mostrarEspecialidades(todasConsultas);
         })
         .catch(function(erro) {
             console.error(erro);
@@ -389,11 +347,6 @@
             var grafico = document.getElementById('grafico-mensal');
             if (grafico) {
                 grafico.innerHTML = '<p>Não foi possível carregar a visão mensal.</p>';
-            }
-
-            var especialidades = document.getElementById('distribuicao-especialidade');
-            if (especialidades) {
-                especialidades.innerHTML = '<p>Não foi possível carregar as especialidades.</p>';
             }
 
             var tabela = document.getElementById('consultas-hoje-tabela');
