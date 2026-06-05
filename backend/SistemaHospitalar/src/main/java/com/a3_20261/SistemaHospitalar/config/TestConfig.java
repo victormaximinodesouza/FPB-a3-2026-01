@@ -62,14 +62,6 @@ public class TestConfig implements CommandLineRunner {
         cirurgiasRepository.saveAll(Arrays.asList(c1,c2));
         medicoRepository.saveAll(Arrays.asList(m1,m2));
 
-
-
-        Exame e1 = new Exame(null,null,null,null,null,null, ExameStatus.AGENDADO);
-        Exame e2 = new Exame(null,null,null,null,null,null,ExameStatus.AGENDADO);
-
-        exameRepository.saveAll(Arrays.asList(e1,e2));
-
-
         SalaCirurgica s1 =new SalaCirurgica(null,20, StatusSalaCirurgica.LIVRE,Arrays.asList(c1));
         SalaCirurgica s2 =new SalaCirurgica(null,30,StatusSalaCirurgica.MANUNTENCAO,Arrays.asList(c2));
 
@@ -80,12 +72,17 @@ public class TestConfig implements CommandLineRunner {
 
         userRepository.saveAll(Arrays.asList(u1,u2));
 
+        Exame e1 = new Exame(null,null,null,u1,null,m1, ExameStatus.AGENDADO);
+        Exame e2 = new Exame(null,null,null,u2,null,m2,ExameStatus.AGENDADO);
+
+        exameRepository.saveAll(Arrays.asList(e1,e2));
+
         Consulta cs1 = new Consulta(null,null,LocalDate.now(),"dor de barriga",u1);
         Consulta cs2 = new Consulta(null,null, LocalDate.now(),"dor de dente",u2);
-
-        consultaRepository.saveAll(Arrays.asList(cs1,cs2));
         cs1.setMedico(m1);
         cs2.setMedico(m2);
+        consultaRepository.saveAll(Arrays.asList(cs1,cs2));
+
 
 
         Prontuario p1 =new Prontuario(null,null,"cleinte bem",u1);
