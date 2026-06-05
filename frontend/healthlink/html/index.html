@@ -139,6 +139,8 @@
 </div>
 <script>
     var API_BASE_URL = 'http://localhost:8080';
+    var usuariosPorId = {};
+    var medicosPorId = {};
 
     function formatarDataLocal(data) {
         var ano = data.getFullYear();
@@ -175,6 +177,15 @@
             .replace(/'/g, '&#039;');
     }
 
+    function mapearPorId(lista) {
+        return (lista || []).reduce(function(mapa, item) {
+            if (item && item.id) {
+                mapa[item.id] = item;
+            }
+            return mapa;
+        }, {});
+    }
+
     function nomePessoa(pessoa) {
         if (!pessoa) return '';
         return pessoa.nome || pessoa.name || pessoa.nomePaciente || pessoa.pacienteNome || pessoa.usuarioNome || pessoa.nomeUsuario || pessoa.patientName || pessoa.fullName || pessoa.nomeCompleto || '';
@@ -191,34 +202,56 @@
         return consulta.usuarioId || consulta.usuario_id || consulta.idUsuario || consulta.userId || consulta.pacienteId || consulta.paciente_id || consulta.idPaciente || null;
     }
 
-    function mapaUsuariosPorId(usuarios) {
-        return (usuarios || []).reduce(function(mapa, usuario) {
-            if (usuario && usuario.id) {
-                mapa[usuario.id] = usuario;
-            }
-            return mapa;
-        }, {});
+    function idMedico(consulta) {
+        if (!consulta) return null;
+        if (typeof consulta.medico === 'number' || typeof consulta.medico === 'string') return consulta.medico;
+        if (consulta.medico && consulta.medico.id) return consulta.medico.id;
+        return consulta.medicoId || consulta.medico_id || consulta.idMedico || null;
     }
 
-    function nomePaciente(consulta, usuariosPorId) {
+    function especialidadeMedico(medico) {
+        if (!medico) return '';
+        return medico.specialty || medico.especialidade || medico.medicoSpecialty || medico.speciality || '';
+    }
+
+    function obterPaciente(consulta) {
+        if (!consulta) return 'Paciente não informado';
+
         var nomeDireto =
-            nomePessoa(consulta && consulta.usuario) ||
-            nomePessoa(consulta && consulta.user) ||
-            nomePessoa(consulta && consulta.paciente) ||
+            nomePessoa(consulta.usuario) ||
+            nomePessoa(consulta.user) ||
+            nomePessoa(consulta.paciente) ||
             nomePessoa(consulta);
 
         if (nomeDireto) return nomeDireto;
 
-        var usuario = usuariosPorId ? usuariosPorId[idPaciente(consulta)] : null;
-        var nomePorId = nomePessoa(usuario);
-
-        return nomePorId || 'Paciente não informado';
+        var usuario = usuariosPorId[idPaciente(consulta)];
+        return nomePessoa(usuario) || 'Paciente não informado';
     }
 
-    function nomeMedico(consulta) {
-        if (consulta.medico && consulta.medico.name) return 'Dr(a). ' + consulta.medico.name;
-        if (consulta.medico && consulta.medico.nome) return 'Dr(a). ' + consulta.medico.nome;
-        return 'Médico não informado';
+    function obterMedico(consulta) {
+        if (!consulta) return 'Médico não informado';
+
+        var nomeDireto = nomePessoa(consulta.medico) || consulta.nomeMedico || consulta.medicoNome;
+        if (nomeDireto) return nomeDireto;
+
+        var medico = medicosPorId[idMedico(consulta)];
+        return nomePessoa(medico) || 'Médico não informado';
+    }
+
+    function obterEspecialidade(consulta) {
+        if (!consulta) return '-';
+
+        var especialidadeDireta =
+            especialidadeMedico(consulta.medico) ||
+            consulta.especialidade ||
+            consulta.specialty ||
+            consulta.medicoEspecialidade;
+
+        if (especialidadeDireta) return especialidadeDireta;
+
+        var medico = medicosPorId[idMedico(consulta)];
+        return especialidadeMedico(medico) || '-';
     }
 
     function statusTexto(status) {
@@ -307,16 +340,16 @@
             return;
         }
 
-        var usuariosPorId = mapaUsuariosPorId(usuarios);
-
         tabela.innerHTML = consultas.map(function(consulta) {
             var status = consulta.status || 'AGENDADA';
             var horario = consulta.horario || consulta.hora || '-';
+            var paciente = obterPaciente(consulta);
+            var medico = obterMedico(consulta);
 
             return (
                 '<tr>' +
-                    '<td><strong>' + escaparHtml(nomePaciente(consulta, usuariosPorId)) + '</strong></td>' +
-                    '<td>' + escaparHtml(nomeMedico(consulta)) + '</td>' +
+                    '<td><strong>' + escaparHtml(paciente) + '</strong></td>' +
+                    '<td>' + escaparHtml(medico) + '</td>' +
                     '<td>Consulta</td>' +
                     '<td><strong>' + escaparHtml(horario) + '</strong></td>' +
                     '<td><span class="status ' + statusClasse(status) + '">' + escaparHtml(statusTexto(status)) + '</span></td>' +
@@ -354,6 +387,10 @@
             buscarDados('/users').catch(function(erro) {
                 console.error('Erro ao carregar pacientes:', erro);
                 return [];
+            }),
+            buscarDados('/medicos').catch(function(erro) {
+                console.error('Erro ao carregar médicos:', erro);
+                return [];
             })
         ])
         .then(function(dados) {
@@ -363,13 +400,14 @@
             var consultas = dados[3];
             var todasConsultas = dados[4] || [];
             var cirurgias = dados[5] || [];
-            var usuarios = dados[6] || [];
+            usuariosPorId = mapearPorId(dados[6] || []);
+            medicosPorId = mapearPorId(dados[7] || []);
 
             atualizarTexto('total-pacientes', totalPacientes);
             atualizarTexto('consultas-hoje', consultasHoje);
             atualizarTexto('cirurgias-agendadas', cirurgiasAgendadas);
 
-            mostrarConsultas(consultas, usuarios);
+            mostrarConsultas(consultas);
             mostrarGraficoMensal(todasConsultas, cirurgias);
         })
         .catch(function(erro) {
