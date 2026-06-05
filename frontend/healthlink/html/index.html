@@ -175,17 +175,44 @@
             .replace(/'/g, '&#039;');
     }
 
-    function nomePaciente(consulta) {
-        if (consulta.paciente && consulta.paciente.name) return consulta.paciente.name;
-        if (consulta.paciente && consulta.paciente.nome) return consulta.paciente.nome;
-        if (consulta.user && consulta.user.name) return consulta.user.name;
-        if (consulta.user && consulta.user.nome) return consulta.user.nome;
-        if (consulta.usuario && consulta.usuario.name) return consulta.usuario.name;
-        if (consulta.usuario && consulta.usuario.nome) return consulta.usuario.nome;
-        if (consulta.nomePaciente) return consulta.nomePaciente;
-        if (consulta.pacienteNome) return consulta.pacienteNome;
-        if (consulta.nome) return consulta.nome;
-        return 'Consulta #' + consulta.id;
+    function nomePessoa(pessoa) {
+        if (!pessoa) return '';
+        return pessoa.nome || pessoa.name || pessoa.nomePaciente || pessoa.pacienteNome || pessoa.usuarioNome || pessoa.nomeUsuario || pessoa.patientName || pessoa.fullName || pessoa.nomeCompleto || '';
+    }
+
+    function idPaciente(consulta) {
+        if (!consulta) return null;
+        if (typeof consulta.usuario === 'number' || typeof consulta.usuario === 'string') return consulta.usuario;
+        if (typeof consulta.user === 'number' || typeof consulta.user === 'string') return consulta.user;
+        if (typeof consulta.paciente === 'number' || typeof consulta.paciente === 'string') return consulta.paciente;
+        if (consulta.usuario && consulta.usuario.id) return consulta.usuario.id;
+        if (consulta.user && consulta.user.id) return consulta.user.id;
+        if (consulta.paciente && consulta.paciente.id) return consulta.paciente.id;
+        return consulta.usuarioId || consulta.usuario_id || consulta.idUsuario || consulta.userId || consulta.pacienteId || consulta.paciente_id || consulta.idPaciente || null;
+    }
+
+    function mapaUsuariosPorId(usuarios) {
+        return (usuarios || []).reduce(function(mapa, usuario) {
+            if (usuario && usuario.id) {
+                mapa[usuario.id] = usuario;
+            }
+            return mapa;
+        }, {});
+    }
+
+    function nomePaciente(consulta, usuariosPorId) {
+        var nomeDireto =
+            nomePessoa(consulta && consulta.usuario) ||
+            nomePessoa(consulta && consulta.user) ||
+            nomePessoa(consulta && consulta.paciente) ||
+            nomePessoa(consulta);
+
+        if (nomeDireto) return nomeDireto;
+
+        var usuario = usuariosPorId ? usuariosPorId[idPaciente(consulta)] : null;
+        var nomePorId = nomePessoa(usuario);
+
+        return nomePorId || 'Paciente não informado';
     }
 
     function nomeMedico(consulta) {
@@ -271,7 +298,7 @@
         }).join('');
     }
 
-    function mostrarConsultas(consultas) {
+    function mostrarConsultas(consultas, usuarios) {
         var tabela = document.getElementById('consultas-hoje-tabela');
         if (!tabela) return;
 
@@ -280,13 +307,15 @@
             return;
         }
 
+        var usuariosPorId = mapaUsuariosPorId(usuarios);
+
         tabela.innerHTML = consultas.map(function(consulta) {
             var status = consulta.status || 'AGENDADA';
             var horario = consulta.horario || consulta.hora || '-';
 
             return (
                 '<tr>' +
-                    '<td><strong>' + escaparHtml(nomePaciente(consulta)) + '</strong></td>' +
+                    '<td><strong>' + escaparHtml(nomePaciente(consulta, usuariosPorId)) + '</strong></td>' +
                     '<td>' + escaparHtml(nomeMedico(consulta)) + '</td>' +
                     '<td>Consulta</td>' +
                     '<td><strong>' + escaparHtml(horario) + '</strong></td>' +
@@ -321,6 +350,10 @@
             buscarDados('/cirurgias').catch(function(erro) {
                 console.error('Erro ao carregar cirurgias:', erro);
                 return [];
+            }),
+            buscarDados('/users').catch(function(erro) {
+                console.error('Erro ao carregar pacientes:', erro);
+                return [];
             })
         ])
         .then(function(dados) {
@@ -330,12 +363,13 @@
             var consultas = dados[3];
             var todasConsultas = dados[4] || [];
             var cirurgias = dados[5] || [];
+            var usuarios = dados[6] || [];
 
             atualizarTexto('total-pacientes', totalPacientes);
             atualizarTexto('consultas-hoje', consultasHoje);
             atualizarTexto('cirurgias-agendadas', cirurgiasAgendadas);
 
-            mostrarConsultas(consultas);
+            mostrarConsultas(consultas, usuarios);
             mostrarGraficoMensal(todasConsultas, cirurgias);
         })
         .catch(function(erro) {
