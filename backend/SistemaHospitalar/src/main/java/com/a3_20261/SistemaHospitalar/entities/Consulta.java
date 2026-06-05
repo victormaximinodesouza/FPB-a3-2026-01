@@ -21,15 +21,19 @@ public class Consulta implements Serializable {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "medico_id")
     private Medico medico;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
+    private User user;
 
     public Consulta() {
     }
 
-    public Consulta(Integer id, StatusConsulta status, LocalDate data, String obs) {
+    public Consulta(Integer id, StatusConsulta status, LocalDate data, String obs,User user) {
         this.id = id;
         this.status = status;
         this.data = data;
         this.obs = obs;
+        this.user = user;
     }
 
     public Integer getId() {
@@ -61,6 +65,14 @@ public class Consulta implements Serializable {
 
     public void setMedico(Medico medico) {
         this.medico = medico;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getObs() {

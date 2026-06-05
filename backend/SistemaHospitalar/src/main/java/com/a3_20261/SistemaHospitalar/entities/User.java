@@ -37,12 +37,19 @@ public class User implements Serializable {
     @OneToOne
     @JoinColumn(name = "senha_atendimento_id")
     private SenhaAtendimento senhaAtendimento;
+    @OneToMany
+    private List<Consulta> consultas = new ArrayList<>();
 
 
     public User() {
     }
 
-    public User(Integer id, String nome, Integer CPF, Date dateBirth, String address, String email,String senha, String number,Prontuario prontuario,List<Exame> exames,List<Atendimento> atendimentos) {
+    public User(Integer id, String nome, Integer CPF,
+                Date dateBirth, String address,
+                String email,String senha,
+                String number,Prontuario prontuario,
+                List<Exame> exames,List<Atendimento> atendimentos,
+                List<Consulta> consultas) {
         this.id = id;
         this.nome = nome;
         this.CPF = CPF;
@@ -54,6 +61,7 @@ public class User implements Serializable {
         this.prontuario = prontuario;
         this.exames = exames;
         this.atendimentos = atendimentos;
+        this.consultas = consultas;
     }
 
     public String getEmail() {
@@ -138,6 +146,13 @@ public class User implements Serializable {
 
     public void setAtendimentos(List<Atendimento> atendimentos) {
         this.atendimentos = atendimentos;
+    }
+
+    public List<Consulta> getConsultas() {
+        return consultas;
+    }
+    public void setConsultas(List<Consulta> consultas) {
+        this.consultas = consultas;
     }
 
     @Override
