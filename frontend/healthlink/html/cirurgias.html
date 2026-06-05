@@ -289,23 +289,23 @@
       }
 
       function statusCirurgia(cirurgia) {
-        if (cirurgia.status === 'ANDAMENTO') {
+        var status = cirurgia.status || cirurgia.statusCirurgia || cirurgia.status_cirurgia || '';
+        if (status === 'ANDAMENTO' || status === 'EM_ANDAMENTO') {
           return 'Em andamento';
         }
-        if (cirurgia.status === 'REALIZADA') {
+        if (status === 'REALIZADA' || status === 'CONCLUIDA') {
           return 'Realizada';
         }
-        if (cirurgia.status === 'CANCELADA') {
+        if (status === 'CANCELADA') {
           return 'Cancelada';
         }
-        if (cirurgia.status === 'AGENDADA') {
+        if (status === 'AGENDADA' || status === 'AGENDADO') {
           return 'Agendada';
         }
+        if (typeof status === 'object' && status && status.name) {
+          return status.name;
+        }
         return 'Status não informado';
-      }
-
-      function prioridadeCirurgia(cirurgia) {
-        return cirurgia.prioridade || cirurgia.priority || 'Prioridade não informada';
       }
 
       function montarCardCirurgia(cirurgia) {
@@ -314,7 +314,6 @@
             '<div class="surgery-card-header">' +
               '<div class="title-group">' +
                 '<h3>' + escaparHtml(cirurgia.nome || 'Cirurgia sem nome') + '</h3>' +
-                '<span class="tag orange-light">' + escaparHtml(prioridadeCirurgia(cirurgia)) + '</span>' +
                 '<span class="tag purple-light">' + escaparHtml(statusCirurgia(cirurgia)) + '</span>' +
               '</div>' +
               '<div class="date-info">' +
