@@ -1,0 +1,606 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../css/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <title>HealthLink - Atendimento Médico</title>
+  </head>
+  <body>
+    <div class="wrapper">
+      <aside class="sidebar">
+        <div class="logo">
+          <i class="fa-solid fa-heart-pulse"></i>
+          <span>HealthLink</span>
+        </div>
+        <nav>
+          <a href="index.html"
+            ><i class="fa-solid fa-table-columns"></i> <span>Dashboard</span></a
+          >
+          <a href="agendamentos.html"
+            ><i class="fa-solid fa-calendar-days"></i>
+            <span>Agendamentos</span></a
+          >
+          <a href="filadeespera.html"
+            ><i class="fa-solid fa-clock"></i> <span>Fila de Espera</span></a
+          >
+          <a href="atendimento.html" class="active"
+            ><i class="fa-solid fa-stethoscope"></i> <span>Atendimento</span></a
+          >
+          <a href="cirurgias.html"
+            ><i class="fa-solid fa-heart-pulse"></i> <span>Cirurgias</span></a
+          >
+          <a href="exames.html"
+            ><i class="fa-solid fa-file-medical"></i> <span>Exames</span></a
+          >
+          <a href="doacaodesangue.html"
+            ><i class="fa-solid fa-droplet"></i>
+            <span>Doação de Sangue</span></a
+          >
+          <a href="usuarios.html"
+            ><i class="fa-solid fa-user-group"></i> <span>Usuários</span></a
+          >
+        </nav>
+        <div class="logout">
+          <a href="login.html"
+            ><i class="fa-solid fa-right-from-bracket"></i> <span>Sair</span></a
+          >
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <header>
+          <div class="header-titles">
+            <h1>Sistema de Gestão Hospitalar</h1>
+            <p>Gestão integrada e distribuída</p>
+          </div>
+          <div class="header-user">
+            <i class="fa-solid fa-bell"></i>
+            <i class="fa-solid fa-gear"></i>
+            <div class="user-profile">
+              <div class="user-info">
+                <strong>Dr. Administrador</strong><span>Administrador</span>
+              </div>
+              <div class="avatar">DR</div>
+            </div>
+          </div>
+        </header>
+
+        <section class="dashboard-head">
+          <div class="head-content">
+            <div>
+              <h2>Atendimento</h2>
+              <small>Registros de consultas e histórico médico</small>
+            </div>
+            <button class="btn-primary" type="button" id="abrir-modal-atendimento">
+              <i class="fa-solid fa-plus"></i> Novo Atendimento
+            </button>
+          </div>
+        </section>
+
+        <!-- KPIs -->
+        <section class="cards-summary">
+          <div class="card-kpi">
+            <div class="kpi-icon icon-green-light">
+              <i class="fa-solid fa-stethoscope"></i>
+            </div>
+            <div class="kpi-data">
+              <span class="kpi-value" id="consultas-hoje">...</span>
+              <span class="kpi-label">Consultas Hoje</span>
+            </div>
+          </div>
+          <div class="card-kpi">
+            <div class="kpi-icon icon-blue-light">
+              <i class="fa-regular fa-clock"></i>
+            </div>
+            <div class="kpi-data">
+              <span class="kpi-value" id="atendimentos-andamento">...</span>
+              <span class="kpi-label">Em Andamento</span>
+            </div>
+          </div>
+          <div class="card-kpi">
+            <div class="kpi-icon icon-green-light">
+              <i class="fa-regular fa-file-lines"></i>
+            </div>
+            <div class="kpi-data">
+              <span class="kpi-value" id="atendimentos-concluidos">...</span>
+              <span class="kpi-label">Concluídos</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="filter-bar-container">
+          <div class="filter-bar" style="width: 100%">
+            <div class="search-input">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input
+                type="text"
+                id="busca-atendimento"
+                placeholder="Buscar por paciente, médico ou diagnóstico..."
+              />
+            </div>
+            <div class="filter-options">
+              <select id="filtro-status">
+                <option value="">Todos os Status</option>
+                <option value="AGENDADO">Agendado</option>
+                <option value="ANDAMENTO">Em andamento</option>
+                <option value="CONCLUIDO">Concluído</option>
+              </select>
+              <input type="date" class="date-input" id="filtro-data" />
+            </div>
+          </div>
+        </section>
+
+        <!-- Cards de atendimento -->
+        <section class="attendance-list" id="atendimentos-lista">
+          <p>Carregando atendimentos...</p>
+        </section>
+      </main>
+    </div>
+
+    <div class="modal-overlay" id="modal-atendimento" aria-hidden="true">
+      <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="modal-atendimento-titulo">
+        <div class="modal-header">
+          <div>
+            <h3 id="modal-atendimento-titulo">Novo Atendimento</h3>
+            <p>Registre as informações principais do paciente</p>
+          </div>
+          <button class="modal-close" id="fechar-modal-atendimento" type="button" aria-label="Fechar">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+
+        <form id="form-atendimento" class="modal-form">
+          <label for="atendimento-paciente">Paciente</label>
+          <input type="text" id="atendimento-paciente" required placeholder="Nome do paciente" />
+
+          <label for="atendimento-data">Data</label>
+          <input type="date" id="atendimento-data" required />
+
+          <label for="atendimento-status">Status</label>
+          <select id="atendimento-status">
+            <option value="AGENDADO">Agendado</option>
+            <option value="ANDAMENTO" selected>Em andamento</option>
+            <option value="CONCLUIDO">Concluído</option>
+          </select>
+
+          <label for="atendimento-descricao">Queixa Principal</label>
+          <textarea id="atendimento-descricao" required placeholder="Descreva a queixa principal"></textarea>
+
+          <label for="atendimento-diagnostico">Diagnóstico</label>
+          <textarea id="atendimento-diagnostico" placeholder="Diagnóstico inicial"></textarea>
+
+          <p class="form-message" id="mensagem-atendimento"></p>
+
+          <div class="modal-actions">
+            <button class="btn-outline" id="cancelar-atendimento" type="button">Cancelar</button>
+            <button class="btn-primary" type="submit">Cadastrar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="modal-overlay" id="modal-prontuario" aria-hidden="true">
+      <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="modal-prontuario-titulo">
+        <div class="modal-header">
+          <div>
+            <h3 id="modal-prontuario-titulo">Prontuário</h3>
+            <p id="modal-prontuario-subtitulo">Detalhes do atendimento</p>
+          </div>
+          <button class="modal-close" id="fechar-modal-prontuario" type="button" aria-label="Fechar">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+        <div class="modal-details" id="prontuario-detalhes"></div>
+      </div>
+    </div>
+
+    <script>
+      const API_BASE_URL = 'http://localhost:8080';
+      const hoje = new Date().toISOString().slice(0, 10);
+      const ATENDIMENTOS_LOCAIS_KEY = 'healthlink_atendimentos_locais';
+      let atendimentosCarregados = [];
+      let consultasHojeApi = 0;
+
+      function buscarDados(caminho) {
+        return fetch(API_BASE_URL + caminho)
+          .then(function (resposta) {
+            if (!resposta.ok) {
+              throw new Error('Erro ao buscar ' + caminho);
+            }
+            return resposta.json();
+          });
+      }
+
+      function atualizarTexto(id, valor) {
+        var elemento = document.getElementById(id);
+        if (elemento) {
+          elemento.textContent = valor;
+        }
+      }
+
+      function escaparHtml(valor) {
+        return String(valor || '')
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#039;');
+      }
+
+      function formatarData(dataString) {
+        if (!dataString) {
+          return '-';
+        }
+
+        var data = new Date(dataString);
+        return data.toLocaleDateString('pt-BR');
+      }
+
+      function dataIso(dataString) {
+        if (!dataString) {
+          return '';
+        }
+        return String(dataString).slice(0, 10);
+      }
+
+      function lerAtendimentosLocais() {
+        try {
+          return JSON.parse(localStorage.getItem(ATENDIMENTOS_LOCAIS_KEY)) || [];
+        } catch (erro) {
+          return [];
+        }
+      }
+
+      function salvarAtendimentosLocais(atendimentos) {
+        localStorage.setItem(ATENDIMENTOS_LOCAIS_KEY, JSON.stringify(atendimentos));
+      }
+
+      function obterPaciente(atendimento) {
+        if (atendimento.pacienteNome) {
+          return atendimento.pacienteNome;
+        }
+        if (atendimento.nomePaciente) {
+          return atendimento.nomePaciente;
+        }
+        if (atendimento.usuario && atendimento.usuario.name) {
+          return atendimento.usuario.name;
+        }
+        if (atendimento.usuario && atendimento.usuario.nome) {
+          return atendimento.usuario.nome;
+        }
+        return 'Paciente não informado';
+      }
+
+      function obterMedico(atendimento) {
+        if (atendimento.medico && atendimento.medico.name) {
+          return atendimento.medico.name;
+        }
+        if (atendimento.medico && atendimento.medico.nome) {
+          return atendimento.medico.nome;
+        }
+        return '';
+      }
+
+      function iniciais(nome) {
+        return String(nome || '-')
+          .split(' ')
+          .filter(Boolean)
+          .map(function (parte) {
+            return parte.charAt(0);
+          })
+          .join('')
+          .slice(0, 2)
+          .toUpperCase();
+      }
+
+      function statusTexto(status) {
+        if (status === 'CONCLUIDO') {
+          return 'Concluído';
+        }
+        if (status === 'ANDAMENTO') {
+          return 'Em andamento';
+        }
+        return 'Agendado';
+      }
+
+      function statusClasse(status) {
+        if (status === 'CONCLUIDO') {
+          return 'finished';
+        }
+        return 'in-progress';
+      }
+
+      function montarCardAtendimento(atendimento) {
+        var indice = atendimentosCarregados.indexOf(atendimento);
+        var paciente = obterPaciente(atendimento);
+        var status = atendimento.atendimentoStatus || 'AGENDADO';
+        var descricao = atendimento.descricao || 'Descrição não informada';
+        var diagnostico = atendimento.diagnosis || 'Diagnóstico não informado';
+        var data = formatarData(atendimento.service_date);
+
+        return (
+          '<div class="attendance-card">' +
+            '<div class="card-top">' +
+              '<div class="patient-main-info">' +
+                '<div class="avatar-circle blue">' + escaparHtml(iniciais(paciente)) + '</div>' +
+                '<div class="name-details">' +
+                  '<h3>' + escaparHtml(paciente) + '</h3>' +
+                  '<span><i class="fa-regular fa-clock"></i> ' + escaparHtml(data) + '</span>' +
+                '</div>' +
+              '</div>' +
+              '<span class="status-tag ' + statusClasse(status) + '">' + statusTexto(status) + '</span>' +
+            '</div>' +
+            '<div class="card-body-grid">' +
+              '<div class="info-block">' +
+                '<label>Queixa Principal</label>' +
+                '<p>' + escaparHtml(descricao) + '</p>' +
+              '</div>' +
+              '<div class="info-block">' +
+                '<label>Diagnóstico</label>' +
+                '<p>' + escaparHtml(diagnostico) + '</p>' +
+              '</div>' +
+            '</div>' +
+            '<div class="card-footer">' +
+              '<button class="btn-action-primary" type="button" data-atendimento-index="' + indice + '">Ver Prontuário Completo</button>' +
+            '</div>' +
+          '</div>'
+        );
+      }
+
+      function mostrarAtendimentos(atendimentos) {
+        var lista = document.getElementById('atendimentos-lista');
+        if (!lista) {
+          return;
+        }
+
+        if (!atendimentos || atendimentos.length === 0) {
+          lista.innerHTML = '<p>Nenhum atendimento encontrado.</p>';
+          return;
+        }
+
+        lista.innerHTML = atendimentos.map(montarCardAtendimento).join('');
+      }
+
+      function aplicarFiltrosAtendimentos() {
+        var busca = (document.getElementById('busca-atendimento')?.value || '').toLowerCase();
+        var statusFiltro = document.getElementById('filtro-status')?.value || '';
+        var dataFiltro = document.getElementById('filtro-data')?.value || '';
+
+        var atendimentosFiltrados = atendimentosCarregados.filter(function (atendimento) {
+          var paciente = obterPaciente(atendimento).toLowerCase();
+          var medico = obterMedico(atendimento).toLowerCase();
+          var diagnostico = (atendimento.diagnosis || '').toLowerCase();
+          var descricao = (atendimento.descricao || '').toLowerCase();
+          var status = atendimento.atendimentoStatus || 'AGENDADO';
+          var dataAtendimento = dataIso(atendimento.service_date);
+          var textoBusca = paciente + ' ' + medico + ' ' + diagnostico + ' ' + descricao;
+
+          var correspondeBusca = !busca || textoBusca.indexOf(busca) !== -1;
+          var correspondeStatus = !statusFiltro || status === statusFiltro;
+          var correspondeData = !dataFiltro || dataAtendimento === dataFiltro;
+
+          return correspondeBusca && correspondeStatus && correspondeData;
+        });
+
+        mostrarAtendimentos(atendimentosFiltrados);
+      }
+
+      function atualizarIndicadores() {
+        var atendimentosLocaisHoje = atendimentosCarregados.filter(function (atendimento) {
+          return atendimento.local && dataIso(atendimento.service_date) === hoje;
+        }).length;
+        var emAndamento = atendimentosCarregados.filter(function (atendimento) {
+          return atendimento.atendimentoStatus === 'ANDAMENTO';
+        }).length;
+        var concluidos = atendimentosCarregados.filter(function (atendimento) {
+          return atendimento.atendimentoStatus === 'CONCLUIDO';
+        }).length;
+
+        atualizarTexto('consultas-hoje', consultasHojeApi + atendimentosLocaisHoje);
+        atualizarTexto('atendimentos-andamento', emAndamento);
+        atualizarTexto('atendimentos-concluidos', concluidos);
+      }
+
+      function abrirModalAtendimento() {
+        var modal = document.getElementById('modal-atendimento');
+        var data = document.getElementById('atendimento-data');
+        var mensagem = document.getElementById('mensagem-atendimento');
+
+        if (data && !data.value) {
+          data.value = hoje;
+        }
+        if (mensagem) {
+          mensagem.textContent = '';
+          mensagem.className = 'form-message';
+        }
+        if (modal) {
+          modal.classList.add('is-open');
+          modal.setAttribute('aria-hidden', 'false');
+        }
+      }
+
+      function fecharModalAtendimento() {
+        var modal = document.getElementById('modal-atendimento');
+        var form = document.getElementById('form-atendimento');
+        if (modal) {
+          modal.classList.remove('is-open');
+          modal.setAttribute('aria-hidden', 'true');
+        }
+        if (form) {
+          form.reset();
+        }
+      }
+
+      function mostrarMensagemAtendimento(texto, tipo) {
+        var mensagem = document.getElementById('mensagem-atendimento');
+        if (!mensagem) return;
+        mensagem.textContent = texto;
+        mensagem.className = 'form-message ' + (tipo || '');
+      }
+
+      function cadastrarAtendimento(evento) {
+        evento.preventDefault();
+
+        var paciente = document.getElementById('atendimento-paciente').value.trim();
+        var data = document.getElementById('atendimento-data').value;
+        var status = document.getElementById('atendimento-status').value;
+        var descricao = document.getElementById('atendimento-descricao').value.trim();
+        var diagnostico = document.getElementById('atendimento-diagnostico').value.trim();
+
+        if (!paciente || !data || !descricao) {
+          mostrarMensagemAtendimento('Preencha paciente, data e queixa principal.', 'error');
+          return;
+        }
+
+        var novoAtendimento = {
+          id: 'local-' + Date.now(),
+          pacienteNome: paciente,
+          usuario: { nome: paciente },
+          service_date: data,
+          atendimentoStatus: status,
+          descricao: descricao,
+          diagnosis: diagnostico || 'Diagnóstico não informado',
+          local: true
+        };
+
+        var locais = lerAtendimentosLocais();
+        locais.unshift(novoAtendimento);
+        salvarAtendimentosLocais(locais);
+
+        atendimentosCarregados.unshift(novoAtendimento);
+        atualizarIndicadores();
+        aplicarFiltrosAtendimentos();
+        fecharModalAtendimento();
+      }
+
+      function abrirProntuario(atendimento) {
+        if (!atendimento) return;
+
+        var paciente = obterPaciente(atendimento);
+        var status = atendimento.atendimentoStatus || 'AGENDADO';
+        var detalhes = document.getElementById('prontuario-detalhes');
+        var subtitulo = document.getElementById('modal-prontuario-subtitulo');
+        var modal = document.getElementById('modal-prontuario');
+
+        if (subtitulo) {
+          subtitulo.textContent = paciente + ' • ' + statusTexto(status);
+        }
+        if (detalhes) {
+          detalhes.innerHTML =
+            '<div class="info-block"><label>Paciente</label><p>' + escaparHtml(paciente) + '</p></div>' +
+            '<div class="info-block"><label>Data</label><p>' + escaparHtml(formatarData(atendimento.service_date)) + '</p></div>' +
+            '<div class="info-block"><label>Status</label><p>' + escaparHtml(statusTexto(status)) + '</p></div>' +
+            '<div class="info-block"><label>Queixa Principal</label><p>' + escaparHtml(atendimento.descricao || 'Descrição não informada') + '</p></div>' +
+            '<div class="info-block"><label>Diagnóstico</label><p>' + escaparHtml(atendimento.diagnosis || 'Diagnóstico não informado') + '</p></div>';
+        }
+        if (modal) {
+          modal.classList.add('is-open');
+          modal.setAttribute('aria-hidden', 'false');
+        }
+      }
+
+      function fecharModalProntuario() {
+        var modal = document.getElementById('modal-prontuario');
+        if (modal) {
+          modal.classList.remove('is-open');
+          modal.setAttribute('aria-hidden', 'true');
+        }
+      }
+
+      function carregarAtendimentos() {
+        Promise.all([
+          buscarDados('/atendimentos'),
+          buscarDados('/consultas/por-dia?data=' + hoje)
+        ])
+          .then(function (dados) {
+            var atendimentos = dados[0] || [];
+            consultasHojeApi = dados[1] || 0;
+            atendimentosCarregados = lerAtendimentosLocais().concat(atendimentos);
+            atualizarIndicadores();
+            aplicarFiltrosAtendimentos();
+          })
+          .catch(function (erro) {
+            console.error('Erro ao carregar atendimentos:', erro);
+            atualizarTexto('consultas-hoje', '0');
+            atualizarTexto('atendimentos-andamento', '0');
+            atualizarTexto('atendimentos-concluidos', '0');
+
+            var lista = document.getElementById('atendimentos-lista');
+            if (lista) {
+              lista.innerHTML = '<p>Não foi possível carregar os atendimentos.</p>';
+            }
+          });
+      }
+
+      document.addEventListener('DOMContentLoaded', function () {
+        carregarAtendimentos();
+
+        var busca = document.getElementById('busca-atendimento');
+        var filtroStatus = document.getElementById('filtro-status');
+        var filtroData = document.getElementById('filtro-data');
+        var abrirModal = document.getElementById('abrir-modal-atendimento');
+        var fecharModal = document.getElementById('fechar-modal-atendimento');
+        var cancelarAtendimento = document.getElementById('cancelar-atendimento');
+        var formAtendimento = document.getElementById('form-atendimento');
+        var fecharProntuario = document.getElementById('fechar-modal-prontuario');
+        var lista = document.getElementById('atendimentos-lista');
+        var modalAtendimento = document.getElementById('modal-atendimento');
+        var modalProntuario = document.getElementById('modal-prontuario');
+
+        if (busca) {
+          busca.addEventListener('input', aplicarFiltrosAtendimentos);
+        }
+        if (filtroStatus) {
+          filtroStatus.addEventListener('change', aplicarFiltrosAtendimentos);
+        }
+        if (filtroData) {
+          filtroData.addEventListener('change', aplicarFiltrosAtendimentos);
+        }
+        if (abrirModal) {
+          abrirModal.addEventListener('click', abrirModalAtendimento);
+        }
+        if (fecharModal) {
+          fecharModal.addEventListener('click', fecharModalAtendimento);
+        }
+        if (cancelarAtendimento) {
+          cancelarAtendimento.addEventListener('click', fecharModalAtendimento);
+        }
+        if (formAtendimento) {
+          formAtendimento.addEventListener('submit', cadastrarAtendimento);
+        }
+        if (fecharProntuario) {
+          fecharProntuario.addEventListener('click', fecharModalProntuario);
+        }
+        if (modalAtendimento) {
+          modalAtendimento.addEventListener('click', function (evento) {
+            if (evento.target.id === 'modal-atendimento') {
+              fecharModalAtendimento();
+            }
+          });
+        }
+        if (modalProntuario) {
+          modalProntuario.addEventListener('click', function (evento) {
+            if (evento.target.id === 'modal-prontuario') {
+              fecharModalProntuario();
+            }
+          });
+        }
+        if (lista) {
+          lista.addEventListener('click', function (evento) {
+            var botao = evento.target.closest('button[data-atendimento-index]');
+            if (!botao) return;
+
+            var indice = Number(botao.getAttribute('data-atendimento-index'));
+            abrirProntuario(atendimentosCarregados[indice]);
+          });
+        }
+      });
+    </script>
+      <script src="../assets/js/header-user.js"></script>
+</body>
+</html>

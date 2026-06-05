@@ -1,0 +1,130 @@
+package com.a3_20261.SistemaHospitalar.config;
+
+import com.a3_20261.SistemaHospitalar.Enum.*;
+import com.a3_20261.SistemaHospitalar.Repository.*;
+import com.a3_20261.SistemaHospitalar.entities.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
+
+@Configuration
+@Profile("test")
+public class TestConfig implements CommandLineRunner {
+    @Autowired
+    private MedicoRepository medicoRepository;
+    @Autowired
+    private AtendimentoRepository atendimentoRepository;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private CirurgiasRepository cirurgiasRepository;
+    @Autowired
+    private ConsultaRepository consultaRepository;
+    @Autowired
+    private ExameRepository exameRepository;
+    @Autowired
+    private HospitalRepository hospitalRepository;
+    @Autowired
+    private ProntuarioRepository prontuarioRepository;
+    @Autowired
+    private SalaCirurgicaRepository salaCirurgicaRepository;
+    @Autowired
+    private SenhaAtendimentoRepository senhaAtendimentoRepository;
+    @Autowired
+    private AgendamentoRepository agendamentoRepository;
+    @Autowired
+    private BCryptPasswordEncoder encoder;
+
+
+    @Override
+    public void run(String... args) throws Exception {
+
+        Cirurgia c1 = new Cirurgia(null,"Ponte de Safena",2,null,"feito com sucesso", StatusCirurgia.AGENDADA,new ArrayList<>(),null);
+        Cirurgia c2 = new Cirurgia(null,"Joelho",3,null,"deu errado",null,new ArrayList<>(),null);
+
+        Medico m1 = new Medico(null, "joao", 3232, null, 922992922,new ArrayList<>(),new ArrayList<>(),new ArrayList<>());
+        Medico m2 = new Medico(null, "maria", 32333, null, 992922,new ArrayList<>(),new ArrayList<>(),new ArrayList<>());
+
+
+        m1.getCirurgia().add(c2);
+        m2.getCirurgia().add(c1);
+
+
+        c2.getMedicos().add(m1);
+        c1.getMedicos().add(m2);
+
+        cirurgiasRepository.saveAll(Arrays.asList(c1,c2));
+        medicoRepository.saveAll(Arrays.asList(m1,m2));
+
+
+
+        Exame e1 = new Exame(null,null,null,null,null,null, ExameStatus.AGENDADO);
+        Exame e2 = new Exame(null,null,null,null,null,null,ExameStatus.AGENDADO);
+
+        exameRepository.saveAll(Arrays.asList(e1,e2));
+
+
+        SalaCirurgica s1 =new SalaCirurgica(null,20, StatusSalaCirurgica.LIVRE,Arrays.asList(c1));
+        SalaCirurgica s2 =new SalaCirurgica(null,30,StatusSalaCirurgica.MANUNTENCAO,Arrays.asList(c2));
+
+        salaCirurgicaRepository.saveAll(Arrays.asList(s1,s2));
+
+        User u1 =new User(null,"adm1",1111111111,null,"rua da macaxeira","adm1@gmail.com", encoder.encode("2"),"2",null,new ArrayList<>(),new ArrayList<>(),new ArrayList<>());
+        User u2 =new User(null,"adm2",111113311,null,"rua da severina","adm2@gmail.com",encoder.encode("3"),"4",null,new ArrayList<>(),new ArrayList<>(),new ArrayList<>());
+
+        userRepository.saveAll(Arrays.asList(u1,u2));
+
+        Consulta cs1 = new Consulta(null,null,LocalDate.now(),"dor de barriga",u1);
+        Consulta cs2 = new Consulta(null,null, LocalDate.now(),"dor de dente",u2);
+
+        consultaRepository.saveAll(Arrays.asList(cs1,cs2));
+        cs1.setMedico(m1);
+        cs2.setMedico(m2);
+
+
+        Prontuario p1 =new Prontuario(null,null,"cleinte bem",u1);
+        Prontuario p2 =new Prontuario(null,null,"cleinte mal",u2);
+
+        prontuarioRepository.saveAll(Arrays.asList(p1,p2));
+
+        Hospital h1 = new Hospital(null, "Sao vicente", 20, "rua da igreja", Arrays.asList(u1),Arrays.asList(m1));
+        Hospital h2 = new Hospital(null, "Metropolitado", 30, "rua de cima", Arrays.asList(u2),Arrays.asList(m2));
+
+        hospitalRepository.saveAll(Arrays.asList(h1,h2));
+
+
+        Atendimento a1 = new Atendimento(null,"cliente dolorido", "Prioridade", null, AtendimentoStatus.ANDAMENTO,u1);
+        Atendimento a2 = new Atendimento(null,"cliente bem", "Prioridade", null,AtendimentoStatus.CONCLUIDO,u2);
+
+        atendimentoRepository.saveAll(Arrays.asList(a1, a2));
+
+        SenhaAtendimento se1 =new SenhaAtendimento(null,u1,StatusSenha.ESPERANDO);
+        SenhaAtendimento se2 =new SenhaAtendimento(null,u2,StatusSenha.ESPERANDO);
+
+        senhaAtendimentoRepository.saveAll(Arrays.asList(se1,se2));
+
+        Agendamento ag1 = new Agendamento(null,null);
+        Agendamento ag2 = new Agendamento(null,null);
+
+        agendamentoRepository.saveAll(Arrays.asList(ag1,ag2));
+
+
+
+    }
+
+
+
+
+    }
+
+
+
+
+
+

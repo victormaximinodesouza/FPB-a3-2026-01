@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>HealthLink - Dashboard</title>
+</head>
+<body>
+<div class="wrapper">
+
+    <aside class="sidebar">
+        <div class="logo">
+            <i class="fa-solid fa-heart-pulse"></i>
+            <span>HealthLink</span>
+        </div>
+        <nav>
+            <a href="index.html" class="active"><i class="fa-solid fa-table-columns"></i> <span>Dashboard</span></a>
+            <a href="agendamentos.html"><i class="fa-solid fa-calendar-days"></i> <span>Agendamentos</span></a>
+            <a href="filadeespera.html"><i class="fa-solid fa-clock"></i> <span>Fila de Espera</span></a>
+            <a href="atendimento.html"><i class="fa-solid fa-stethoscope"></i> <span>Atendimento</span></a>
+            <a href="cirurgias.html"><i class="fa-solid fa-heart-pulse"></i> <span>Cirurgias</span></a>
+            <a href="exames.html"><i class="fa-solid fa-file-medical"></i> <span>Exames</span></a>
+            <a href="doacaodesangue.html"><i class="fa-solid fa-droplet"></i> <span>Doação de Sangue</span></a>
+            <a href="usuarios.html"><i class="fa-solid fa-user-group"></i> <span>Usuários</span></a>
+        </nav>
+        <div class="logout">
+            <a href="login.html"><i class="fa-solid fa-right-from-bracket"></i> <span>Sair</span></a>
+        </div>
+    </aside>
+
+    <main class="main-content">
+
+        <header>
+            <div class="header-titles">
+                <h1>Sistema de Gestão Hospitalar</h1>
+                <p>Gestão integrada e distribuída</p>
+            </div>
+            <div class="header-user">
+                <i class="fa-solid fa-bell"></i>
+                <i class="fa-solid fa-gear"></i>
+                <div class="user-profile">
+                    <div class="user-info">
+                        <strong>Dr. Administrador</strong>
+                        <span>Administrador</span>
+                    </div>
+                    <div class="avatar">DR</div>
+                </div>
+            </div>
+        </header>
+
+        <section class="dashboard-head">
+            <div class="head-left">
+                <h2>Dashboard</h2>
+                <small>Bem-vindo! Confira o resumo de hoje.</small>
+            </div>
+        </section>
+
+        <div class="dashboard-container">
+
+            <!-- KPIs -->
+            <section class="cards-summary">
+                <div class="card-kpi">
+                    <div class="kpi-icon icon-blue-light">
+                        <i class="fa-solid fa-users"></i>
+                    </div>
+                    <div class="kpi-data">
+                        <span class="kpi-value" id="total-pacientes">...</span>
+                        <span class="kpi-label">Total de Pacientes</span>
+                    </div>
+                </div>
+                <div class="card-kpi">
+                    <div class="kpi-icon icon-green-light">
+                        <i class="fa-solid fa-calendar-check"></i>
+                    </div>
+                    <div class="kpi-data">
+                        <span class="kpi-value" id="consultas-hoje">...</span>
+                        <span class="kpi-label">Consultas Hoje</span>
+                    </div>
+                </div>
+                <div class="card-kpi">
+                    <div class="kpi-icon icon-green-light">
+                        <i class="fa-solid fa-heart-pulse"></i>
+                    </div>
+                    <div class="kpi-data">
+                        <span class="kpi-value" id="cirurgias-agendadas">...</span>
+                        <span class="kpi-label">Cirurgias Agendadas</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Gráfico -->
+            <div class="charts-grid single-chart">
+                <div class="card" style="padding:20px;">
+                    <h3>Visão Mensal</h3>
+                    <p class="subtitle">Últimos 6 meses</p>
+                    <div class="bar-chart-container" id="grafico-mensal">
+                        <p>Carregando visão mensal...</p>
+                    </div>
+                    <div class="legend">
+                        <span class="dot dark"></span> Consultas &nbsp;
+                        <span class="dot light"></span> Cirurgias
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Tabela consultas hoje -->
+            <div class="card table-card">
+                <div class="table-header">
+                    <div>
+                        <h3>Consultas de Hoje</h3>
+                        <p>Acompanhamento em tempo real</p>
+                    </div>
+                    <a href="agendamentos.html" class="view-all">Ver todas →</a>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>PACIENTE</th>
+                            <th>MÉDICO</th>
+                            <th>TIPO</th>
+                            <th>HORÁRIO</th>
+                            <th>STATUS</th>
+                        </tr>
+                    </thead>
+                    <tbody id="consultas-hoje-tabela">
+                        <tr>
+                            <td colspan="5">Carregando consultas...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+    </main>
+</div>
+<script>
+    var API_BASE_URL = 'http://localhost:8080';
+    var usuariosPorId = {};
+    var medicosPorId = {};
+
+    function formatarDataLocal(data) {
+        var ano = data.getFullYear();
+        var mes = String(data.getMonth() + 1).padStart(2, '0');
+        var dia = String(data.getDate()).padStart(2, '0');
+        return ano + '-' + mes + '-' + dia;
+    }
+
+    var hoje = formatarDataLocal(new Date());
+
+    function atualizarTexto(id, valor) {
+        var elemento = document.getElementById(id);
+        if (elemento) {
+            elemento.textContent = valor;
+        }
+    }
+
+    function buscarDados(caminho) {
+        return fetch(API_BASE_URL + caminho)
+            .then(function(resposta) {
+                if (!resposta.ok) {
+                    throw new Error('Erro ao buscar ' + caminho);
+                }
+                return resposta.json();
+            });
+    }
+
+    function escaparHtml(valor) {
+        return String(valor || '')
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
+    }
+
+    function mapearPorId(lista) {
+        return (lista || []).reduce(function(mapa, item) {
+            if (item && item.id) {
+                mapa[item.id] = item;
+            }
+            return mapa;
+        }, {});
+    }
+
+    function nomePessoa(pessoa) {
+        if (!pessoa) return '';
+        return pessoa.nome || pessoa.name || pessoa.nomePaciente || pessoa.pacienteNome || pessoa.usuarioNome || pessoa.nomeUsuario || pessoa.patientName || pessoa.fullName || pessoa.nomeCompleto || '';
+    }
+
+    function idPaciente(consulta) {
+        if (!consulta) return null;
+        if (typeof consulta.usuario === 'number' || typeof consulta.usuario === 'string') return consulta.usuario;
+        if (typeof consulta.user === 'number' || typeof consulta.user === 'string') return consulta.user;
+        if (typeof consulta.paciente === 'number' || typeof consulta.paciente === 'string') return consulta.paciente;
+        if (consulta.usuario && consulta.usuario.id) return consulta.usuario.id;
+        if (consulta.user && consulta.user.id) return consulta.user.id;
+        if (consulta.paciente && consulta.paciente.id) return consulta.paciente.id;
+        return consulta.usuarioId || consulta.usuario_id || consulta.idUsuario || consulta.userId || consulta.pacienteId || consulta.paciente_id || consulta.idPaciente || null;
+    }
+
+    function idMedico(consulta) {
+        if (!consulta) return null;
+        if (typeof consulta.medico === 'number' || typeof consulta.medico === 'string') return consulta.medico;
+        if (consulta.medico && consulta.medico.id) return consulta.medico.id;
+        return consulta.medicoId || consulta.medico_id || consulta.idMedico || null;
+    }
+
+    function especialidadeMedico(medico) {
+        if (!medico) return '';
+        return medico.specialty || medico.especialidade || medico.medicoSpecialty || medico.speciality || '';
+    }
+
+    function obterPaciente(consulta) {
+        if (!consulta) return 'Paciente não informado';
+
+        var nomeDireto =
+            nomePessoa(consulta.usuario) ||
+            nomePessoa(consulta.user) ||
+            nomePessoa(consulta.paciente) ||
+            nomePessoa(consulta);
+
+        if (nomeDireto) return nomeDireto;
+
+        var usuario = usuariosPorId[idPaciente(consulta)];
+        return nomePessoa(usuario) || 'Paciente não informado';
+    }
+
+    function obterMedico(consulta) {
+        if (!consulta) return 'Médico não informado';
+
+        var nomeDireto = nomePessoa(consulta.medico) || consulta.nomeMedico || consulta.medicoNome;
+        if (nomeDireto) return nomeDireto;
+
+        var medico = medicosPorId[idMedico(consulta)];
+        return nomePessoa(medico) || 'Médico não informado';
+    }
+
+    function obterEspecialidade(consulta) {
+        if (!consulta) return '-';
+
+        var especialidadeDireta =
+            especialidadeMedico(consulta.medico) ||
+            consulta.especialidade ||
+            consulta.specialty ||
+            consulta.medicoEspecialidade;
+
+        if (especialidadeDireta) return especialidadeDireta;
+
+        var medico = medicosPorId[idMedico(consulta)];
+        return especialidadeMedico(medico) || '-';
+    }
+
+    function statusTexto(status) {
+        if (status === 'REALIZADA') return 'Realizada';
+        if (status === 'CANCELADA') return 'Cancelada';
+        return 'Agendada';
+    }
+
+    function statusClasse(status) {
+        if (status === 'REALIZADA') return 'done';
+        return 'pending';
+    }
+
+    function dataConsulta(consulta) {
+        return consulta.data || consulta.date || consulta.service_date || '';
+    }
+
+    function dataCirurgia(cirurgia) {
+        return cirurgia.dateSurgery || cirurgia.data || '';
+    }
+
+    function ultimosSeisMeses() {
+        var meses = [];
+        var agora = new Date();
+
+        for (var i = 5; i >= 0; i--) {
+            var data = new Date(agora.getFullYear(), agora.getMonth() - i, 1);
+            meses.push({
+                chave: data.getFullYear() + '-' + String(data.getMonth() + 1).padStart(2, '0'),
+                label: data.toLocaleDateString('pt-BR', { month: 'short' }).replace('.', '')
+            });
+        }
+
+        return meses;
+    }
+
+    function contarPorMes(lista, obterData) {
+        return lista.reduce(function(acumulador, item) {
+            var data = obterData(item);
+            if (!data) return acumulador;
+
+            var chave = String(data).slice(0, 7);
+            acumulador[chave] = (acumulador[chave] || 0) + 1;
+            return acumulador;
+        }, {});
+    }
+
+    function mostrarGraficoMensal(consultas, cirurgias) {
+        var container = document.getElementById('grafico-mensal');
+        if (!container) return;
+
+        var meses = ultimosSeisMeses();
+        var consultasPorMes = contarPorMes(consultas || [], dataConsulta);
+        var cirurgiasPorMes = contarPorMes(cirurgias || [], dataCirurgia);
+        var maiorValor = meses.reduce(function(maior, mes) {
+            return Math.max(maior, consultasPorMes[mes.chave] || 0, cirurgiasPorMes[mes.chave] || 0);
+        }, 0);
+
+        if (maiorValor === 0) {
+            container.innerHTML = '<p>Nenhum dado mensal encontrado.</p>';
+            return;
+        }
+
+        container.innerHTML = meses.map(function(mes) {
+            var totalConsultas = consultasPorMes[mes.chave] || 0;
+            var totalCirurgias = cirurgiasPorMes[mes.chave] || 0;
+            var alturaConsultas = Math.max(4, Math.round((totalConsultas / maiorValor) * 100));
+            var alturaCirurgias = Math.max(4, Math.round((totalCirurgias / maiorValor) * 100));
+
+            return (
+                '<div class="bar-group">' +
+                    '<div class="bar dark" title="Consultas: ' + totalConsultas + '" style="height:' + alturaConsultas + '%;"></div>' +
+                    '<div class="bar light" title="Cirurgias: ' + totalCirurgias + '" style="height:' + alturaCirurgias + '%;"></div>' +
+                    '<span>' + escaparHtml(mes.label) + '</span>' +
+                '</div>'
+            );
+        }).join('');
+    }
+
+    function mostrarConsultas(consultas, usuarios) {
+        var tabela = document.getElementById('consultas-hoje-tabela');
+        if (!tabela) return;
+
+        if (!consultas || consultas.length === 0) {
+            tabela.innerHTML = '<tr><td colspan="5">Nenhuma consulta encontrada para hoje.</td></tr>';
+            return;
+        }
+
+        tabela.innerHTML = consultas.map(function(consulta) {
+            var status = consulta.status || 'AGENDADA';
+            var horario = consulta.horario || consulta.hora || '-';
+            var paciente = obterPaciente(consulta);
+            var medico = obterMedico(consulta);
+
+            return (
+                '<tr>' +
+                    '<td><strong>' + escaparHtml(paciente) + '</strong></td>' +
+                    '<td>' + escaparHtml(medico) + '</td>' +
+                    '<td>Consulta</td>' +
+                    '<td><strong>' + escaparHtml(horario) + '</strong></td>' +
+                    '<td><span class="status ' + statusClasse(status) + '">' + escaparHtml(statusTexto(status)) + '</span></td>' +
+                '</tr>'
+            );
+        }).join('');
+    }
+
+    function carregarDashboard() {
+        Promise.all([
+            buscarDados('/users/totalPacientes').catch(function(erro) {
+                console.error('Erro ao carregar total de pacientes:', erro);
+                return 0;
+            }),
+            buscarDados('/consultas/por-dia?data=' + hoje).catch(function(erro) {
+                console.error('Erro ao carregar consultas de hoje:', erro);
+                return 0;
+            }),
+            buscarDados('/cirurgias/total-agendadas').catch(function(erro) {
+                console.error('Erro ao carregar cirurgias agendadas:', erro);
+                return 0;
+            }),
+            buscarDados('/consultas/por-dia/lista?data=' + hoje).catch(function(erro) {
+                console.error('Erro ao carregar lista de consultas de hoje:', erro);
+                return [];
+            }),
+            buscarDados('/consultas').catch(function(erro) {
+                console.error('Erro ao carregar consultas:', erro);
+                return [];
+            }),
+            buscarDados('/cirurgias').catch(function(erro) {
+                console.error('Erro ao carregar cirurgias:', erro);
+                return [];
+            }),
+            buscarDados('/users').catch(function(erro) {
+                console.error('Erro ao carregar pacientes:', erro);
+                return [];
+            }),
+            buscarDados('/medicos').catch(function(erro) {
+                console.error('Erro ao carregar médicos:', erro);
+                return [];
+            })
+        ])
+        .then(function(dados) {
+            var totalPacientes = dados[0];
+            var consultasHoje = dados[1];
+            var cirurgiasAgendadas = dados[2];
+            var consultas = dados[3];
+            var todasConsultas = dados[4] || [];
+            var cirurgias = dados[5] || [];
+            usuariosPorId = mapearPorId(dados[6] || []);
+            medicosPorId = mapearPorId(dados[7] || []);
+
+            atualizarTexto('total-pacientes', totalPacientes);
+            atualizarTexto('consultas-hoje', consultasHoje);
+            atualizarTexto('cirurgias-agendadas', cirurgiasAgendadas);
+
+            mostrarConsultas(consultas);
+            mostrarGraficoMensal(todasConsultas, cirurgias);
+        })
+        .catch(function(erro) {
+            console.error(erro);
+            atualizarTexto('total-pacientes', '0');
+            atualizarTexto('consultas-hoje', '0');
+            atualizarTexto('cirurgias-agendadas', '0');
+
+            var grafico = document.getElementById('grafico-mensal');
+            if (grafico) {
+                grafico.innerHTML = '<p>Não foi possível carregar a visão mensal.</p>';
+            }
+
+            var tabela = document.getElementById('consultas-hoje-tabela');
+            if (tabela) {
+                tabela.innerHTML = '<tr><td colspan="5">Não foi possível carregar os dados do backend.</td></tr>';
+            }
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', carregarDashboard);
+</script>
+    <script src="../assets/js/header-user.js"></script>
+</body>
+</html>

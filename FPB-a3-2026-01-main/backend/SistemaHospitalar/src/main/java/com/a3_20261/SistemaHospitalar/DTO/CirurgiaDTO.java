@@ -1,0 +1,104 @@
+package com.a3_20261.SistemaHospitalar.DTO;
+
+import com.a3_20261.SistemaHospitalar.Enum.StatusCirurgia;
+import com.a3_20261.SistemaHospitalar.entities.Cirurgia;
+import com.a3_20261.SistemaHospitalar.entities.Medico;
+import com.a3_20261.SistemaHospitalar.entities.SalaCirurgica;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+public class CirurgiaDTO {
+    private Integer id;
+    private String nome;
+    private Integer duracao;
+    private Date dateSurgery;
+    private String report;
+    private StatusCirurgia status;
+    private List<MedicoResumoDTO> medicos = new ArrayList<>();
+    private SalaCirurgica salaCirurgica;
+
+    public CirurgiaDTO() {}
+
+    public CirurgiaDTO(Cirurgia entity) {
+        this.id = entity.getId();
+        this.dateSurgery = entity.getDateSurgery();
+        this.report = entity.getReport();
+        this.status = entity.getStatus();
+        this.salaCirurgica = entity.getSalaCirurgica();
+        this.nome = entity.getNome();
+        this.duracao = entity.getDuracao();
+
+        for (Medico m : entity.getMedicos()) {
+            this.medicos.add(new MedicoResumoDTO(m));
+        }
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public Integer getDuracao() {
+        return duracao;
+    }
+
+    public void setDuracao(Integer duracao) {
+        this.duracao = duracao;
+    }
+
+    public Date getDateSurgery() {
+        return dateSurgery;
+    }
+
+    public void setDateSurgery(Date dateSurgery) {
+        this.dateSurgery = dateSurgery;
+    }
+
+    public String getReport() {
+        return report;
+    }
+
+    public StatusCirurgia getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusCirurgia status) {
+        this.status = status;
+    }
+
+    public void setReport(String report) {
+        this.report = report;
+    }
+
+    public List<MedicoResumoDTO> getMedicos() {
+        return medicos;
+    }
+
+    public void setMedicos(List<MedicoResumoDTO> medicos) {
+        this.medicos = medicos;
+    }
+
+    public SalaCirurgica getSalaCirurgica() {
+        return salaCirurgica;
+    }
+
+    public void setSalaCirurgica(SalaCirurgica salaCirurgica) {
+        this.salaCirurgica = salaCirurgica;
+    }
+
+
+}
+

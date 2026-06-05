@@ -1,0 +1,400 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../css/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <title>HealthLink - Doação de Sangue</title>
+  </head>
+  <body>
+    <div class="wrapper">
+      <aside class="sidebar">
+        <div class="logo">
+          <i class="fa-solid fa-heart-pulse"></i><span>HealthLink</span>
+        </div>
+        <nav>
+          <a href="index.html"><i class="fa-solid fa-table-columns"></i> <span>Dashboard</span></a>
+          <a href="agendamentos.html"><i class="fa-solid fa-calendar-days"></i> <span>Agendamentos</span></a>
+          <a href="filadeespera.html"><i class="fa-solid fa-clock"></i> <span>Fila de Espera</span></a>
+          <a href="atendimento.html"><i class="fa-solid fa-stethoscope"></i> <span>Atendimento</span></a>
+          <a href="cirurgias.html"><i class="fa-solid fa-heart-pulse"></i> <span>Cirurgias</span></a>
+          <a href="exames.html"><i class="fa-solid fa-file-medical"></i> <span>Exames</span></a>
+          <a href="doacaodesangue.html" class="active"><i class="fa-solid fa-droplet"></i> <span>Doação de Sangue</span></a>
+          <a href="usuarios.html"><i class="fa-solid fa-user-group"></i> <span>Usuários</span></a>
+        </nav>
+        <div class="logout">
+          <a href="login.html"><i class="fa-solid fa-right-from-bracket"></i> <span>Sair</span></a>
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <header>
+          <div class="header-titles">
+            <h1>Sistema de Gestão Hospitalar</h1>
+            <p>Gestão integrada e distribuída</p>
+          </div>
+          <div class="header-user">
+            <i class="fa-solid fa-bell"></i>
+            <i class="fa-solid fa-gear"></i>
+            <div class="user-profile">
+              <div class="user-info">
+                <strong>Dr. Administrador</strong><span>Administrador</span>
+              </div>
+              <div class="avatar">DR</div>
+            </div>
+          </div>
+        </header>
+
+        <section class="dashboard-head">
+          <div class="head-left">
+            <h2>Gestão de Doação de Sangue</h2>
+            <small>Gerenciar doações de sangue e estoque</small>
+          </div>
+          <button class="btn-primary" id="abrir-modal-doacao">
+            <i class="fa-solid fa-plus"></i> Nova Doação
+          </button>
+        </section>
+
+        <section class="cards-summary">
+          <div class="card-kpi">
+            <div class="kpi-icon-container red-bg">
+              <i class="fa-solid fa-droplet"></i>
+            </div>
+            <div class="kpi-body">
+              <h3 class="kpi-value" id="total-unidades">...</h3>
+              <p class="kpi-subtext">Unidades Disponíveis</p>
+            </div>
+          </div>
+        </section>
+
+        <div class="card-base inventory-levels">
+          <h3>Níveis de Estoque por Tipo Sanguíneo</h3>
+          <div class="levels-list" id="estoque-lista">
+            <p>Carregando estoque...</p>
+          </div>
+        </div>
+
+        <div class="table-card card" style="margin: 20px 32px 32px;">
+          <div class="table-header" style="padding: 20px 20px 0;">
+            <div>
+              <h3>Usuários Cadastrados</h3>
+              <p>Doadores e pacientes do sistema</p>
+            </div>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>NOME</th>
+                <th>E-MAIL</th>
+                <th>CPF</th>
+              </tr>
+            </thead>
+            <tbody id="doadores-tabela">
+              <tr><td colspan="3">Carregando usuários...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </main>
+    </div>
+
+    <div class="modal-overlay" id="modal-doacao" aria-hidden="true">
+      <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="modal-doacao-titulo">
+        <div class="modal-header">
+          <div>
+            <h3 id="modal-doacao-titulo">Nova Doação</h3>
+            <p>Registre a entrada de bolsas no estoque.</p>
+          </div>
+          <button class="modal-close" id="fechar-modal-doacao" type="button" aria-label="Fechar">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+
+        <form id="form-doacao" class="modal-form">
+          <label>
+            Tipo sanguíneo
+            <select id="tipo-doacao" required>
+              <option value="">Selecione</option>
+              <option value="A_POSITIVO">A+</option>
+              <option value="A_NEGATIVO">A-</option>
+              <option value="B_POSITIVO">B+</option>
+              <option value="B_NEGATIVO">B-</option>
+              <option value="AB_POSITIVO">AB+</option>
+              <option value="AB_NEGATIVO">AB-</option>
+              <option value="O_POSITIVO">O+</option>
+              <option value="O_NEGATIVO">O-</option>
+            </select>
+          </label>
+
+          <label>
+            Quantidade de bolsas
+            <input id="quantidade-doacao" type="number" min="1" step="1" required />
+          </label>
+
+          <p class="form-message" id="mensagem-doacao"></p>
+
+          <div class="modal-actions">
+            <button class="btn-secondary" id="cancelar-doacao" type="button">Cancelar</button>
+            <button class="btn-primary" id="salvar-doacao" type="submit">
+              <i class="fa-solid fa-floppy-disk"></i> Salvar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      var API_BASE_URL = 'http://localhost:8080';
+
+      
+      var TIPOS_SANGUINEOS = [
+        { label: 'A+',  chaveApi: 'A_POSITIVO',  icone: 'icon-ap'  },
+        { label: 'A-',  chaveApi: 'A_NEGATIVO',  icone: 'icon-an'  },
+        { label: 'B+',  chaveApi: 'B_POSITIVO',  icone: 'icon-bp'  },
+        { label: 'B-',  chaveApi: 'B_NEGATIVO',  icone: 'icon-bn'  },
+        { label: 'AB+', chaveApi: 'AB_POSITIVO', icone: 'icon-abp' },
+        { label: 'AB-', chaveApi: 'AB_NEGATIVO', icone: 'icon-abn' },
+        { label: 'O+',  chaveApi: 'O_POSITIVO',  icone: 'icon-op'  },
+        { label: 'O-',  chaveApi: 'O_NEGATIVO',  icone: 'icon-on'  }
+      ];
+
+      var CAPACIDADE_MAXIMA = 60;
+      var LIMIAR_ALERTA = 20;
+
+      function buscarTipo(chaveApi) {
+        return fetch(API_BASE_URL + '/doacaoSangue/tipo?tipo=' + chaveApi)
+          .then(function (resposta) {
+            if (!resposta.ok) {
+              throw new Error('Erro ao buscar tipo ' + chaveApi);
+            }
+            return resposta.json();
+          });
+      }
+
+      function registrarDoacao(tipo, quantidade) {
+        var params = '?tipo=' + encodeURIComponent(tipo) + '&quantidade=' + encodeURIComponent(quantidade);
+
+        return fetch(API_BASE_URL + '/doacaoSangue' + params, {
+          method: 'POST'
+        }).then(function (resposta) {
+          if (!resposta.ok) {
+            throw new Error('Erro ao registrar doação');
+          }
+          return resposta.json();
+        });
+      }
+
+      function atualizarTexto(id, valor) {
+        var elemento = document.getElementById(id);
+        if (elemento) {
+          elemento.textContent = valor;
+        }
+      }
+
+      function escaparHtml(valor) {
+        return String(valor || '')
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#039;');
+      }
+
+      function obterQuantidade(dado) {
+      
+        if (typeof dado === 'number') return dado;
+        return dado.quantity || dado.quantidade || dado.total || dado.units || 0;
+      }
+
+      function calcularPorcentagem(quantidade) {
+        var pct = Math.round((quantidade / CAPACIDADE_MAXIMA) * 100);
+        return Math.min(pct, 100);
+      }
+
+      function classeBarra(porcentagem) {
+        if (porcentagem <= 30) return 'bar-orange';
+        if (porcentagem <= 60) return 'bar-blue';
+        return 'bar-green';
+      }
+
+      function montarLinhaEstoque(tipo, quantidade) {
+        var porcentagem = calcularPorcentagem(quantidade);
+        var classBarra = classeBarra(porcentagem);
+        var alertaHtml = quantidade <= LIMIAR_ALERTA
+          ? ' <i class="fa-solid fa-circle-exclamation warn"></i>'
+          : '';
+
+        return (
+          '<div class="level-row">' +
+            '<div class="level-head">' +
+              '<span><i class="fa-solid fa-droplet ' + escaparHtml(tipo.icone) + '"></i> ' + escaparHtml(tipo.label) + '</span>' +
+              '<span>' + quantidade + ' unidades' + alertaHtml + '</span>' +
+            '</div>' +
+            '<div class="progress-bar">' +
+              '<div class="progress ' + classBarra + '" style="width: ' + porcentagem + '%"></div>' +
+            '</div>' +
+          '</div>'
+        );
+      }
+
+      function carregarEstoque() {
+        var chamadas = TIPOS_SANGUINEOS.map(function (tipo) {
+          return buscarTipo(tipo.chaveApi)
+            .then(function (dado) {
+              return { tipo: tipo, quantidade: obterQuantidade(dado) };
+            })
+            .catch(function () {
+              
+              return { tipo: tipo, quantidade: 0 };
+            });
+        });
+
+        Promise.all(chamadas)
+          .then(function (resultados) {
+            var lista = document.getElementById('estoque-lista');
+            if (!lista) return;
+
+            var total = resultados.reduce(function (soma, item) {
+              return soma + item.quantidade;
+            }, 0);
+
+            atualizarTexto('total-unidades', total);
+            lista.innerHTML = resultados.map(function (item) {
+              return montarLinhaEstoque(item.tipo, item.quantidade);
+            }).join('');
+          })
+          .catch(function (erro) {
+            console.error('Erro ao carregar estoque de sangue:', erro);
+            atualizarTexto('total-unidades', '0');
+            var lista = document.getElementById('estoque-lista');
+            if (lista) {
+              lista.innerHTML = '<p>Não foi possível carregar o estoque de sangue.</p>';
+            }
+          });
+      }
+
+      function abrirModalDoacao() {
+        var modal = document.getElementById('modal-doacao');
+        var mensagem = document.getElementById('mensagem-doacao');
+
+        if (mensagem) {
+          mensagem.textContent = '';
+          mensagem.className = 'form-message';
+        }
+
+        if (modal) {
+          modal.classList.add('is-open');
+          modal.setAttribute('aria-hidden', 'false');
+        }
+      }
+
+      function fecharModalDoacao() {
+        var modal = document.getElementById('modal-doacao');
+        var form = document.getElementById('form-doacao');
+
+        if (modal) {
+          modal.classList.remove('is-open');
+          modal.setAttribute('aria-hidden', 'true');
+        }
+
+        if (form) {
+          form.reset();
+        }
+      }
+
+      function mostrarMensagemDoacao(texto, tipo) {
+        var mensagem = document.getElementById('mensagem-doacao');
+        if (!mensagem) return;
+
+        mensagem.textContent = texto;
+        mensagem.className = 'form-message ' + (tipo || '');
+      }
+
+      function enviarDoacao(evento) {
+        evento.preventDefault();
+
+        var tipo = document.getElementById('tipo-doacao').value;
+        var quantidade = Number(document.getElementById('quantidade-doacao').value);
+        var botaoSalvar = document.getElementById('salvar-doacao');
+
+        if (!tipo || !quantidade || quantidade < 1) {
+          mostrarMensagemDoacao('Informe o tipo sanguíneo e uma quantidade válida.', 'error');
+          return;
+        }
+
+        if (botaoSalvar) {
+          botaoSalvar.disabled = true;
+          botaoSalvar.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Salvando';
+        }
+
+        registrarDoacao(tipo, quantidade)
+          .then(function () {
+            mostrarMensagemDoacao('Doação registrada com sucesso.', 'success');
+            carregarEstoque();
+            setTimeout(fecharModalDoacao, 700);
+          })
+          .catch(function (erro) {
+            console.error('Erro ao registrar doação:', erro);
+            mostrarMensagemDoacao('Não foi possível registrar a doação.', 'error');
+          })
+          .finally(function () {
+            if (botaoSalvar) {
+              botaoSalvar.disabled = false;
+              botaoSalvar.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Salvar';
+            }
+          });
+      }
+
+      document.addEventListener('DOMContentLoaded', function () {
+        carregarEstoque();
+
+        // Carregar usuários
+        fetch(API_BASE_URL + '/users')
+          .then(function (r) { return r.json(); })
+          .then(function (usuarios) {
+            var tabela = document.getElementById('doadores-tabela');
+            if (!tabela) return;
+            if (!usuarios || usuarios.length === 0) {
+              tabela.innerHTML = '<tr><td colspan="3">Nenhum usuário encontrado.</td></tr>';
+              return;
+            }
+            tabela.innerHTML = usuarios.map(function (u) {
+              var nome  = u.nome  || u.name  || 'Sem nome';
+              var email = u.email || '-';
+              var cpf   = u.CPF   || u.cpf   || '-';
+              var ini   = nome.split(' ').filter(Boolean).map(function(p){ return p[0]; }).join('').slice(0,2).toUpperCase();
+              return (
+                '<tr>' +
+                  '<td><div class="patient-info">' +
+                    '<div class="avatar-circle blue">' + ini + '</div>' +
+                    '<span>' + nome + '</span>' +
+                  '</div></td>' +
+                  '<td>' + email + '</td>' +
+                  '<td>' + cpf + '</td>' +
+                '</tr>'
+              );
+            }).join('');
+          })
+          .catch(function (e) {
+            console.error('Erro ao carregar usuários:', e);
+            var tabela = document.getElementById('doadores-tabela');
+            if (tabela) tabela.innerHTML = '<tr><td colspan="3">Não foi possível carregar os usuários.</td></tr>';
+          });
+
+        document.getElementById('abrir-modal-doacao').addEventListener('click', abrirModalDoacao);
+        document.getElementById('fechar-modal-doacao').addEventListener('click', fecharModalDoacao);
+        document.getElementById('cancelar-doacao').addEventListener('click', fecharModalDoacao);
+        document.getElementById('form-doacao').addEventListener('submit', enviarDoacao);
+        document.getElementById('modal-doacao').addEventListener('click', function (evento) {
+          if (evento.target.id === 'modal-doacao') {
+            fecharModalDoacao();
+          }
+        });
+      });
+    </script>
+      <script src="../assets/js/header-user.js"></script>
+</body>
+</html>
