@@ -93,6 +93,8 @@
 <script>
     const API_BASE_URL = 'http://localhost:8080';
     let filaCarregada = [];
+    let usuariosPorId = {};
+    let medicosPorId = {};
 
     function buscarDados(caminho) {
         return fetch(API_BASE_URL + caminho)
@@ -118,6 +120,43 @@
             .replace(/>/g, '&gt;')
             .replace(/"/g, '&quot;')
             .replace(/'/g, '&#039;');
+    }
+
+    function mapearPorId(lista) {
+        return (lista || []).reduce(function (mapa, item) {
+            if (item && item.id) {
+                mapa[item.id] = item;
+            }
+            return mapa;
+        }, {});
+    }
+
+    function nomePessoa(pessoa) {
+        if (!pessoa) return '';
+        return pessoa.nome || pessoa.name || pessoa.nomePaciente || pessoa.pacienteNome || pessoa.usuarioNome || pessoa.nomeUsuario || pessoa.patientName || pessoa.fullName || pessoa.nomeCompleto || '';
+    }
+
+    function idPaciente(consulta) {
+        if (!consulta) return null;
+        if (typeof consulta.usuario === 'number' || typeof consulta.usuario === 'string') return consulta.usuario;
+        if (typeof consulta.user === 'number' || typeof consulta.user === 'string') return consulta.user;
+        if (typeof consulta.paciente === 'number' || typeof consulta.paciente === 'string') return consulta.paciente;
+        if (consulta.usuario && consulta.usuario.id) return consulta.usuario.id;
+        if (consulta.user && consulta.user.id) return consulta.user.id;
+        if (consulta.paciente && consulta.paciente.id) return consulta.paciente.id;
+        return consulta.usuarioId || consulta.usuario_id || consulta.idUsuario || consulta.userId || consulta.pacienteId || consulta.paciente_id || consulta.idPaciente || null;
+    }
+
+    function idMedico(consulta) {
+        if (!consulta) return null;
+        if (typeof consulta.medico === 'number' || typeof consulta.medico === 'string') return consulta.medico;
+        if (consulta.medico && consulta.medico.id) return consulta.medico.id;
+        return consulta.medicoId || consulta.medico_id || consulta.idMedico || null;
+    }
+
+    function especialidadeMedico(medico) {
+        if (!medico) return '';
+        return medico.specialty || medico.especialidade || medico.medicoSpecialty || medico.speciality || '';
     }
 
     function obterPaciente(consulta) {
@@ -171,6 +210,56 @@
         return 'Especialidade não informada';
     }
 
+    function obterPaciente(consulta) {
+        if (!consulta) {
+            return 'Paciente nao informado';
+        }
+
+        var nomeDireto =
+            nomePessoa(consulta.usuario) ||
+            nomePessoa(consulta.user) ||
+            nomePessoa(consulta.paciente) ||
+            nomePessoa(consulta);
+
+        if (nomeDireto) {
+            return nomeDireto;
+        }
+
+        var usuario = usuariosPorId[idPaciente(consulta)];
+        return nomePessoa(usuario) || 'Paciente nao informado';
+    }
+
+    function obterMedico(consulta) {
+        if (consulta) {
+            var nomeDireto = nomePessoa(consulta.medico) || consulta.nomeMedico || consulta.medicoNome;
+            if (nomeDireto) {
+                return nomeDireto;
+            }
+        }
+
+        var medico = medicosPorId[idMedico(consulta)];
+        return nomePessoa(medico) || 'Medico nao informado';
+    }
+
+    function obterEspecialidade(consulta) {
+        if (!consulta) {
+            return '-';
+        }
+
+        var especialidadeDireta =
+            especialidadeMedico(consulta.medico) ||
+            consulta.especialidade ||
+            consulta.specialty ||
+            consulta.medicoEspecialidade;
+
+        if (especialidadeDireta) {
+            return especialidadeDireta;
+        }
+
+        var medico = medicosPorId[idMedico(consulta)];
+        return especialidadeMedico(medico) || '-';
+    }
+
     function iniciais(nome) {
         return String(nome || '-')
             .split(' ')
@@ -211,31 +300,17 @@
         return 'Chamar';
     }
 
-    function minutosEspera(consulta) {
-        var data = consulta.data || consulta.date;
-        var hora = consulta.hora || consulta.horario;
-        if (!data || !hora) {
-            return 0;
-        }
-
-        var inicio = new Date(String(data).slice(0, 10) + 'T' + hora);
-        var diferenca = Math.floor((Date.now() - inicio.getTime()) / 60000);
-        return diferenca > 0 ? diferenca : 0;
-    }
-
     function montarCardFila(consulta, indice) {
         var paciente = obterPaciente(consulta);
         var medico = obterMedico(consulta);
         var especialidade = obterEspecialidade(consulta);
         var status = consulta.status || 'AGENDADA';
-        var espera = minutosEspera(consulta);
 
         return (
             '<div class="waiting-card">' +
                 '<div class="waiting-number">' + (indice + 1) + '</div>' +
                 '<div class="avatar-circle blue">' + escaparHtml(iniciais(paciente)) + '</div>' +
                 '<div class="waiting-info"><h3>' + escaparHtml(paciente) + '</h3><span>' + escaparHtml(especialidade) + ' • ' + escaparHtml(medico) + '</span></div>' +
-                '<div class="wait-time"><i class="fa-regular fa-clock"></i> ' + espera + ' min aguardando</div>' +
                 '<span class="status ' + statusClasse(status) + '">' + statusTexto(status) + '</span>' +
                 '<button class="' + classeBotao(status) + '" type="button" data-fila-index="' + consulta._filaIndex + '">' + textoBotao(status) + '</button>' +
             '</div>'
@@ -310,9 +385,25 @@
     }
 
     function carregarFila() {
-        buscarDados('/consultas')
-            .then(function (consultas) {
-                filaCarregada = (consultas || []).filter(function (consulta) {
+        Promise.all([
+            buscarDados('/consultas').catch(function (erro) {
+                console.error('Erro ao carregar consultas:', erro);
+                return [];
+            }),
+            buscarDados('/users').catch(function (erro) {
+                console.error('Erro ao carregar pacientes:', erro);
+                return [];
+            }),
+            buscarDados('/medicos').catch(function (erro) {
+                console.error('Erro ao carregar medicos:', erro);
+                return [];
+            })
+        ])
+            .then(function (dados) {
+                usuariosPorId = mapearPorId(dados[1]);
+                medicosPorId = mapearPorId(dados[2]);
+
+                filaCarregada = (dados[0] || []).filter(function (consulta) {
                     return consulta.status === 'AGENDADA' || consulta.status === 'ANDAMENTO' || !consulta.status;
                 }).map(function (consulta, indice) {
                     consulta._filaIndex = indice;
