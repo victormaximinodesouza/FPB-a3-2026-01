@@ -46,8 +46,17 @@ public class TestConfig implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
+        User u1 =new User(null,"adm1",1111111111,null,"rua da macaxeira","adm1@gmail.com", encoder.encode("2"),"2",null,new ArrayList<>(),new ArrayList<>(),new ArrayList<>());
+        User u2 =new User(null,"davi",111113311,null,"rua da severina","adm2@gmail.com",encoder.encode("3"),"4",null,new ArrayList<>(),new ArrayList<>(),new ArrayList<>());
+        User u3 = new User(null,"Jose",222222222,null,"Rua A","jose@gmail.com", encoder.encode("123"),"123",null,new ArrayList<>(),new ArrayList<>(),new ArrayList<>());
+        User u4 = new User(null,"Mariana",333333333,null,"Rua B","mariana@gmail.com", encoder.encode("123"),"123",null,new ArrayList<>(),new ArrayList<>(),new ArrayList<>());
+        User u5 = new User(null,"Paulo",444444444,null,"Rua C","paulo@gmail.com", encoder.encode("123"),"123",null,new ArrayList<>(),new ArrayList<>(),new ArrayList<>());
+        User u6 = new User(null,"Fernanda",555555555,null,"Rua D","fernanda@gmail.com", encoder.encode("123"),"123",null,new ArrayList<>(),new ArrayList<>(),new ArrayList<>());
+
+        userRepository.saveAll(Arrays.asList(u1,u2,u3,u4,u5,u6));
+
         Cirurgia c1 = new Cirurgia(null,"Ponte de Safena",2,new Date(),"feito com sucesso", StatusCirurgia.AGENDADA,new ArrayList<>(),null);
-        Cirurgia c2 = new Cirurgia(null,"Joelho",3,new Date(),"deu errado",null,new ArrayList<>(),null);
+        Cirurgia c2 = new Cirurgia(null,"Joelho",3,new Date(),"deu errado",StatusCirurgia.AGENDADA,new ArrayList<>(),null);
         Cirurgia c3 = new Cirurgia(null,"Apendicite",1,new Date(),"sucesso", StatusCirurgia.AGENDADA,new ArrayList<>(),null);
         Cirurgia c4 = new Cirurgia(null,"Hérnia",2,new Date(),"em observação", StatusCirurgia.REALIZADA,new ArrayList<>(),null);
         Cirurgia c5 = new Cirurgia(null,"Catarata",1,new Date(),"sem complicações", StatusCirurgia.AGENDADA,new ArrayList<>(),null);
@@ -86,21 +95,12 @@ public class TestConfig implements CommandLineRunner {
 
         salaCirurgicaRepository.saveAll(Arrays.asList(s1,s2,s3,s4,s5,s6));
 
-        User u1 =new User(null,"adm1",1111111111,null,"rua da macaxeira","adm1@gmail.com", encoder.encode("2"),"2",null,new ArrayList<>(),new ArrayList<>(),new ArrayList<>());
-        User u2 =new User(null,"davi",111113311,null,"rua da severina","adm2@gmail.com",encoder.encode("3"),"4",null,new ArrayList<>(),new ArrayList<>(),new ArrayList<>());
-        User u3 = new User(null,"Jose",222222222,null,"Rua A","jose@gmail.com", encoder.encode("123"),"123",null,new ArrayList<>(),new ArrayList<>(),new ArrayList<>());
-        User u4 = new User(null,"Mariana",333333333,null,"Rua B","mariana@gmail.com", encoder.encode("123"),"123",null,new ArrayList<>(),new ArrayList<>(),new ArrayList<>());
-        User u5 = new User(null,"Paulo",444444444,null,"Rua C","paulo@gmail.com", encoder.encode("123"),"123",null,new ArrayList<>(),new ArrayList<>(),new ArrayList<>());
-        User u6 = new User(null,"Fernanda",555555555,null,"Rua D","fernanda@gmail.com", encoder.encode("123"),"123",null,new ArrayList<>(),new ArrayList<>(),new ArrayList<>());
-
-        userRepository.saveAll(Arrays.asList(u1,u2,u3,u4,u5,u6));
-
-        Exame e1 = new Exame(null,null,null,u1,ExameTipo.ELETROCARDIOGRAMA,m1, ExameStatus.AGENDADO);
-        Exame e2 = new Exame(null,null,null,u2,ExameTipo.RAIO_X,m2,ExameStatus.AGENDADO);
-        Exame e3 = new Exame(null,null,null,u3,ExameTipo.Ressonancia_Magnetica,m3,ExameStatus.AGENDADO);
-        Exame e4 = new Exame(null,null,null,u4,ExameTipo.RAIO_X,m4,ExameStatus.CONCLUIDO);
-        Exame e5 = new Exame(null,null,null,u5,ExameTipo.HEMOGRAMA,m5,ExameStatus.AGENDADO);
-        Exame e6 = new Exame(null,null,null,u6,ExameTipo.HEMOGRAMA,m6,ExameStatus.CONCLUIDO);
+        Exame e1 = new Exame(null,new Date(),null,u1,ExameTipo.ELETROCARDIOGRAMA,m1, ExameStatus.AGENDADO);
+        Exame e2 = new Exame(null,new Date(),null,u2,ExameTipo.RAIO_X,m2,ExameStatus.AGENDADO);
+        Exame e3 = new Exame(null,new Date(),null,u3,ExameTipo.Ressonancia_Magnetica,m3,ExameStatus.AGENDADO);
+        Exame e4 = new Exame(null,new Date(),null,u4,ExameTipo.RAIO_X,m4,ExameStatus.CONCLUIDO);
+        Exame e5 = new Exame(null,new Date(),null,u5,ExameTipo.HEMOGRAMA,m5,ExameStatus.AGENDADO);
+        Exame e6 = new Exame(null,new Date(),null,u6,ExameTipo.HEMOGRAMA,m6,ExameStatus.CONCLUIDO);
 
         exameRepository.saveAll(Arrays.asList(e1,e2,e3,e4,e5,e6,e6));
 
