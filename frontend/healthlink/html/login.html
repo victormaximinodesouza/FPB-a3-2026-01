@@ -74,6 +74,17 @@
     </div>
 
     <script>
+      function parseJwt(token) {
+        try {
+          const base64Payload = token.split('.')[1];
+          if (!base64Payload) return {};
+          return JSON.parse(atob(base64Payload.replace(/-/g, '+').replace(/_/g, '/')));
+        } catch (erro) {
+          console.warn('Não foi possível decodificar o token.', erro);
+          return {};
+        }
+      }
+
       document
         .getElementById("senha")
         .addEventListener("keydown", function (e) {
@@ -120,13 +131,38 @@
           }
 
           const token = await response.text();
+          const payload = parseJwt(token);
+          const emailUsuario = (payload.sub || "").toLowerCase();
 
-          // salva JWT
           localStorage.setItem("token", token);
+
+          let nomeUsuario = emailUsuario || "Usuário";
+          let role = "Administrador";
+
+          try {
+            const respostaUsuarios = await fetch("http://localhost:8080/users");
+            if (respostaUsuarios.ok) {
+              const usuarios = await respostaUsuarios.json();
+              const usuarioAtual = usuarios.find(function (usuario) {
+                return (usuario.email || "").toLowerCase() === emailUsuario;
+              });
+
+              if (usuarioAtual) {
+                nomeUsuario = usuarioAtual.nome || usuarioAtual.email || emailUsuario || "Usuário";
+                role = usuarioAtual.role || "Administrador";
+              }
+            }
+          } catch (erro) {
+            console.warn("Não foi possível carregar o usuário logado.", erro);
+          }
+
+          localStorage.setItem(
+            "loggedUser",
+            JSON.stringify({ nome: nomeUsuario, email: emailUsuario, role: role })
+          );
 
           console.log("TOKEN:", token);
 
-          // redireciona
           window.location.href = "index.html";
         } catch (e) {
           erro.innerHTML =
