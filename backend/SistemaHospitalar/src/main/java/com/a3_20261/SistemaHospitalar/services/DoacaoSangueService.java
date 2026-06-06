@@ -14,12 +14,10 @@ public class DoacaoSangueService {
     @Autowired
     private DoacaoSangueRepository doacaoSangueRepository;
 
-
     public List<DoacaoSangue> findAll() {
 
         return doacaoSangueRepository.findAll();
     }
-
 
     public DoacaoSangue adicionarBolsa(TipoSanguineo tipo, Integer quantidade){
 
@@ -46,7 +44,6 @@ public class DoacaoSangueService {
 
             total += d.getQuantidadeBolsas();
         }
-
         return total;
     }
     public Integer quantidadePorTipo(TipoSanguineo tipo){
