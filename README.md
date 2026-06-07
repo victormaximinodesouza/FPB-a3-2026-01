@@ -1,81 +1,233 @@
-# HealthLink - Sistema de Gestao Hospitalar
+# 🏥 FPB A3 2026.1: Sistema de Gestão Hospitalar
 
-## Descricao breve
+![Status](https://img.shields.io/badge/Status-Em%20Desenvolvimento-blue)
+![Java](https://img.shields.io/badge/Java-21-orange)
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-4.0.3-green)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Database-blue)
 
-O HealthLink e um sistema de gestao hospitalar com frontend em HTML/CSS/JavaScript e backend em Java com Spring Boot. O projeto organiza modulos de usuarios, medicos, hospitais, prontuarios, exames, consultas, cirurgias, atendimentos, agendamentos, fila de espera, relatorios e doacao de sangue.
+Projeto desenvolvido para a disciplina **Sistemas Distribuídos e Mobile** da **Faculdade Internacional da Paraíba (FPB)**.
 
-## Tecnologias Utilizadas
+---
+
+## 🎯 Sobre o Projeto
+
+O Sistema de Gestão Hospitalar foi desenvolvido para auxiliar hospitais e unidades de saúde no gerenciamento e acompanhamento de atendimentos hospitalares.
+
+A plataforma centraliza informações relacionadas a:
+
+- 👤 Pacientes
+- 👨‍⚕️ Médicos
+- 🏥 Hospitais
+- 📅 Consultas
+- 🧪 Exames
+- 🔪 Cirurgias
+- 📋 Prontuários
+- 📞 Atendimentos
+- 📊 Indicadores Gerenciais
+
+O objetivo é otimizar processos internos, melhorar a gestão hospitalar e fornecer informações estratégicas para tomada de decisão.
+
+---
+
+## ✨ Funcionalidades
+
+### 👨‍💼 Administrador
+
+- Dashboard geral
+- Gerenciamento de usuários
+- Gerenciamento de hospitais
+- Gerenciamento de médicos
+- Relatórios e indicadores
+
+### 🏥 Recepção
+
+- Consulta de agendamentos
+- Controle da fila de espera
+- Chamada de pacientes
+- Acompanhamento de atendimentos
+
+### 👨‍⚕️ Médico
+
+- Consulta de agenda médica
+- Visualização de prontuários
+- Solicitação de exames
+- Histórico de atendimentos
+- Acompanhamento de cirurgias
+
+### 🧪 Laboratório
+
+- Consulta de exames
+- Controle de status dos exames
+- Acompanhamento de resultados
+
+### 🔪 Centro Cirúrgico
+
+- Gestão de cirurgias
+- Controle de salas cirúrgicas
+- Associação entre médicos e procedimentos
+
+### 🩸 Banco de Sangue
+
+- Controle de estoque sanguíneo
+- Acompanhamento de solicitações
+- Registro de doações
+
+---
+
+## 💻 Tecnologias Utilizadas
+
+### Backend
 
 - Java 21
-- Spring Boot
+- Spring Boot 4.0.3
 - Spring Web
 - Spring Data JPA
-- PostgreSQL
-- Maven Wrapper
+- Hibernate
+- Maven
+
+### Frontend
+
 - HTML5
 - CSS3
 - JavaScript
 - Font Awesome
+- Google Fonts
 
-## Como rodar o projeto
+### Banco de Dados
 
-### 1. Pre-requisitos
+- PostgreSQL
+
+### Ferramentas
+
+- Git
+- GitHub
+- IntelliJ IDEA
+- Maven
+- Postman
+- Insomnia
+
+---
+
+## ⚙️ Pré-requisitos
+
+### Backend
 
 - JDK 21
+- Maven ou Maven Wrapper
 - PostgreSQL
-- Git
 
-### 2. Clonar o repositorio
+### Frontend
+
+- Navegador Web Moderno
+
+### Ferramentas Opcionais
+
+- Git
+- IntelliJ IDEA
+- Postman
+- Insomnia
+
+---
+
+## 🚀 Como Executar o Projeto
+
+### 1️⃣ Clone o repositório
 
 ```bash
-git clone <url-do-repositorio>
-cd FPB-a3-2026-01
+git clone https://github.com/seu-usuario/seu-repositorio.git
 ```
 
-### 3. Configurar o banco
-
-Crie o banco `hospital` no PostgreSQL e confira as credenciais em:
-
-`backend/SistemaHospitalar/src/main/resources/application.properties`
-
-### 4. Executar o backend
+### 2️⃣ Entre na pasta do projeto
 
 ```bash
-cd backend/SistemaHospitalar
+cd nome-do-projeto
+```
+
+### 3️⃣ Configure o banco PostgreSQL
+
+```sql
+CREATE DATABASE hospital;
+```
+
+### 4️⃣ Execute a aplicação
+
+**Linux/Mac**
+
+```bash
 ./mvnw spring-boot:run
 ```
 
-No Windows:
+**Windows**
 
-```powershell
-.\mvnw.cmd spring-boot:run
+```bash
+mvnw.cmd spring-boot:run
 ```
 
-### 5. Abrir o frontend
+### 5️⃣ Acesse o sistema
 
-Abra no navegador:
+```text
+http://localhost:8080
+```
 
-- `frontend/healthlink/html/login.html`
-- `frontend/healthlink/html/index.html`
+---
 
-Observacao:
+## 🏗️ Arquitetura
 
-- o dashboard ja consome alguns endpoints reais da API
-- o login atual faz validacao visual simples e redireciona para o dashboard
+O projeto segue uma arquitetura em camadas:
 
-## Estrutura basica
+```text
+Controller
+    ↓
+Service
+    ↓
+Repository
+    ↓
+PostgreSQL
+```
 
-- `backend/` - codigo da API Spring Boot
-- `backend/SistemaHospitalar/src/main/java/.../entities` - entidades do banco
-- `backend/SistemaHospitalar/src/main/java/.../Enum` - enums de status e dominio
-- `backend/SistemaHospitalar/src/main/java/.../Repository` - repositorios JPA
-- `backend/SistemaHospitalar/src/main/java/.../services` - servicos e regras de consulta
-- `backend/SistemaHospitalar/src/main/java/.../resources` - rotas da API
-- `frontend/healthlink/html/` - telas do sistema
-- `frontend/healthlink/css/` - estilos
-- `frontend/healthlink/assets/` - imagens e arquivos visuais
-- `DOCUMENTACAO.md` - documentacao completa do projeto
+Estrutura principal:
 
-## Link para documentacao completa
+```text
+src
+├── entities
+├── repositories
+├── services
+├── resources
+├── dto
+├── enums
+└── config
+```
 
-Veja a documentacao detalhada em [DOCUMENTACAO.md](./DOCUMENTACAO.md).
+---
+
+## 👥 Equipe de Desenvolvimento
+
+| Participante |
+|--------------|
+| Lenon Furtado Medeiros |
+| Venicio Ferreira da Silva |
+| Wlisses Gabriel Cabral dos Santos |
+| Victor Maximino de Souza |
+| Emanuel Viktor de Souza Bezerra |
+
+---
+
+## 👨‍🏫 Professores
+
+- Pablo Ramon
+
+---
+
+## 📚 Disciplina
+
+**Sistemas Distribuídos e Mobile**
+
+**Faculdade Internacional da Paraíba - FPB**
+
+**Projeto A3 - 2026.1**
+
+---
+
+## 📄 Licença
+
+Projeto acadêmico desenvolvido exclusivamente para fins educacionais.
