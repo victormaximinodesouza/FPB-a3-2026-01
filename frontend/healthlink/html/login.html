@@ -37,7 +37,7 @@
         <div class="input-group">
           <label for="senha">Senha</label>
           <div class="input-wrapper">
-            <span>🔒</span>
+            
             <input type="password" id="senha" placeholder="••••••••" />
           </div>
         </div>
@@ -138,6 +138,10 @@
 
           let nomeUsuario = emailUsuario || "Usuário";
           let role = "Administrador";
+
+          if (payload.name || payload.nome) {
+            nomeUsuario = payload.name || payload.nome;
+          }
 
           try {
             const respostaUsuarios = await fetch("http://localhost:8080/users");
