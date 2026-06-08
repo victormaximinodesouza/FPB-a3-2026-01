@@ -210,6 +210,56 @@ header {
   flex-shrink: 0;
 }
 
+.login-callout {
+  min-width: 200px;
+  min-height: 58px;
+  padding: 12px 16px;
+  background: #1b4332;
+  color: var(--text-white);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 8px 18px rgba(0, 217, 98, 0.28);
+  transition: transform .15s, background .2s, box-shadow .2s;
+}
+
+.login-callout:hover {
+  background: #1b4332;
+  color: var(--text-white);
+  transform: translateY(-1px);
+  box-shadow: 0 10px 22px rgba(0, 217, 98, 0.28);
+}
+
+.login-callout-icon {
+  width: 32px;
+  height: 32px;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.login-callout .login-callout-icon i {
+  color: var(--text-white);
+  font-size: .95rem;
+  cursor: inherit;
+}
+
+.login-callout:hover .login-callout-icon i { color: var(--text-white); }
+
+.login-callout-text {
+  font-size: .85rem;
+  font-weight: 700;
+  line-height: 1.25;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.login-callout-text strong { font-weight: 800; }
+
 /* ── Cabeçalho de Seção ── */
 .dashboard-head {
   padding: 28px 32px 0;
@@ -1032,6 +1082,17 @@ body.login-page {
   .waiting-list { padding-left: 16px; padding-right: 16px; }
 
   header { padding: 12px 16px; }
+  .header-user { gap: 8px; }
+  .header-user > i { display: none; }
+  .login-callout {
+    min-width: 46px;
+    min-height: 44px;
+    padding: 8px;
+    justify-content: center;
+  }
+  .login-callout-text { display: none; }
+  .login-callout-icon { width: 30px; height: 30px; }
+  .user-info { display: none; }
   .card-body-grid       { grid-template-columns: 1fr; }
   .surgery-details-grid { grid-template-columns: 1fr 1fr; }
   .filter-bar           { flex-direction: column; align-items: stretch; }
