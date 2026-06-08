@@ -115,9 +115,9 @@
                 <tr>
                   <th>PACIENTE</th>
                   <th>MÉDICO</th>
-                  <th>ESPECIALIDADE</th>
+                  
                   <th>DATA</th>
-                  <th>HORÁRIO</th>
+                 
                   <th>TIPO</th>
                   <th>STATUS</th>
                   <th>AÇÕES</th>
@@ -134,64 +134,65 @@
       </main>
     </div>
     <script>
-      const API_BASE_URL = "http://localhost:8080";
+      const API_BASE_URL = 'http://localhost:8080';
       let agendamentosCarregados = [];
       let usuariosPorId = {};
       let medicosPorId = {};
 
       function buscarDados(caminho) {
-        return fetch(API_BASE_URL + caminho).then(function (resposta) {
-          if (!resposta.ok) {
-            throw new Error("Erro ao buscar " + caminho);
-          }
-          return resposta.json();
-        });
+        return fetch(API_BASE_URL + caminho)
+          .then(function (resposta) {
+            if (!resposta.ok) {
+              throw new Error('Erro ao buscar ' + caminho);
+            }
+            return resposta.json();
+          });
       }
 
       function formatarData(dataString) {
         if (!dataString) {
-          return "-";
+          return '-';
         }
         const data = new Date(dataString);
-        return data.toLocaleDateString("pt-BR");
+        return data.toLocaleDateString('pt-BR');
       }
 
       function statusTexto(status) {
         if (!status) {
-          return "Agendado";
+          return 'Agendado';
         }
-        if (status === "REALIZADA" || status === "CONCLUIDO") {
-          return "Concluído";
+        if (status === 'REALIZADA' || status === 'CONCLUIDO') {
+          return 'Concluído';
         }
-        if (status === "CANCELADA") {
-          return "Cancelado";
+        if (status === 'CANCELADA') {
+          return 'Cancelado';
         }
-        if (status === "ANDAMENTO") {
-          return "Em andamento";
+        if (status === 'ANDAMENTO') {
+          return 'Em andamento';
         }
         return status.charAt(0).toUpperCase() + status.slice(1).toLowerCase();
       }
 
       function statusClasse(status) {
-        if (status === "REALIZADA" || status === "CONCLUIDO") {
-          return "done";
+        if (status === 'REALIZADA' || status === 'CONCLUIDO') {
+          return 'done';
         }
-        if (status === "CANCELADA") {
-          return "cancelled";
+        if (status === 'CANCELADA') {
+          return 'cancelled';
         }
-        if (status === "ANDAMENTO") {
-          return "progress";
+        if (status === 'ANDAMENTO') {
+          return 'progress';
         }
-        return "pending";
+        return 'pending';
       }
 
       function escaparHtml(valor) {
-        return String(valor || "")
-          .replace(/&/g, "&amp;")
-          .replace(/</g, "&lt;")
-          .replace(/>/g, "&gt;")
-          .replace(/"/g, "&quot;")
-          .replace(/'/g, "&#039;");
+        return String(valor || '')
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#039;');
       }
 
       function mapearPorId(lista) {
@@ -204,81 +205,36 @@
       }
 
       function nomePessoa(pessoa) {
-        if (!pessoa) return "";
-        return (
-          pessoa.nome ||
-          pessoa.name ||
-          pessoa.nomePaciente ||
-          pessoa.pacienteNome ||
-          pessoa.usuarioNome ||
-          pessoa.nomeUsuario ||
-          pessoa.patientName ||
-          pessoa.fullName ||
-          pessoa.nomeCompleto ||
-          ""
-        );
+        if (!pessoa) return '';
+        return pessoa.nome || pessoa.name || pessoa.nomePaciente || pessoa.pacienteNome || pessoa.usuarioNome || pessoa.nomeUsuario || pessoa.patientName || pessoa.fullName || pessoa.nomeCompleto || '';
       }
 
       function idPaciente(consulta) {
         if (!consulta) return null;
-        if (
-          typeof consulta.usuario === "number" ||
-          typeof consulta.usuario === "string"
-        )
-          return consulta.usuario;
-        if (
-          typeof consulta.user === "number" ||
-          typeof consulta.user === "string"
-        )
-          return consulta.user;
-        if (
-          typeof consulta.paciente === "number" ||
-          typeof consulta.paciente === "string"
-        )
-          return consulta.paciente;
+        if (typeof consulta.usuario === 'number' || typeof consulta.usuario === 'string') return consulta.usuario;
+        if (typeof consulta.user === 'number' || typeof consulta.user === 'string') return consulta.user;
+        if (typeof consulta.paciente === 'number' || typeof consulta.paciente === 'string') return consulta.paciente;
         if (consulta.usuario && consulta.usuario.id) return consulta.usuario.id;
         if (consulta.user && consulta.user.id) return consulta.user.id;
-        if (consulta.paciente && consulta.paciente.id)
-          return consulta.paciente.id;
-        return (
-          consulta.usuarioId ||
-          consulta.usuario_id ||
-          consulta.idUsuario ||
-          consulta.userId ||
-          consulta.pacienteId ||
-          consulta.paciente_id ||
-          consulta.idPaciente ||
-          null
-        );
+        if (consulta.paciente && consulta.paciente.id) return consulta.paciente.id;
+        return consulta.usuarioId || consulta.usuario_id || consulta.idUsuario || consulta.userId || consulta.pacienteId || consulta.paciente_id || consulta.idPaciente || null;
       }
 
       function idMedico(consulta) {
         if (!consulta) return null;
-        if (
-          typeof consulta.medico === "number" ||
-          typeof consulta.medico === "string"
-        )
-          return consulta.medico;
+        if (typeof consulta.medico === 'number' || typeof consulta.medico === 'string') return consulta.medico;
         if (consulta.medico && consulta.medico.id) return consulta.medico.id;
-        return (
-          consulta.medicoId || consulta.medico_id || consulta.idMedico || null
-        );
+        return consulta.medicoId || consulta.medico_id || consulta.idMedico || null;
       }
 
       function especialidadeMedico(medico) {
-        if (!medico) return "";
-        return (
-          medico.specialty ||
-          medico.especialidade ||
-          medico.medicoSpecialty ||
-          medico.speciality ||
-          ""
-        );
+        if (!medico) return '';
+        return medico.specialty || medico.especialidade || medico.medicoSpecialty || medico.speciality || '';
       }
 
       function obterPacienteAntigo(consulta) {
         if (!consulta) {
-          return "-";
+          return '-';
         }
         if (consulta.usuario && consulta.usuario.nome) {
           return consulta.usuario.nome;
@@ -307,17 +263,15 @@
         if (consulta.nome) {
           return consulta.nome;
         }
-        return "Paciente não informado";
+        return 'Paciente não informado';
       }
 
       function iniciais(nome) {
-        return String(nome || "-")
-          .split(" ")
+        return String(nome || '-')
+          .split(' ')
           .filter(Boolean)
-          .map(function (word) {
-            return word.charAt(0);
-          })
-          .join("")
+          .map(function(word){ return word.charAt(0); })
+          .join('')
           .slice(0, 2)
           .toUpperCase();
       }
@@ -326,7 +280,7 @@
         if (consulta && consulta.medico && consulta.medico.specialty) {
           return consulta.medico.specialty;
         }
-        return "-";
+        return '-';
       }
 
       function obterMedicoAntigo(consulta) {
@@ -336,12 +290,12 @@
         if (consulta && consulta.medico && consulta.medico.nome) {
           return consulta.medico.nome;
         }
-        return "Médico não informado";
+        return 'Médico não informado';
       }
 
       function obterPaciente(consulta) {
         if (!consulta) {
-          return "-";
+          return '-';
         }
 
         const nomeDireto =
@@ -355,12 +309,12 @@
         }
 
         const usuario = usuariosPorId[idPaciente(consulta)];
-        return nomePessoa(usuario) || "Paciente nao informado";
+        return nomePessoa(usuario) || 'Paciente nao informado';
       }
 
       function obterEspecialidade(consulta) {
         if (!consulta) {
-          return "-";
+          return '-';
         }
 
         const especialidadeDireta =
@@ -374,22 +328,19 @@
         }
 
         const medico = medicosPorId[idMedico(consulta)];
-        return especialidadeMedico(medico) || "-";
+        return especialidadeMedico(medico) || '-';
       }
 
       function obterMedico(consulta) {
         if (consulta) {
-          const nomeDireto =
-            nomePessoa(consulta.medico) ||
-            consulta.nomeMedico ||
-            consulta.medicoNome;
+          const nomeDireto = nomePessoa(consulta.medico) || consulta.nomeMedico || consulta.medicoNome;
           if (nomeDireto) {
             return nomeDireto;
           }
         }
 
         const medico = medicosPorId[idMedico(consulta)];
-        return nomePessoa(medico) || "Medico nao informado";
+        return nomePessoa(medico) || 'Medico nao informado';
       }
 
       function montarLinhaAgendamento(consulta) {
@@ -397,66 +348,47 @@
         const paciente = obterPaciente(consulta);
         const especialidade = obterEspecialidade(consulta);
         const data = formatarData(consulta.data);
-        const horario = consulta.hora || consulta.horario || "-";
-        const tipo = consulta.obs || "Consulta";
-        const status = consulta.status || "AGENDADA";
+        const horario = consulta.hora || consulta.horario || '-';
+        const tipo = consulta.obs || 'Consulta';
+        const status = consulta.status || 'AGENDADA';
 
         return (
-          "<tr>" +
-          "<td>" +
-          '<div class="patient-info">' +
-          '<div class="avatar-circle blue">' +
-          escaparHtml(iniciais(paciente)) +
-          "</div>" +
-          "<span>" +
-          escaparHtml(paciente) +
-          "</span>" +
-          "</div>" +
-          "</td>" +
-          "<td>" +
-          escaparHtml(medico) +
-          "</td>" +
-          "<td>" +
-          escaparHtml(especialidade) +
-          "</td>" +
-          "<td>" +
-          escaparHtml(data) +
-          "</td>" +
-          '<td><i class="fa-regular fa-clock"></i> ' +
-          escaparHtml(horario) +
-          "</td>" +
-          "<td>" +
-          escaparHtml(tipo) +
-          "</td>" +
-          '<td><span class="status ' +
-          statusClasse(status) +
-          '">' +
-          statusTexto(status) +
-          "</span></td>" +
-          '<td class="actions">' +
-          '<span class="view">Ver</span> | <span class="edit">Editar</span>' +
-          "</td>" +
-          "</tr>"
+          '<tr>' +
+            '<td>' +
+              '<div class="patient-info">' +
+                '<div class="avatar-circle blue">' + escaparHtml(iniciais(paciente)) + '</div>' +
+                '<span>' + escaparHtml(paciente) + '</span>' +
+              '</div>' +
+            '</td>' +
+            '<td>' + escaparHtml(medico) + '</td>' +
+            '<td>' + escaparHtml(especialidade) + '</td>' +
+            '<td>' + escaparHtml(data) + '</td>' +
+            '<td><i class="fa-regular fa-clock"></i> ' + escaparHtml(horario) + '</td>' +
+            '<td>' + escaparHtml(tipo) + '</td>' +
+            '<td><span class="status ' + statusClasse(status) + '">' + statusTexto(status) + '</span></td>' +
+            '<td class="actions">' +
+              '<span class="view">Ver</span> | <span class="edit">Editar</span>' +
+            '</td>' +
+          '</tr>'
         );
       }
 
       function mostrarAgendamentos(consultas) {
-        const tabela = document.getElementById("agendamentos-tabela");
+        const tabela = document.getElementById('agendamentos-tabela');
         if (!tabela) {
           return;
         }
 
         if (!consultas || consultas.length === 0) {
-          tabela.innerHTML =
-            '<tr><td colspan="8">Nenhum agendamento encontrado.</td></tr>';
+          tabela.innerHTML = '<tr><td colspan="8">Nenhum agendamento encontrado.</td></tr>';
           return;
         }
 
-        tabela.innerHTML = consultas.map(montarLinhaAgendamento).join("");
+        tabela.innerHTML = consultas.map(montarLinhaAgendamento).join('');
       }
 
       function preencherFiltroMedicos(consultas) {
-        const filtroMedico = document.getElementById("filtro-medico");
+        const filtroMedico = document.getElementById('filtro-medico');
         if (!filtroMedico) {
           return;
         }
@@ -464,74 +396,55 @@
         const medicos = consultas
           .map(obterMedico)
           .filter(function (medico) {
-            return medico !== "Medico nao informado";
+            return medico !== 'Medico nao informado';
           })
           .filter(function (medico, indice, lista) {
-            return (
-              medico !== "Médico não informado" &&
-              lista.indexOf(medico) === indice
-            );
+            return medico !== 'Médico não informado' && lista.indexOf(medico) === indice;
           })
           .sort();
 
-        filtroMedico.innerHTML =
-          '<option value="">Todos os Médicos</option>' +
-          medicos
-            .map(function (medico) {
-              return (
-                '<option value="' +
-                escaparHtml(medico) +
-                '">' +
-                escaparHtml(medico) +
-                "</option>"
-              );
-            })
-            .join("");
+        filtroMedico.innerHTML = '<option value="">Todos os Médicos</option>' +
+          medicos.map(function (medico) {
+            return '<option value="' + escaparHtml(medico) + '">' + escaparHtml(medico) + '</option>';
+          }).join('');
       }
 
       function aplicarFiltrosAgendamentos() {
-        const busca = (
-          document.getElementById("busca-agendamento")?.value || ""
-        ).toLowerCase();
-        const statusFiltro =
-          document.getElementById("filtro-status")?.value || "";
-        const medicoFiltro =
-          document.getElementById("filtro-medico")?.value || "";
+        const busca = (document.getElementById('busca-agendamento')?.value || '').toLowerCase();
+        const statusFiltro = document.getElementById('filtro-status')?.value || '';
+        const medicoFiltro = document.getElementById('filtro-medico')?.value || '';
 
-        const consultasFiltradas = agendamentosCarregados.filter(
-          function (consulta) {
-            const paciente = obterPaciente(consulta).toLowerCase();
-            const medico = obterMedico(consulta);
-            const especialidade = obterEspecialidade(consulta).toLowerCase();
-            const status = consulta.status || "AGENDADA";
-            const textoBusca =
-              paciente + " " + medico.toLowerCase() + " " + especialidade;
+        const consultasFiltradas = agendamentosCarregados.filter(function (consulta) {
+          const paciente = obterPaciente(consulta).toLowerCase();
+          const medico = obterMedico(consulta);
+          const especialidade = obterEspecialidade(consulta).toLowerCase();
+          const status = consulta.status || 'AGENDADA';
+          const textoBusca = paciente + ' ' + medico.toLowerCase() + ' ' + especialidade;
 
-            const correspondeBusca = !busca || textoBusca.indexOf(busca) !== -1;
-            const correspondeStatus = !statusFiltro || status === statusFiltro;
-            const correspondeMedico = !medicoFiltro || medico === medicoFiltro;
+          const correspondeBusca = !busca || textoBusca.indexOf(busca) !== -1;
+          const correspondeStatus = !statusFiltro || status === statusFiltro;
+          const correspondeMedico = !medicoFiltro || medico === medicoFiltro;
 
-            return correspondeBusca && correspondeStatus && correspondeMedico;
-          },
-        );
+          return correspondeBusca && correspondeStatus && correspondeMedico;
+        });
 
         mostrarAgendamentos(consultasFiltradas);
       }
 
       function carregarAgendamentos() {
         Promise.all([
-          buscarDados("/consultas").catch(function (erro) {
-            console.error("Erro ao carregar consultas:", erro);
+          buscarDados('/consultas').catch(function (erro) {
+            console.error('Erro ao carregar consultas:', erro);
             return [];
           }),
-          buscarDados("/users").catch(function (erro) {
-            console.error("Erro ao carregar pacientes:", erro);
+          buscarDados('/users').catch(function (erro) {
+            console.error('Erro ao carregar pacientes:', erro);
             return [];
           }),
-          buscarDados("/medicos").catch(function (erro) {
-            console.error("Erro ao carregar medicos:", erro);
+          buscarDados('/medicos').catch(function (erro) {
+            console.error('Erro ao carregar medicos:', erro);
             return [];
-          }),
+          })
         ])
           .then(function (dados) {
             agendamentosCarregados = dados[0] || [];
@@ -541,42 +454,41 @@
             aplicarFiltrosAgendamentos();
           })
           .catch(function (erro) {
-            console.error("Erro ao carregar agendamentos:", erro);
-            const tabela = document.getElementById("agendamentos-tabela");
+            console.error('Erro ao carregar agendamentos:', erro);
+            const tabela = document.getElementById('agendamentos-tabela');
             if (tabela) {
-              tabela.innerHTML =
-                '<tr><td colspan="8">Não foi possível carregar os agendamentos.</td></tr>';
+              tabela.innerHTML = '<tr><td colspan="8">Não foi possível carregar os agendamentos.</td></tr>';
             }
           });
       }
 
-      document.addEventListener("DOMContentLoaded", function () {
+      document.addEventListener('DOMContentLoaded', function () {
         carregarAgendamentos();
 
-        const busca = document.getElementById("busca-agendamento");
-        const filtroStatus = document.getElementById("filtro-status");
-        const filtroMedico = document.getElementById("filtro-medico");
-        const limparFiltros = document.getElementById("limpar-filtros");
+        const busca = document.getElementById('busca-agendamento');
+        const filtroStatus = document.getElementById('filtro-status');
+        const filtroMedico = document.getElementById('filtro-medico');
+        const limparFiltros = document.getElementById('limpar-filtros');
 
         if (busca) {
-          busca.addEventListener("input", aplicarFiltrosAgendamentos);
+          busca.addEventListener('input', aplicarFiltrosAgendamentos);
         }
         if (filtroStatus) {
-          filtroStatus.addEventListener("change", aplicarFiltrosAgendamentos);
+          filtroStatus.addEventListener('change', aplicarFiltrosAgendamentos);
         }
         if (filtroMedico) {
-          filtroMedico.addEventListener("change", aplicarFiltrosAgendamentos);
+          filtroMedico.addEventListener('change', aplicarFiltrosAgendamentos);
         }
         if (limparFiltros) {
-          limparFiltros.addEventListener("click", function () {
-            if (busca) busca.value = "";
-            if (filtroStatus) filtroStatus.value = "";
-            if (filtroMedico) filtroMedico.value = "";
+          limparFiltros.addEventListener('click', function () {
+            if (busca) busca.value = '';
+            if (filtroStatus) filtroStatus.value = '';
+            if (filtroMedico) filtroMedico.value = '';
             aplicarFiltrosAgendamentos();
           });
         }
       });
     </script>
-    <script src="../assets/js/header-user.js"></script>
-  </body>
+      <script src="../assets/js/header-user.js"></script>
+</body>
 </html>
