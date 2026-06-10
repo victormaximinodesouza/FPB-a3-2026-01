@@ -157,31 +157,54 @@
         return data.toLocaleDateString('pt-BR');
       }
 
+      function normalizarStatus(status) {
+        return String(status || '')
+          .trim()
+          .toUpperCase()
+          .replace(/\s+/g, '_')
+          .replace(/[^A-Z_]/g, '');
+      }
+
       function statusTexto(status) {
-        if (!status) {
+        const valor = normalizarStatus(status);
+
+        if (!valor) {
           return 'Agendado';
         }
-        if (status === 'REALIZADA' || status === 'CONCLUIDO') {
+
+        if (['REALIZADA', 'CONCLUIDA', 'CONCLUIDO', 'FINALIZADA', 'FINALIZADO'].includes(valor)) {
           return 'Concluído';
         }
-        if (status === 'CANCELADA') {
+        if (['CANCELADA', 'CANCELADO'].includes(valor)) {
           return 'Cancelado';
         }
-        if (status === 'ANDAMENTO') {
+        if (['ANDAMENTO', 'EM_ANDAMENTO', 'EM_ANDAMENTO_'].includes(valor)) {
           return 'Em andamento';
         }
-        return status.charAt(0).toUpperCase() + status.slice(1).toLowerCase();
+        if (['APROVADA', 'APROVADO', 'CONFIRMADA', 'CONFIRMADO'].includes(valor)) {
+          return 'Aprovado';
+        }
+        if (['AGENDADA', 'AGENDADO', 'PENDENTE'].includes(valor)) {
+          return 'Pendente';
+        }
+
+        return valor.charAt(0) + valor.slice(1).toLowerCase().replace(/_/g, ' ');
       }
 
       function statusClasse(status) {
-        if (status === 'REALIZADA' || status === 'CONCLUIDO') {
+        const valor = normalizarStatus(status);
+
+        if (['REALIZADA', 'CONCLUIDA', 'CONCLUIDO', 'FINALIZADA', 'FINALIZADO'].includes(valor)) {
           return 'done';
         }
-        if (status === 'CANCELADA') {
+        if (['CANCELADA', 'CANCELADO'].includes(valor)) {
           return 'cancelled';
         }
-        if (status === 'ANDAMENTO') {
+        if (['ANDAMENTO', 'EM_ANDAMENTO'].includes(valor)) {
           return 'progress';
+        }
+        if (['APROVADA', 'APROVADO', 'CONFIRMADA', 'CONFIRMADO'].includes(valor)) {
+          return 'confirmed';
         }
         return 'pending';
       }
