@@ -577,12 +577,16 @@ tbody tr:hover { background: #f9fafb; }
    ============================================================ */
 .status {
   padding: 4px 10px; border-radius: 20px;
-  font-size: .75rem; font-weight: 600; display: inline-block;
+  font-size: .75rem; font-weight: 600;
+  display: inline-flex; align-items: center; justify-content: center;
+  line-height: 1.1; text-align: center; white-space: nowrap;
+  vertical-align: middle;
 }
 .status.confirmed { background: var(--green-pale);  color: var(--green-mid); }
 .status.progress  { background: var(--blue-pale);   color: var(--blue-mid); }
 .status.pending   { background: var(--orange-pale); color: var(--orange-mid); }
 .status.done      { background: var(--green-pale);  color: var(--green-dark); }
+.status.cancelled { background: var(--red-pale);    color: var(--red-mid); }
 
 .status-badge { background: var(--green-pale); color: var(--green-mid); padding: 4px 10px; border-radius: 20px; font-size: .75rem; font-weight: 600; }
 
