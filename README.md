@@ -82,6 +82,8 @@ O objetivo é otimizar processos internos, melhorar a gestão hospitalar e forne
 - Spring Boot 4.0.3
 - Spring Web
 - Spring Data JPA
+- Spring Security
+- JWT
 - Hibernate
 - Maven
 
@@ -96,6 +98,11 @@ O objetivo é otimizar processos internos, melhorar a gestão hospitalar e forne
 ### Banco de Dados
 
 - PostgreSQL
+
+### Autenticacao
+
+- Login via API
+- Token JWT armazenado no navegador
 
 ### Ferramentas
 
@@ -149,6 +156,22 @@ cd nome-do-projeto
 CREATE DATABASE hospital;
 ```
 
+Configuracao esperada:
+
+```text
+host: localhost
+porta: 5432
+banco: hospital
+usuario: postgres
+senha: 1234
+```
+
+Entre na pasta do backend antes de executar:
+
+```bash
+cd backend/SistemaHospitalar
+```
+
 ### 4️⃣ Execute a aplicação
 
 **Linux/Mac**
@@ -165,9 +188,32 @@ mvnw.cmd spring-boot:run
 
 ### 5️⃣ Acesse o sistema
 
+API:
+
 ```text
 http://localhost:8080
 ```
+
+Frontend:
+
+```text
+frontend/healthlink/html/login.html
+frontend/healthlink/html/index.html
+```
+
+Credenciais iniciais de teste:
+
+```text
+adm1@gmail.com / 2
+adm2@gmail.com / 3
+```
+
+Observacoes:
+
+- o perfil ativo e `test`
+- o banco e recriado a cada execucao com `ddl-auto=create`
+- a classe `TestConfig` popula dados iniciais
+- o login usa `POST /users/login` e salva o token JWT no `localStorage`
 
 ---
 

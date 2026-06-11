@@ -47,10 +47,12 @@ Atualmente, o projeto esta em um estagio intermediario entre prototipo de interf
 
 - o frontend possui telas prontas para os principais modulos
 - o dashboard ja consome endpoints reais do backend
-- o login tem validacao visual simples no navegador
+- o login ja consome o endpoint `/users/login`, recebe um token JWT e armazena os dados do usuario no `localStorage`
 - o backend ja possui leitura de dados em varios modulos
 - existem rotas analiticas para usuarios, consultas, cirurgias, atendimentos e exames
-- ainda nao existem rotas de criacao, atualizacao ou exclusao
+- ja existem rotas de criacao em alguns modulos, como usuarios, medicos, exames, cirurgias, atendimentos, doacao de sangue e senhas
+- a fila de espera ja lista senhas cadastradas e permite chamar o proximo paciente
+- ainda nao existem rotas de atualizacao
 - alguns endpoints ainda seguem em modo prototipado
 
 ---
@@ -63,7 +65,10 @@ Com base no codigo atual e nas telas existentes, os requisitos funcionais do sis
 
 - abrir a tela de login
 - validar preenchimento de e-mail e senha no frontend
-- acessar o dashboard apos validacao visual
+- autenticar usuario pela API usando e-mail e senha
+- receber token JWT no login
+- armazenar token e dados basicos do usuario no navegador
+- acessar o dashboard apos autenticacao
 - sair do sistema pela navegacao lateral
 
 ### Dashboard
@@ -78,6 +83,7 @@ Com base no codigo atual e nas telas existentes, os requisitos funcionais do sis
 
 - listar usuarios cadastrados
 - consultar total de pacientes
+- cadastrar novo usuario
 - visualizar dados basicos do usuario
 - visualizar prontuario associado ao usuario
 - visualizar exames vinculados ao usuario
@@ -86,6 +92,7 @@ Com base no codigo atual e nas telas existentes, os requisitos funcionais do sis
 ### Medicos
 
 - listar medicos cadastrados
+- cadastrar novo medico
 - exibir CRM, especialidade e telefone
 - associar medicos a cirurgias
 - associar medicos a hospital
@@ -107,6 +114,7 @@ Com base no codigo atual e nas telas existentes, os requisitos funcionais do sis
 ### Exames
 
 - listar exames
+- cadastrar novo exame
 - exibir tipo e status do exame
 - exibir paciente e medico relacionados
 - consultar total de exames por mes
@@ -124,6 +132,7 @@ Com base no codigo atual e nas telas existentes, os requisitos funcionais do sis
 ### Cirurgias
 
 - listar cirurgias
+- cadastrar nova cirurgia
 - exibir nome, duracao, data e relatorio
 - exibir medicos relacionados
 - associar cirurgia a sala cirurgica
@@ -139,6 +148,7 @@ Com base no codigo atual e nas telas existentes, os requisitos funcionais do sis
 ### Atendimentos
 
 - listar atendimentos
+- cadastrar novo atendimento
 - registrar descricao, diagnostico e data
 - registrar status do atendimento
 - associar atendimento a usuario
@@ -148,11 +158,23 @@ Com base no codigo atual e nas telas existentes, os requisitos funcionais do sis
 
 - representar agendamentos no backend
 - exibir tela de gestao de agendamentos no frontend
+- listar agendamentos a partir das consultas cadastradas na tela do frontend
+- filtrar agendamentos por busca, status e medico
 
 ### Senhas de atendimento
 
 - representar senha de atendimento no backend
 - exibir tela relacionada no frontend
+- cadastrar senha de atendimento
+- listar fila de senhas
+- chamar o proximo paciente removendo a proxima senha da fila
+
+### Doacao de sangue
+
+- listar estoque de sangue por tipo sanguineo
+- cadastrar entrada de bolsas por tipo sanguineo
+- consultar quantidade total de bolsas
+- consultar quantidade por tipo sanguineo
 
 ### Relatorios e indicadores
 
@@ -168,7 +190,8 @@ Com base no codigo atual e nas telas existentes, os requisitos funcionais do sis
 - credenciais de banco nao devem ser expostas em producao
 - a API deve evoluir para autenticacao e autorizacao reais
 - dados clinicos devem ser protegidos
-- o login atual e apenas visual e nao autentica no backend
+- o login atual autentica no backend e gera token JWT
+- as rotas ainda estao liberadas no `SecurityConfig`, portanto o token ainda nao restringe o acesso aos endpoints
 
 ### Desempenho
 
@@ -217,6 +240,8 @@ Com base no codigo atual e nas telas existentes, os requisitos funcionais do sis
 - Spring Web
 - Spring Data JPA
 - Spring Boot Test
+- Spring Security
+- JJWT
 - Maven Wrapper
 - Font Awesome
 - Google Fonts
@@ -334,7 +359,8 @@ Abra no navegador:
 ### Observacoes
 
 - o dashboard usa `fetch` para consultar a API em `http://localhost:8080`
-- o login atual so valida campos preenchidos e redireciona para `index.html`
+- o login usa `POST /users/login`, salva o token no `localStorage` e redireciona para `index.html`
+- a API possui CORS configurado para `http://127.0.0.1:5500` e `http://localhost:5500`
 
 ---
 
@@ -425,10 +451,12 @@ Imagens e arquivos visuais.
 
 ## Visao geral da API
 
-A API atual expõe apenas rotas `GET`. Ela mistura:
+A API atual expoe rotas de leitura, metricas, login e algumas rotas de criacao. Ela mistura:
 
 - endpoints de listagem
 - endpoints analiticos de contagem
+- endpoints de criacao em alguns modulos
+- endpoint de autenticacao com JWT
 - alguns endpoints ainda prototipados
 
 ### Base URL
@@ -443,13 +471,15 @@ http://localhost:8080
 - algumas rotas retornam DTOs
 - outras retornam entidades diretamente
 - algumas rotas retornam apenas `Long`
+- o login retorna o token JWT em texto
 
 ### Limitacoes atuais
 
-- nao ha autenticacao
-- nao ha `POST`, `PUT` ou `DELETE`
+- ha autenticacao por login e geracao de JWT, mas as rotas ainda nao exigem o token
+- nao ha `PUT`
 - nem todos os modulos usam DTO
 - alguns endpoints ainda nao representam o comportamento final do sistema
+- alguns `POST` recebem entidades diretamente, sem DTO especifico de entrada
 
 ## Endpoints por modulo
 
@@ -508,6 +538,56 @@ Retorna a quantidade total de usuarios cadastrados.
 - `UserService.totalPacientes()`
 - `UserRepository.count()`
 
+#### `POST /users`
+
+Cadastra um novo usuario.
+
+**Corpo esperado**
+
+```json
+{
+  "nome": "Novo Paciente",
+  "CPF": 123456789,
+  "address": "Rua Exemplo",
+  "email": "paciente@email.com",
+  "senha": "123",
+  "number": "10"
+}
+```
+
+**Observacoes**
+
+- a senha e criptografada com `BCryptPasswordEncoder` antes de salvar
+- a rota recebe a entidade `User` diretamente
+
+#### `POST /users/login`
+
+Autentica usuario por e-mail e senha.
+
+**Corpo esperado**
+
+```json
+{
+  "email": "adm1@gmail.com",
+  "senha": "2"
+}
+```
+
+**Resposta**
+
+- token JWT em texto
+
+**Origem**
+
+- `UserService.login(LoginDTO loginDTO)`
+- `JWTService.gerarToken(String email)`
+
+**Uso atual no frontend**
+
+- a tela `login.html` consome essa rota
+- o token retornado e salvo no `localStorage`
+- apos o login, o frontend busca `/users` para identificar nome e e-mail do usuario logado
+
 ---
 
 ### Medicos
@@ -529,6 +609,15 @@ Lista medicos em formato DTO.
 
 - `specialty` usa enum `MedicoSpecialty`
 - as cirurgias sao retornadas em formato resumido
+
+#### `POST /medicos`
+
+Cadastra um novo medico.
+
+**Observacoes**
+
+- a rota recebe a entidade `Medico` diretamente
+- o retorno e o medico salvo
 
 ---
 
@@ -586,6 +675,7 @@ Lista consultas como entidade.
 
 - `status` usa enum `StatusConsulta`
 - `data` usa `LocalDate`
+- a entidade tambem possui relacionamento com `User`
 
 #### `GET /consultas/por-dia?data=YYYY-MM-DD`
 
@@ -653,6 +743,15 @@ Lista cirurgias em formato DTO.
 
 - `status` existe na entidade `Cirurgia`, mas nao esta exposto no `CirurgiaDTO`
 - `salaCirurgica` esta sendo retornada diretamente
+
+#### `POST /cirurgias`
+
+Cadastra uma nova cirurgia.
+
+**Observacoes**
+
+- a rota recebe a entidade `Cirurgia` diretamente
+- o retorno e a cirurgia salva
 
 #### `GET /cirurgias/total-agendadas`
 
@@ -738,6 +837,15 @@ GET /exames/por-status?status=AGENDADO
 - `ExameService.totalPorStatus(ExameStatus status)`
 - `ExameRepository.countByExameStatus(ExameStatus status)`
 
+#### `POST /exames`
+
+Cadastra um novo exame.
+
+**Observacoes**
+
+- a rota recebe a entidade `Exame` diretamente
+- o retorno e o exame salvo
+
 ---
 
 ### Atendimentos
@@ -781,6 +889,49 @@ GET /atendimentos/por-status?status=ANDAMENTO
 - `AtendimentoService.totalPorStatus(AtendimentoStatus status)`
 - `AtendimentoRepository.countByAtendimentoStatus(AtendimentoStatus status)`
 
+#### `POST /atendimentos`
+
+Cadastra um novo atendimento.
+
+**Observacoes**
+
+- a rota recebe a entidade `Atendimento` diretamente
+- o retorno e o atendimento salvo
+
+---
+
+### Doacao de sangue
+
+#### `GET /doacaoSangue`
+
+Lista os registros de estoque sanguineo.
+
+#### `POST /doacaoSangue?tipo=A_POSITIVO&quantidade=10`
+
+Adiciona bolsas ao estoque de um tipo sanguineo.
+
+**Parametros**
+
+- `tipo`: valor do enum `TipoSanguineo`
+- `quantidade`: quantidade de bolsas adicionadas
+
+**Observacoes**
+
+- se o tipo sanguineo ja existir no estoque, a quantidade e somada
+- se o tipo ainda nao existir, um novo registro e criado
+
+#### `GET /doacaoSangue/total`
+
+Retorna a quantidade total de bolsas cadastradas.
+
+#### `GET /doacaoSangue/tipo?tipo=A_POSITIVO`
+
+Retorna a quantidade de bolsas de um tipo sanguineo especifico.
+
+**Uso atual no frontend**
+
+- a tela `doacaodesangue.html` consulta os tipos sanguineos, atualiza os cards de estoque e envia novas doacoes
+
 ---
 
 ### Salas cirurgicas
@@ -813,6 +964,8 @@ Retorna um objeto `Agendamento` vazio.
 
 - endpoint ainda prototipado
 - nao consulta o banco apesar de existir repository e service
+- a tela `agendamentos.html` usa atualmente as consultas retornadas por `/consultas` para montar a lista visual de agendamentos
+- as ultimas atualizacoes removeram as colunas de especialidade e horario da tabela de agendamentos, deixando a exibicao mais alinhada aos dados reais disponiveis
 
 ---
 
@@ -820,12 +973,35 @@ Retorna um objeto `Agendamento` vazio.
 
 #### `GET /senha`
 
-Retorna um objeto `SenhaAtendimento` vazio.
+Lista as senhas de atendimento cadastradas.
+
+**Resposta**
+
+- lista de entidades `SenhaAtendimento`
+
+#### `POST /senha`
+
+Cadastra uma nova senha de atendimento.
+
+**Observacoes**
+
+- a rota recebe a entidade `SenhaAtendimento` diretamente
+- o retorno e a senha salva
+
+#### `DELETE /senha/proximo`
+
+Chama o proximo paciente da fila.
+
+**Comportamento**
+
+- busca a primeira senha cadastrada
+- remove essa senha do banco
+- retorna a senha chamada
 
 **Status atual**
 
-- endpoint ainda prototipado
-- nao consulta o banco apesar de existir repository e service
+- a fila ja consulta o banco por meio de `SenhaAtendimentoService.listarFila()`
+- a chamada do proximo paciente usa `SenhaAtendimentoService.chamarProximo()`
 
 ---
 
@@ -838,6 +1014,21 @@ O dashboard em `frontend/healthlink/html/index.html` chama:
 - `GET /cirurgias/total-agendadas`
 - `GET /consultas/por-dia/lista?data=YYYY-MM-DD`
 
+A tela de login em `frontend/healthlink/html/login.html` chama:
+
+- `POST /users/login`
+- `GET /users`
+
+Outras telas tambem consomem endpoints reais:
+
+- `usuarios.html`: `GET /users`, `POST /users`
+- `atendimento.html`: `GET /atendimentos`, `POST /atendimentos`, `GET /atendimentos/por-status`
+- `exames.html`: `GET /exames`, `GET /exames/por-mes`, `GET /exames/por-status`
+- `cirurgias.html`: `GET /cirurgias`, `POST /cirurgias`
+- `filadeespera.html`: `GET /senha`, `DELETE /senha/proximo`
+- `doacaodesangue.html`: `GET /doacaoSangue/tipo`, `POST /doacaoSangue`, `GET /users`
+- `agendamentos.html`: `GET /consultas`
+
 Essas rotas alimentam:
 
 - KPI total de pacientes
@@ -845,15 +1036,19 @@ Essas rotas alimentam:
 - KPI cirurgias agendadas
 - KPI fila de espera
 - tabela de consultas de hoje
+- formularios de cadastro em modulos especificos
+- listagens, filtros e indicadores das telas internas
 
 ## Oportunidades de melhoria na API
 
 - padronizar todas as respostas em DTO
-- criar rotas `POST`, `PUT` e `DELETE`
-- adicionar autenticacao
+- completar rotas `POST` nos modulos que ainda nao possuem criacao
+- criar rotas `PUT` e `DELETE` padronizadas
+- aplicar validacao do JWT nas rotas protegidas
 - expor `status` no `CirurgiaDTO`
 - revisar enums com construtores inconsistentes
 - alinhar nomes de campos entre frontend e backend para reduzir logica de fallback no JavaScript
+- remover registros duplicados da carga inicial quando nao forem necessarios
 
 ---
 
@@ -883,12 +1078,15 @@ Representa usuarios/pacientes.
 - `address`
 - `number`
 - `email`
+- `senha`
 
 **Relacionamentos**
 
 - `1:1` com `tb_prontuario`
 - `1:N` com `tb_exame`
 - `1:N` com `tb_Atendimento`
+- `1:1` com `tb_senhaAtendimento`
+- `1:N` com `tb_Consulta`
 
 ### `tb_prontuario`
 
@@ -946,6 +1144,7 @@ Representa consultas.
 - `data`
 - `obs`
 - `medico_id`
+- `user_id`
 
 ### `tb_Cirurgias`
 
@@ -1040,6 +1239,18 @@ Executa automaticamente no perfil `test` e popula o banco com dados iniciais par
 
 Conta o total de usuarios no banco usando `repository.count()`.
 
+#### `UserService.insert`
+
+Criptografa a senha do usuario com `BCryptPasswordEncoder` e salva o cadastro no banco.
+
+#### `UserService.login`
+
+Busca o usuario pelo e-mail, compara a senha informada com a senha criptografada e retorna um token JWT quando as credenciais sao validas.
+
+#### `JWTService.gerarToken`
+
+Gera um token JWT com o e-mail do usuario no assunto (`sub`) e expiracao de 24 horas.
+
 #### `ConsultaService.totalConsultasPorDia`
 
 Conta consultas de uma data especifica.
@@ -1064,6 +1275,22 @@ Conta exames entre o primeiro e o ultimo dia do mes informado.
 
 Conta exames por status.
 
+#### `DoacaoSangueService.adicionarBolsa`
+
+Adiciona bolsas ao estoque sanguineo. Quando o tipo sanguineo ja existe, soma a quantidade informada ao registro existente.
+
+#### `DoacaoSangueService.quantidadePorTipo`
+
+Retorna a quantidade de bolsas cadastradas para um tipo sanguineo especifico.
+
+#### `SenhaAtendimentoService.listarFila`
+
+Lista as senhas cadastradas para exibicao da fila de espera.
+
+#### `SenhaAtendimentoService.chamarProximo`
+
+Remove e retorna a primeira senha cadastrada, representando a chamada do proximo paciente.
+
 ### Repositorios com consultas derivadas importantes
 
 - `UserRepository.count()`
@@ -1073,6 +1300,8 @@ Conta exames por status.
 - `AtendimentoRepository.countByAtendimentoStatus(AtendimentoStatus status)`
 - `ExameRepository.countByDateRequestBetween(Date inicio, Date fim)`
 - `ExameRepository.countByExameStatus(ExameStatus status)`
+- `DoacaoSangueRepository.findByTipoSanguineo(TipoSanguineo tipoSanguineo)`
+- `UserRepository.findByEmail(String email)`
 
 ### Controllers mais importantes para o estado atual
 
@@ -1081,6 +1310,8 @@ Conta exames por status.
 - `CirurgiasResources`
 - `AtendimentoResources`
 - `ExameResources`
+- `DoacaoSangueResources`
+- `SenhaAtendimentoResources`
 
 Esses controllers concentram as rotas mais relevantes para o dashboard e para as metricas atuais do sistema.
 
@@ -1093,7 +1324,10 @@ Implementa:
 - validacao simples de campos
 - submit por clique
 - submit ao pressionar Enter
-- redirecionamento para o dashboard
+- chamada para `POST /users/login`
+- armazenamento do token JWT no `localStorage`
+- busca do usuario logado em `/users`
+- redirecionamento para o dashboard apos autenticacao
 
 ### `frontend/healthlink/html/index.html`
 
@@ -1104,6 +1338,31 @@ Implementa:
 - atualizacao dinamica dos KPIs
 - renderizacao da tabela de consultas do dia
 - fallback quando a API nao responde
+- tabela de consultas sem coluna de horario, alinhada aos dados atuais do backend
+
+### `frontend/healthlink/html/agendamentos.html`
+
+Implementa:
+
+- listagem visual de agendamentos a partir das consultas
+- filtros por busca, status e medico
+- tabela simplificada sem colunas de especialidade e horario
+
+### `frontend/healthlink/html/filadeespera.html`
+
+Implementa:
+
+- carregamento das senhas de atendimento
+- indicadores de pacientes aguardando e em atendimento
+- acao de chamar o proximo paciente
+
+### `frontend/healthlink/html/doacaodesangue.html`
+
+Implementa:
+
+- consulta de estoque por tipo sanguineo
+- formulario para adicionar bolsas de sangue
+- atualizacao visual dos totais por tipo
 
 ### `frontend/healthlink/css/style.css`
 
@@ -1115,9 +1374,10 @@ Centraliza:
 - cards
 - tabelas
 - estilos comuns entre modulos
+- badges de status com alinhamento central, `white-space: nowrap` e classe `cancelled`
 
 ---
 
 ## Conclusao
 
-O projeto evoluiu de um prototipo visual para uma base mais consistente de sistema hospitalar com API de leitura e metricas. O ponto mais forte no momento esta no backend, que ja oferece rotas uteis para alimentar o dashboard e organizar o dominio com enums, relacionamentos e consultas analiticas. O proximo passo natural e padronizar os retornos da API, completar os endpoints ainda prototipados e adicionar operacoes de escrita e autenticacao.
+O projeto evoluiu de um prototipo visual para uma base mais consistente de sistema hospitalar com API de leitura, metricas, login com JWT e algumas operacoes de criacao. O ponto mais forte no momento esta no backend, que ja oferece rotas uteis para alimentar o dashboard e organizar o dominio com enums, relacionamentos e consultas analiticas. O proximo passo natural e padronizar os retornos da API, aplicar protecao real nas rotas com JWT, completar os endpoints ainda prototipados e adicionar operacoes de atualizacao e exclusao.
